@@ -435,6 +435,7 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 | 連携先 | 用途 | 方式 | 認証 |
 |---|---|---|---|
 | service-hub `GET /api/public/status` | 稼働サービス一覧（安全サブセット） | REST（read-only、定期 fetch + キャッシュ） | 公開 API（不要） or 軽い API キー（HUB 側方針次第、[論点-001]） |
+| service-hub ← shipyard `GET /api/hub/service-info`（**公開する側**、O48） | service-hub が shipyard 自身の稼働/アプリ層指標を pull | REST（HUB が pull、最小固定契約 + extra/optional） | `HUB_SHARED_SECRET`（env、Bearer 検証、読み取り専用）。契約 SoT=service-hub、確定後に再整合 |
 | Resend | 返信通知 / 新着通知メール | REST API / SDK | `RESEND_API_KEY`（env、サーバー側） |
 | Cloudflare Turnstile | 不可視スパム判定 | サイトキー（クライアント）+ シークレット検証（サーバー） | `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` |
 | Clerk | 運用者(admin)認証 | SDK | `CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` |
@@ -477,7 +478,8 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
     利点: 安全サブセットに限定（内部指標を物理的に含めない）／ 表示に必要十分。欠点: HUB 側実装が前提（別タスク）。
   - 案 B: HUB が既存で別形を返す → shipyard 側で変換アダプタ。利点: HUB 改修不要な場合がある。欠点: 安全サブセット保証が shipyard 側責務になる（内部指標漏れリスク）。
 - **推奨**: 案 A。理由: 安全サブセットを HUB 側で保証するのが PII/内部指標漏れ防止に最も堅い。HUB 未実装の間は shipyard 側でモック contract（案 A の形）を使って開発を進める。
-- **判断期限**: `service-status` 機能設計（`/flow:feature`）着手前
+- **status**: `accepted-with-mock`（2026-05-27、AUDIT_20260527_1700 / D20260527-057）。`_shared/hub-client` が案 A の提案 contract を **mock 採用**して実装完了（`lib/hub/mock.ts`、Zod で安全サブセット strip）。service-status も実装済。**service-hub 側で実 contract 確定後に env URL 切替 + 整合再確認**（実装は無改修想定）。逆方向の service-info 公開は O48 で実装済（§6）。
+- **判断期限**: ~~`service-status` 機能設計着手前~~ → 実装は mock で先行完了。実 HUB 確定は service-hub 側タスク（外部依存）。
 - **担当**: seiji（HUB 側は別タスク `service-hub /flow:revise`）
 
 ### [論点-002] [SEC-001] 個人情報のログ漏洩防止: Critical（法令必須）
