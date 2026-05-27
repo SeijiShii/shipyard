@@ -1,0 +1,162 @@
+import { describe, it, expect, vi } from "vitest";
+import {
+  serviceStatusSchema,
+  publicStatusResponseSchema,
+  type PublicStatusResponse,
+} from "./contract";
+import { MOCK_HUB_STATUS } from "./mock";
+import { fetchHubStatus } from "./client";
+import { refreshStatusCache, getCachedStatus } from "./cache";
+import type {
+  StatusCacheRepo,
+  StatusCacheInput,
+} from "@/lib/db/repositories/statusCache";
+
+// docs/_shared/hub-client/003_hub-client_UNIT_TEST.md — contract / client / cache（実 HUB 不要 mock）
+
+function okResponse(data: unknown): Response {
+  return {
+    ok: true,
+    status: 200,
+    json: async () => data,
+  } as unknown as Response;
+}
+function errResponse(status: number): Response {
+  return { ok: false, status, json: async () => ({}) } as unknown as Response;
+}
+function mockRepo(rows: Awaited<ReturnType<StatusCacheRepo["listAll"]>> = []) {
+  const upsertMany = vi.fn(async (_rows: StatusCacheInput[]) => {});
+  const listAll = vi.fn(async () => rows);
+  return {
+    repo: { upsertMany, listAll } as unknown as StatusCacheRepo,
+    upsertMany,
+    listAll,
+  };
+}
+
+describe("contract (U-1, U-E3, U-E4, U-B1, U-B2)", () => {
+  it("U-1: 正しい PublicStatusResponse をパース", () => {
+    const parsed = publicStatusResponseSchema.parse(MOCK_HUB_STATUS);
+    expect(parsed.services).toHaveLength(2);
+  });
+
+  it("U-E3: 余剰フィールド（内部指標）は strip", () => {
+    const parsed = serviceStatusSchema.parse({
+      slug: "x",
+      name: "X",
+      url: "https://x",
+      status: "up",
+      cost: 1234, // 内部指標 → 破棄されるべき
+      churn: 0.5,
+    });
+    expect(parsed).not.toHaveProperty("cost");
+    expect(parsed).not.toHaveProperty("churn");
+  });
+
+  it("U-E4: status 不正値は reject", () => {
+    expect(() =>
+      serviceStatusSchema.parse({
+        slug: "x",
+        name: "X",
+        url: "u",
+        status: "weird",
+      }),
+    ).toThrow();
+  });
+
+  it("U-B1: services 空配列は正常", () => {
+    const parsed = publicStatusResponseSchema.parse({
+      generated_at: "t",
+      services: [],
+    });
+    expect(parsed.services).toEqual([]);
+  });
+
+  it("U-B2: since/last_checked_at 欠落は optional として許容", () => {
+    const parsed = serviceStatusSchema.parse({
+      slug: "x",
+      name: "X",
+      url: "u",
+      status: "up",
+    });
+    expect(parsed.since).toBeUndefined();
+  });
+});
+
+describe("fetchHubStatus (U-2, U-E1)", () => {
+  it("U-2: mock fetch で services を返す", async () => {
+    const fetcher = vi.fn(async () => okResponse(MOCK_HUB_STATUS));
+    const res = await fetchHubStatus({
+      fetcher,
+      url: "https://hub.test/status",
+    });
+    expect(res.services[0].slug).toBe("example-a");
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it("内部指標が来ても strip して返す", async () => {
+    const dirty = {
+      generated_at: "t",
+      services: [
+        { slug: "a", name: "A", url: "u", status: "up", secretCost: 9 },
+      ],
+    };
+    const res = await fetchHubStatus({
+      fetcher: vi.fn(async () => okResponse(dirty)),
+      url: "https://hub.test",
+    });
+    expect(res.services[0]).not.toHaveProperty("secretCost");
+  });
+
+  it("U-E1: HUB 5xx は例外", async () => {
+    await expect(
+      fetchHubStatus({
+        fetcher: vi.fn(async () => errResponse(503)),
+        url: "https://hub.test",
+      }),
+    ).rejects.toThrow();
+  });
+
+  it("URL 未設定は例外", async () => {
+    await expect(fetchHubStatus({ fetcher: vi.fn(), url: "" })).rejects.toThrow(
+      /HUB_STATUS_URL/,
+    );
+  });
+});
+
+describe("refreshStatusCache (U-3, U-E2) / getCachedStatus (U-4)", () => {
+  it("U-3: 成功時 upsertMany を fetched_at 付きで呼ぶ", async () => {
+    const { repo, upsertMany } = mockRepo();
+    const now = new Date("2026-05-27T12:00:00Z");
+    const res = await refreshStatusCache({
+      repo,
+      fetchStatus: async () => MOCK_HUB_STATUS,
+      now,
+    });
+    expect(res).toEqual({ ok: true, updated: 2 });
+    expect(upsertMany).toHaveBeenCalledTimes(1);
+    const rows = upsertMany.mock.calls[0][0];
+    expect(rows[0]).toMatchObject({ slug: "example-a", fetchedAt: now });
+  });
+
+  it("U-E2: fetch 失敗時はキャッシュを更新しない（前回値維持）", async () => {
+    const { repo, upsertMany } = mockRepo();
+    const res = await refreshStatusCache({
+      repo,
+      fetchStatus: async () => {
+        throw new Error("HUB down");
+      },
+    });
+    expect(res).toEqual({ ok: false, kept: true });
+    expect(upsertMany).not.toHaveBeenCalled();
+  });
+
+  it("U-4: getCachedStatus は listAll を返す", async () => {
+    const rows = [{ slug: "a" }] as Awaited<
+      ReturnType<StatusCacheRepo["listAll"]>
+    >;
+    const { repo, listAll } = mockRepo(rows);
+    expect(await getCachedStatus({ repo })).toBe(rows);
+    expect(listAll).toHaveBeenCalledTimes(1);
+  });
+});
