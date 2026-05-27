@@ -4,8 +4,8 @@
 **コマンド**: /flow:tdd（連続実装モード）
 **対象**: Phase 3 実装（Phase 0 scaffold → 優先度順 12 ターゲット）
 **実行者**: Claude (Opus 4.7)
-**状態**: 進行中（scaffold + _shared 全 7 + service-status,landing,inquiry(unit) 完了。次 = legal）
-**含まれる decision**: D20260527-048 〜 D20260527-061
+**状態**: 進行中（scaffold + _shared 全 7 + 機能 4(service-status,landing,inquiry,legal) unit 完了。次 = admin）
+**含まれる decision**: D20260527-048 〜 D20260527-062
 
 ## 進行状況（連続実装モード、resume 用）
 - ✅ **Phase 0 scaffold**: Next.js+TS+Tailwind+Drizzle+Vitest+CI 一式、npm install 560pkg、smoke 2/2 + typecheck GREEN（commit d877710）
@@ -20,7 +20,8 @@
   - 依存順の入替: landing が service-status component に依存するため、Step 0.3（依存先先行）で landing より先に service-status を実装。
 - ✅ **Target 9 landing（unit）**: 全 Phase 完了。app/page.tsx（scaffold 置換）= Header→Hero→StatusList 埋込→ValueSection→ConsultPitch→Footer + buildMetadata + JSON-LD（WebSite/Person）。JsonLd 共通 component（escaped, 静的データ専用）新設。**5 件 GREEN（全体 117/117）+ typecheck クリーン**。CTA→/contact。**E2E（004）+ 視覚 + wording は後続**。
 - ✅ **Target 10 inquiry（unit, 核心機能）**: 全 Phase 完了。core service（createInquiry: spam 5 段→db→通知 best-effort / addReply: token 検証 IDOR）+ Zod schema + storage + ThreadView（プレーンテキスト=XSS）+ ContactForm/ReplyForm + contact/t[token] 画面 + API 2 本。**14 件 GREEN（全体 131/131）+ typecheck クリーン**。**IDOR/XSS/PII/spam 分岐 100%**。実 SDK 結合 + E2E（004）は後続。
-- ⬜ 残り 2 機能: **次 = legal（優先度 3, privacy/terms）** → admin（優先度 4）（各 TDD）
+- ✅ **Target 11 legal（unit）**: privacy/terms 本文（静的 React）+ /legal/privacy・/legal/terms ページ。cookieless/外部AI送信なし/取得項目=メール+本文のみが §6/SEC-001 と整合。**Footer/seo の URL drift（/privacy→/legal/privacy）を設計 SoT に reconcile**。**5 件 GREEN（全体 136/136）+ typecheck クリーン**。文面は公開前に最終確認。E2E（004）は /flow:e2e。
+- ⬜ 残り 1 機能: **次 = admin（優先度 4, Clerk gate 運用コンソール）**（最終 target）
 
 > 観察（follow-up、本 target の阻害でない）: ESLint 設定が scaffold 未初期化（`next lint` が対話プロンプト）。CI の lint step に影響しうる → Phase 0 scaffold 側の bookkeeping。GREEN ゲートは typecheck + unit で担保。
 - ⬜ その後: /flow:e2e（E2E gate）→ /flow:design --review-only（視覚）→ /flow:wording（文言）→ /flow:release（実キー+デプロイ、Class B）
@@ -269,4 +270,20 @@
   context: |
     IDOR/XSS/PII/spam の 4 セキュリティ分岐を実キーなしで 100% unit。Turnstile widget は
     data 属性 + hidden input（CF スクリプト連携は Release）。flat ルート（contact, t/[token]）。131/131 GREEN。
+
+- id: D20260527-062
+  timestamp: 2026-05-27T16:17:00+09:00
+  command: /flow:tdd
+  phase: Target 11 legal / URL drift reconcile
+  question: 法務ページの実装方式 + Footer/seo の URL 不整合
+  options:
+    - 静的 React コンテンツ + /legal/* (設計 SoT) に Footer/seo を reconcile (recommended)
+    - MDX 導入 / Footer の /privacy をそのまま採用
+  recommended: 静的 React + /legal/* reconcile
+  chosen: PrivacyContent/TermsContent を静的 React で実装（@next/mdx 回避、純粋テスト可能）。Footer(_shared/ui) + seo PUBLIC_PATHS が /privacy /terms だったが legal 設計 SoT は /legal/* → 設計に合わせて Footer リンク + PUBLIC_PATHS + Footer テストを /legal/* に修正（sitemap/robots 自動追従）
+  chosen_type: auto-recommended
+  depends_on: [D20260527-053, D20260527-054]
+  context: |
+    cookieless/外部AI送信なし/取得項目(メール+本文のみ)が §6/SEC-001 と整合（U-C1/C2）。
+    index 可（公開ページ）。法務文面は draft、公開前に最終確認（SPEC §8）。E2E は /flow:e2e。136/136 GREEN。
 ```
