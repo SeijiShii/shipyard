@@ -11,7 +11,10 @@
 ## ファイル一覧（番号順）
 | 番号 | ファイル | 種別 | 状態 | 最終更新 | 短い説明 |
 |---|---|---|---|---|---|
-| (まだ設計文書なし。`/flow:feature _shared/auth` で生成) |
+| 001 | 001_auth_SPEC.md | SPEC | 設計済 | 2026-05-27 | Clerk + allowlist（admin のみ、SEC-002） |
+| 002 | 002_auth_PLAN.md | PLAN | 設計済 | 2026-05-27 | middleware + requireOperator |
+| 003 | 003_auth_UNIT_TEST.md | UNIT_TEST | 設計済 | 2026-05-27 | allowlist/認可分岐 + 訪問者通過 |
+| 004 | (E2E スキップ) | — | N/A | — | cross-cutting |
 
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
@@ -19,15 +22,16 @@
 | (なし。`/flow:revise` / `/flow:fix` / `/flow:claim` で生成) |
 
 ## 関連
-- 親 concept: `../concept.md` §1.3.2 _shared/auth 行
-- 実装コード: §1.4 参照
+- 親 concept: `../../concept.md` §3.7 SEC-002 / §6 Clerk / §1.2 公開分離
+- 被依存: admin
+- 実装コード: `middleware.ts` `lib/auth/`（§1.4 参照）
 
 ## AI アクセスガイド（読み込み順推奨）
 - 機能概要 → README.md
-- 仕様詳細 → 001_*_SPEC.md (まだ未生成)
+- 仕様詳細 → 001_auth_SPEC.md §1
 
 ## 機能性質タグ
-- (まだ未確定。`/flow:feature` 実行時に決定)
+- cross-cutting, auth-required（admin RBAC）
 
 <!-- auto-generated-end -->
 
