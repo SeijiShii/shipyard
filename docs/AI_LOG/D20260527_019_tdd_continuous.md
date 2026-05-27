@@ -4,8 +4,8 @@
 **コマンド**: /flow:tdd（連続実装モード）
 **対象**: Phase 3 実装（Phase 0 scaffold → 優先度順 12 ターゲット）
 **実行者**: Claude (Opus 4.7)
-**状態**: 進行中（scaffold + _shared 全 7 + service-status,landing(unit) 完了。次 = inquiry から継続）
-**含まれる decision**: D20260527-048 〜 D20260527-060
+**状態**: 進行中（scaffold + _shared 全 7 + service-status,landing,inquiry(unit) 完了。次 = legal）
+**含まれる decision**: D20260527-048 〜 D20260527-061
 
 ## 進行状況（連続実装モード、resume 用）
 - ✅ **Phase 0 scaffold**: Next.js+TS+Tailwind+Drizzle+Vitest+CI 一式、npm install 560pkg、smoke 2/2 + typecheck GREEN（commit d877710）
@@ -19,7 +19,8 @@
 - ✅ **Target 8 service-status（unit）**: 全 Phase 完了。StatusList（0件 EmptyState/未知 fallback）+ uptimeDays（daysSince re-export）+ toPublicStatus（安全サブセット, 内部除外）+ isAuthorizedCron（CRON_SECRET）+ /api/services + /api/cron + /services page。**7 件 GREEN（全体 112/112）+ typecheck クリーン**。**E2E（004）は /flow:e2e（P4.5）待ち**。route 本体は thin（getRepos 実 DB）。
   - 依存順の入替: landing が service-status component に依存するため、Step 0.3（依存先先行）で landing より先に service-status を実装。
 - ✅ **Target 9 landing（unit）**: 全 Phase 完了。app/page.tsx（scaffold 置換）= Header→Hero→StatusList 埋込→ValueSection→ConsultPitch→Footer + buildMetadata + JSON-LD（WebSite/Person）。JsonLd 共通 component（escaped, 静的データ専用）新設。**5 件 GREEN（全体 117/117）+ typecheck クリーン**。CTA→/contact。**E2E（004）+ 視覚 + wording は後続**。
-- ⬜ 残り 3 機能: **次 = inquiry（優先度 3, 核心機能）** → legal → admin（各 TDD）
+- ✅ **Target 10 inquiry（unit, 核心機能）**: 全 Phase 完了。core service（createInquiry: spam 5 段→db→通知 best-effort / addReply: token 検証 IDOR）+ Zod schema + storage + ThreadView（プレーンテキスト=XSS）+ ContactForm/ReplyForm + contact/t[token] 画面 + API 2 本。**14 件 GREEN（全体 131/131）+ typecheck クリーン**。**IDOR/XSS/PII/spam 分岐 100%**。実 SDK 結合 + E2E（004）は後続。
+- ⬜ 残り 2 機能: **次 = legal（優先度 3, privacy/terms）** → admin（優先度 4）（各 TDD）
 
 > 観察（follow-up、本 target の阻害でない）: ESLint 設定が scaffold 未初期化（`next lint` が対話プロンプト）。CI の lint step に影響しうる → Phase 0 scaffold 側の bookkeeping。GREEN ゲートは typecheck + unit で担保。
 - ⬜ その後: /flow:e2e（E2E gate）→ /flow:design --review-only（視覚）→ /flow:wording（文言）→ /flow:release（実キー+デプロイ、Class B）
@@ -252,4 +253,20 @@
   context: |
     landing は service-status の StatusList を埋込（依存解消済）。文言は仮置き（design SoT §7、
     最終は /flow:wording）。視覚レビュー(O34/O41) + コピー(O42) は Phase 3。E2E(004) は /flow:e2e。
+
+- id: D20260527-061
+  timestamp: 2026-05-27T16:11:00+09:00
+  command: /flow:tdd
+  phase: Target 10 inquiry / セキュリティ中核の DI 化
+  question: IDOR/XSS/PII/spam をどうテスト可能に実装するか
+  options:
+    - 中核(createInquiry/addReply)を service.ts に抽出し DI、route/page は thin、本文はプレーンテキスト (recommended)
+    - route handler に直接ロジック
+  recommended: service 抽出 + DI + プレーンテキスト
+  chosen: createInquiry/addReply を service.ts に抽出（verify/repos/notify を DI）。IDOR=findByToken のみ（id 経路を設けない）、無効/詐称は一律 404。XSS=ThreadView が React エスケープ（dangerouslySetInnerHTML 不使用）。PII=通知に body を渡さない（リンクのみ）。spam reject は汎用文言。route/page は thin wiring（getRepos/実 SDK は Release/E2E）
+  chosen_type: auto-recommended
+  depends_on: [D20260527-050, D20260527-055, D20260527-058]
+  context: |
+    IDOR/XSS/PII/spam の 4 セキュリティ分岐を実キーなしで 100% unit。Turnstile widget は
+    data 属性 + hidden input（CF スクリプト連携は Release）。flat ルート（contact, t/[token]）。131/131 GREEN。
 ```
