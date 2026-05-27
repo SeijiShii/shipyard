@@ -1,9 +1,12 @@
 # service-status ドキュメントインデックス
 
-**最終更新**: 2026-05-27 12:35
-**生成元**: /flow:concept (初期化)
+**最終更新**: 2026-05-27 15:59
+**生成元**: /flow:concept (初期化) / /flow:tdd (unit 実装完了)
 
 <!-- auto-generated-start -->
+
+## 状態: unit 実装完了 (2026-05-27)
+Phase 1（StatusList + uptime）+ Phase 2（/api/services + /api/cron + services page）+ Phase 3（vercel cron）完了。単体 7 件 GREEN。安全サブセット/secret 分岐 100%。**E2E（004）は /flow:e2e（P4.5）で実行予定**。
 
 ## 機能概要 (短縮、詳細は README.md)
 （README.md 参照）
@@ -14,7 +17,9 @@
 | 001 | 001_service-status_SPEC.md | SPEC | 設計済 | 2026-05-27 | 稼働一覧 + /api/services + cron |
 | 002 | 002_service-status_PLAN.md | PLAN | 設計済 | 2026-05-27 | StatusList/API/cron/uptime |
 | 003 | 003_service-status_UNIT_TEST.md | UNIT_TEST | 設計済 | 2026-05-27 | 表示/cache/secret/安全サブセット |
-| 004 | 004_service-status_E2E_TEST.md | E2E_TEST | 設計済 | 2026-05-27 | journey + Level1/2（色覚配慮） |
+| 004 | 004_service-status_E2E_TEST.md | E2E_TEST | 設計済（未実行） | 2026-05-27 | journey + Level1/2（/flow:e2e） |
+| 101 | 101_service-status_IMPL_REPORT.md | IMPL_REPORT | 実装完了 | 2026-05-27 | StatusList/API/cron/uptime |
+| 102 | 102_service-status_UNIT_TEST_REPORT.md | UNIT_TEST_REPORT | 実装完了 | 2026-05-27 | 7 件 GREEN（安全サブセット/secret 100%） |
 
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |

@@ -4,8 +4,8 @@
 **コマンド**: /flow:tdd（連続実装モード）
 **対象**: Phase 3 実装（Phase 0 scaffold → 優先度順 12 ターゲット）
 **実行者**: Claude (Opus 4.7)
-**状態**: 進行中（scaffold + _shared 全 7 完了。次 = landing（機能, 優先度 3）から継続）
-**含まれる decision**: D20260527-048 〜 D20260527-058
+**状態**: 進行中（scaffold + _shared 全 7 + service-status(unit) 完了。次 = landing から継続）
+**含まれる decision**: D20260527-048 〜 D20260527-059
 
 ## 進行状況（連続実装モード、resume 用）
 - ✅ **Phase 0 scaffold**: Next.js+TS+Tailwind+Drizzle+Vitest+CI 一式、npm install 560pkg、smoke 2/2 + typecheck GREEN（commit d877710）
@@ -16,7 +16,9 @@
 - ✅ **Target 5 _shared/auth**: 全 Phase 完了。Clerk middleware（admin のみ保護、訪問者導線は matcher 対象外=認証ゼロ D004）+ requireOperator（injectable resolver、未認証 401/allowlist 外 403）+ isOperator + ClerkProvider（admin layout 限定）。Clerk セッション取得は clerk.ts に分離し operator.ts を純ロジック化。**9 件 GREEN（全体 76/76）+ typecheck クリーン**。認可分岐 100%（SEC-002）。実認証は Release（Clerk 実キー）。
 - ✅ **Target 6 _shared/hub-client**: 全 Phase 完了。Zod contract（暗黙 strip で安全サブセットのみ受信、内部指標破棄）+ mock（論点-001）+ fetchHubStatus（injectable fetch, timeout, 検証）+ refreshStatusCache/getCachedStatus（HUB ダウンで前回値保持）。**12 件 GREEN（全体 88/88）+ typecheck クリーン**。Cron route は service-status へ繰延、実 HUB 結合は [論点-001] 解決後。
 - ✅ **Target 7 _shared/spam**: 全 Phase 完了。verifySubmission 5 段合議（honeypot/timing/rate/Turnstile/email）+ generateThreadToken（R1 単一生成元、db/token は re-export 化）+ rate-limit（ip/email を sha256 hash key）+ email-checks（使い捨て/MX injectable）+ turnstile（injectable）。**17 件 GREEN（全体 105/105）+ typecheck クリーン**。5 段+PII 100%。[論点-005] = 案A（fail-closed reject）既定採用（切替可）。実 Turnstile は Release。
-- ⬜ **_shared 横断 全 7 完了**。残り 5 機能ターゲット: **次 = landing（優先度 3, UI）** → service-status → inquiry → legal → admin（各 TDD）
+- ✅ **Target 8 service-status（unit）**: 全 Phase 完了。StatusList（0件 EmptyState/未知 fallback）+ uptimeDays（daysSince re-export）+ toPublicStatus（安全サブセット, 内部除外）+ isAuthorizedCron（CRON_SECRET）+ /api/services + /api/cron + /services page。**7 件 GREEN（全体 112/112）+ typecheck クリーン**。**E2E（004）は /flow:e2e（P4.5）待ち**。route 本体は thin（getRepos 実 DB）。
+  - 依存順の入替: landing が service-status component に依存するため、Step 0.3（依存先先行）で landing より先に service-status を実装。
+- ⬜ 残り 4 機能: **次 = landing（優先度 3, service-status 依存解消済）** → inquiry → legal → admin（各 TDD）
 
 > 観察（follow-up、本 target の阻害でない）: ESLint 設定が scaffold 未初期化（`next lint` が対話プロンプト）。CI の lint step に影響しうる → Phase 0 scaffold 側の bookkeeping。GREEN ゲートは typecheck + unit で担保。
 - ⬜ その後: /flow:e2e（E2E gate）→ /flow:design --review-only（視覚）→ /flow:wording（文言）→ /flow:release（実キー+デプロイ、Class B）
@@ -217,4 +219,20 @@
     [論点-005] は推奨の案A（スパム流入より一時的送信不可の害が小さい）を採用。最終確認は
     inquiry 実装時/seiji（設定切替で可逆）。5 段分岐 + PII ハッシュ 100%。実 Turnstile は Release。
     spec-review R3（古い rate_limits 窓 cleanup）は service-status cron に相乗りで別途配線予定。
+
+- id: D20260527-059
+  timestamp: 2026-05-27T15:59:00+09:00
+  command: /flow:tdd
+  phase: Target 8 service-status / 依存順入替 + route 抽出
+  question: landing→service-status 依存の順序 + route handler のテスト方式
+  options:
+    - 依存先 service-status を landing より先に実装 + route 核ロジックを lib に抽出して unit (recommended)
+    - scenario 記載順（landing 先）を厳守 / route を直接 unit
+  recommended: 依存先先行 + 核ロジック抽出
+  chosen: Step 0.3 に従い landing の依存（service-status の StatusList component）を先に実装。route handler は thin wiring とし、toPublicStatus/isAuthorizedCron を lib/service-status/api.ts に抽出して unit（route 本体は getRepos 実 DB のため E2E で被覆）。services は (public) group を作らず app/services に flat 配置
+  chosen_type: auto-recommended
+  depends_on: [D20260527-052, D20260527-057]
+  context: |
+    安全サブセット配信（内部指標除外 U-B1）+ CRON_SECRET 検証（U-E2）を 100% unit。
+    HUB ダウン graceful は hub-client 側で被覆済。E2E（004）は /flow:e2e（P4.5）待ち。112/112 GREEN。
 ```
