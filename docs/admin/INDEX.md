@@ -1,9 +1,12 @@
 # admin ドキュメントインデックス
 
-**最終更新**: 2026-05-27 12:35
-**生成元**: /flow:concept (初期化)
+**最終更新**: 2026-05-27 16:23
+**生成元**: /flow:concept (初期化) / /flow:tdd (unit 実装完了)
 
 <!-- auto-generated-start -->
+
+## 状態: unit 実装完了 (2026-05-27)
+service(reply/close) + layout ガード + 一覧/詳細ページ + reply/close API 完了。単体 10 件 GREEN。認可（requireOperator 401/403）/PII/404/best-effort 100%。threadRepo.findById を db に追加（admin id 経路）。**E2E（004）+ 実 Clerk は後続**。
 
 ## 機能概要 (短縮、詳細は README.md)
 （README.md 参照）
@@ -14,7 +17,9 @@
 | 001 | 001_admin_SPEC.md | SPEC | 設計済 | 2026-05-27 | Clerk gate 一覧/詳細/返信/close |
 | 002 | 002_admin_PLAN.md | PLAN | 設計済 | 2026-05-27 | layout ガード + API |
 | 003 | 003_admin_UNIT_TEST.md | UNIT_TEST | 設計済 | 2026-05-27 | 認可分岐 + PII + reply |
-| 004 | 004_admin_E2E_TEST.md | E2E_TEST | 設計済 | 2026-05-27 | journey + 認可 block + Level1/2 |
+| 004 | 004_admin_E2E_TEST.md | E2E_TEST | 設計済（未実行） | 2026-05-27 | journey + 認可 block（/flow:e2e） |
+| 101 | 101_admin_IMPL_REPORT.md | IMPL_REPORT | 実装完了 | 2026-05-27 | service/layout ガード/一覧/詳細/API |
+| 102 | 102_admin_UNIT_TEST_REPORT.md | UNIT_TEST_REPORT | 実装完了 | 2026-05-27 | 10 件 GREEN（認可/PII/404 100%） |
 
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |

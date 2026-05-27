@@ -4,8 +4,8 @@
 **コマンド**: /flow:tdd（連続実装モード）
 **対象**: Phase 3 実装（Phase 0 scaffold → 優先度順 12 ターゲット）
 **実行者**: Claude (Opus 4.7)
-**状態**: 進行中（scaffold + _shared 全 7 + 機能 4(service-status,landing,inquiry,legal) unit 完了。次 = admin）
-**含まれる decision**: D20260527-048 〜 D20260527-062
+**状態**: 完了（全 12 ターゲット unit 実装完了 = scaffold + _shared 全 7 + 機能 5。147/147 GREEN）。次 = /flow:e2e（P4.5 E2E gate）
+**含まれる decision**: D20260527-048 〜 D20260527-063
 
 ## 進行状況（連続実装モード、resume 用）
 - ✅ **Phase 0 scaffold**: Next.js+TS+Tailwind+Drizzle+Vitest+CI 一式、npm install 560pkg、smoke 2/2 + typecheck GREEN（commit d877710）
@@ -21,7 +21,9 @@
 - ✅ **Target 9 landing（unit）**: 全 Phase 完了。app/page.tsx（scaffold 置換）= Header→Hero→StatusList 埋込→ValueSection→ConsultPitch→Footer + buildMetadata + JSON-LD（WebSite/Person）。JsonLd 共通 component（escaped, 静的データ専用）新設。**5 件 GREEN（全体 117/117）+ typecheck クリーン**。CTA→/contact。**E2E（004）+ 視覚 + wording は後続**。
 - ✅ **Target 10 inquiry（unit, 核心機能）**: 全 Phase 完了。core service（createInquiry: spam 5 段→db→通知 best-effort / addReply: token 検証 IDOR）+ Zod schema + storage + ThreadView（プレーンテキスト=XSS）+ ContactForm/ReplyForm + contact/t[token] 画面 + API 2 本。**14 件 GREEN（全体 131/131）+ typecheck クリーン**。**IDOR/XSS/PII/spam 分岐 100%**。実 SDK 結合 + E2E（004）は後続。
 - ✅ **Target 11 legal（unit）**: privacy/terms 本文（静的 React）+ /legal/privacy・/legal/terms ページ。cookieless/外部AI送信なし/取得項目=メール+本文のみが §6/SEC-001 と整合。**Footer/seo の URL drift（/privacy→/legal/privacy）を設計 SoT に reconcile**。**5 件 GREEN（全体 136/136）+ typecheck クリーン**。文面は公開前に最終確認。E2E（004）は /flow:e2e。
-- ⬜ 残り 1 機能: **次 = admin（優先度 4, Clerk gate 運用コンソール）**（最終 target）
+- ✅ **Target 12 admin（unit, 最終 target）**: service(adminReply/adminClose, id 経由, 404, best-effort)+ replySchema + ThreadList(対応中/完了)+ layout ガード(requireOperator)+ 一覧/詳細ページ + reply/close API(requireOperator 二重防御)。**threadRepo.findById を db に追加**(admin id 経路, visitor token と分離)。**10 件 GREEN（全体 147/147）+ typecheck クリーン**。認可/PII/404 100%。
+- 🎉 **全 12 ターゲット unit 実装完了**（scaffold + _shared 7 + 機能 5）。147/147 GREEN + typecheck クリーン。
+- ➡️ **次フェーズ = E2E gate（P4.5）**: 004 を持つ feature（landing/service-status/inquiry/legal/admin）の E2E を `/flow:e2e` で実行 → 103 green。その後 P4.4(b) 視覚レビュー（design --review-only）→ P4.45 wording → P4.7 release（実キー+デプロイ）。
 
 > 観察（follow-up、本 target の阻害でない）: ESLint 設定が scaffold 未初期化（`next lint` が対話プロンプト）。CI の lint step に影響しうる → Phase 0 scaffold 側の bookkeeping。GREEN ゲートは typecheck + unit で担保。
 - ⬜ その後: /flow:e2e（E2E gate）→ /flow:design --review-only（視覚）→ /flow:wording（文言）→ /flow:release（実キー+デプロイ、Class B）
@@ -286,4 +288,20 @@
   context: |
     cookieless/外部AI送信なし/取得項目(メール+本文のみ)が §6/SEC-001 と整合（U-C1/C2）。
     index 可（公開ページ）。法務文面は draft、公開前に最終確認（SPEC §8）。E2E は /flow:e2e。136/136 GREEN。
+
+- id: D20260527-063
+  timestamp: 2026-05-27T16:23:00+09:00
+  command: /flow:tdd
+  phase: Target 12 admin / db findById 追加 + 認可二重防御
+  question: admin の id 経路（threadRepo に findById なし）+ 認可をどう実装するか
+  options:
+    - threadRepo.findById を db に追加 + reply/close を service 抽出 + requireOperator 二重防御 (recommended)
+    - token 経路を流用 / 認可は middleware のみ
+  recommended: findById 追加 + service 抽出 + 二重防御
+  chosen: db threadRepo に findById(id) を追加（admin=認証済 id 経路、visitor=token 経路と分離=SEC-002、db 22/22 再 GREEN）。adminReply/adminClose を service.ts に抽出（認可は requireOperator 再利用）。route は middleware + handler の requireOperator 二重防御。返信通知はリンクのみ（本文非含有=SEC-001）
+  chosen_type: auto-recommended
+  depends_on: [D20260527-050, D20260527-056, D20260527-061]
+  context: |
+    SPEC §3「admin は id 経由」を満たすため db に findById を補完（設計の隙間を埋める drift 解消）。
+    認可(401/403)/PII/404/best-effort を 100% unit。実 Clerk/Resend は Release。全 12 target 完了、147/147 GREEN。
 ```
