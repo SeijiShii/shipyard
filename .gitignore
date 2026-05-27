@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+build/
+dist/
+
+# env / secrets (perspectives O25)
+.env
+.env*.local
+
+# vercel
+.vercel
+
+# logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# test / coverage
+coverage/
+
+# revenue / cost exports (§4.6)
+exports/
+
+# os
+.DS_Store
+Thumbs.db

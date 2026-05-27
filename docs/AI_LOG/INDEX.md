@@ -1,0 +1,52 @@
+# AI_LOG インデックス — shipyard
+
+**最終更新**: 2026-05-27 12:35 (+09:00)
+**総セッション数**: 1
+**総 decision 数**: 13
+
+> このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
+> セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
+> 人間向けサマリは `../concept.md` §7 決定事項ログ を参照。
+
+<!-- auto-generated-start -->
+
+## セッション一覧（新しい順）
+
+| ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
+|---|---|---|---|---|---|
+| [D20260527_001_concept_initial.md](./D20260527_001_concept_initial.md) | 2026-05-27 | /flow:concept | initial | D20260527-001〜010 | 完了 |
+
+## decision_id 索引（grep 用、新しい順）
+
+| ID | command | phase | chosen (短縮) | type | ファイル |
+|---|---|---|---|---|---|
+| D20260527-013 | /flow:concept | Step 7.7 / Git | git init + 自動コミット | auto-recommended | D20260527_001_concept_initial.md |
+| D20260527-012 | /flow:concept | Step 7.5 / preferences | すべて更新 | auto-recommended | D20260527_001_concept_initial.md |
+| D20260527-011 | /flow:concept | Step 5.5 / wants | アーカイブして空に | auto-recommended | D20260527_001_concept_initial.md |
+| D20260527-010 | /flow:concept | Step 3 / 論点 | (open) HUB contract | open | D20260527_001_concept_initial.md |
+| D20260527-009 | /flow:concept | Q12.5 外部 AI | 使わない | auto-recommended | D20260527_001_concept_initial.md |
+| D20260527-008 | /flow:concept | Q11 リソース選定 | §3.1 無料枠バンドル | auto-recommended | D20260527_001_concept_initial.md |
+| D20260527-007 | /flow:concept | Step 3 / FW | Next.js (Vite override) | auto-recommended | D20260527_001_concept_initial.md |
+| D20260527-006 | /flow:concept | Q12.12 デザイン | 信頼感×ミニマル×クラフト | auto-recommended | D20260527_001_concept_initial.md |
+| D20260527-005 | /flow:concept | スパム対策 | 不可視スタック | auto-recommended | D20260527_001_concept_initial.md |
+| D20260527-004 | /flow:concept | 問い合わせ識別 | メアド必須+検証 | explicit-choice | D20260527_001_concept_initial.md |
+| D20260527-003 | /flow:concept | 問い合わせ形式 | サイト内スレッド | explicit-choice | D20260527_001_concept_initial.md |
+| D20260527-002 | /flow:concept | 永続化 | Neon-backed | non-recommended | D20260527_001_concept_initial.md |
+| D20260527-001 | /flow:concept | Step 1.7 | preferences 読込 | auto-recommended | D20260527_001_concept_initial.md |
+
+## Open 論点（chosen_type=open、全期間横断）
+
+| ID | 論点タイトル | 採番セッション | 関連 decision |
+|---|---|---|---|
+| D20260527-010 | service-hub GET /api/public/status contract 確定（concept §8 [論点-001]） | D20260527_001 | D20260527-003 |
+
+## Superseded chain（旧 Open → 新解決）
+
+| 旧 ID | 新 ID | 解決日 | 解決セッション |
+|---|---|---|---|
+| (なし) | | | |
+
+<!-- auto-generated-end -->
+
+<!-- user-edit-start -->
+<!-- user-edit-end -->
