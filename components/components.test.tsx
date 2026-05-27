@@ -139,7 +139,12 @@ describe("StatusCard (U-2, U-E2)", () => {
   it("U-E2: url 欠落時はリンク化しない（非クリック）", () => {
     render(
       <StatusCard
-        service={{ slug: "b", name: "停止中アプリ", status: "down", since: null }}
+        service={{
+          slug: "b",
+          name: "停止中アプリ",
+          status: "down",
+          since: null,
+        }}
         now={now}
       />,
     );
@@ -151,15 +156,29 @@ describe("StatusCard (U-2, U-E2)", () => {
 describe("Header (U-5) / Footer", () => {
   it("U-5: ワードマーク + お問い合わせ + これは何?", () => {
     render(<Header />);
-    expect(screen.getByRole("link", { name: "shipyard" })).toHaveAttribute("href", "/");
-    expect(screen.getByRole("link", { name: "お問い合わせ" })).toHaveAttribute("href", "/contact");
-    expect(screen.getByRole("link", { name: "これは何？" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "shipyard" })).toHaveAttribute(
+      "href",
+      "/",
+    );
+    expect(screen.getByRole("link", { name: "お問い合わせ" })).toHaveAttribute(
+      "href",
+      "/contact",
+    );
+    expect(
+      screen.getByRole("link", { name: "これは何？" }),
+    ).toBeInTheDocument();
   });
 
   it("Footer: 法務リンク + 控えめなメイカー文脈", () => {
     render(<Footer year={2026} />);
-    expect(screen.getByRole("link", { name: "プライバシー" })).toHaveAttribute("href", "/privacy");
-    expect(screen.getByRole("link", { name: "利用規約" })).toHaveAttribute("href", "/terms");
+    expect(screen.getByRole("link", { name: "プライバシー" })).toHaveAttribute(
+      "href",
+      "/legal/privacy",
+    );
+    expect(screen.getByRole("link", { name: "利用規約" })).toHaveAttribute(
+      "href",
+      "/legal/terms",
+    );
     expect(screen.getByText(/週1ペース/)).toBeInTheDocument();
   });
 });
@@ -186,10 +205,16 @@ describe("EmptyState (U-7)", () => {
 });
 
 describe("ProgressFeedback (U-6)", () => {
-  const stages = ["送信内容を確認しています", "スレッドを用意しています", "完了しました"];
+  const stages = [
+    "送信内容を確認しています",
+    "スレッドを用意しています",
+    "完了しました",
+  ];
 
   it("current に連動した段階文言（嘘進捗でない）", () => {
-    const { rerender } = render(<ProgressFeedback stages={stages} current={0} />);
+    const { rerender } = render(
+      <ProgressFeedback stages={stages} current={0} />,
+    );
     expect(screen.getByText("送信内容を確認しています")).toBeInTheDocument();
     rerender(<ProgressFeedback stages={stages} current={1} />);
     expect(screen.getByText("スレッドを用意しています")).toBeInTheDocument();
