@@ -12,6 +12,7 @@
 |---|---|---|
 | `verifySubmission(input)` | 不可視スタックを一括判定（pass/reject + 理由） | inquiry（POST /api/inquiry） |
 | `generateThreadToken()` | 暗号論的乱数 token（128-bit, base64url、SEC-002） | inquiry / db.threadRepo |
+<!-- spec-review R1: token 生成の単一責務はここ（spam）。db.threadRepo.create が本関数を呼んで生成、UNIQUE 衝突時は repo がリトライ（再度本関数を呼ぶ）。生成箇所を二重定義しない -->　
 
 ## 2. 入出力（verifySubmission）
 入力: `{ turnstileToken, honeypot, formRenderedAt, ip, email, body }`
@@ -19,6 +20,7 @@
 1. **honeypot**: 隠しフィールドが空でない → bot（reject、UX 無影響）
 2. **送信タイミング trap**: `now - formRenderedAt < N 秒`（例 2s）→ 即時投稿 bot（reject）
 3. **rate limit**: `rateLimitRepo.hitAndCount(key=hash(ip)+hash(email), window)` が上限超過 → reject（429）
+   <!-- spec-review R3: 古い窓は読み取り時に window_start で無視 + 定期 cleanup（service-status の cron に相乗り or 別 cron）で N 日より古い rate_limits 行を削除。Neon 無料枠ストレージ保護 -->　
 4. **Turnstile**: サーバー側で `TURNSTILE_SECRET_KEY` 検証（score/success）→ fail で reject
 5. **MX / 使い捨てドメイン**: email ドメインの MX 確認 + 使い捨てブロックリスト照合 → fail で reject
 出力: `{ ok: true } | { ok: false, reason }`。**理由はユーザーに詳細表示しない**（bot にヒントを与えない、汎用エラー文言）。

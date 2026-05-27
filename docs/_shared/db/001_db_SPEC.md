@@ -108,6 +108,7 @@ rate_limits（独立）
 ### 5.2 提供 repository インターフェース（実装は各機能が利用）
 - `inquirerRepo`: `upsertByEmail(email)`, `findById(id)`
 - `threadRepo`: `create({inquirerId, subject})→{id,token}`, `findByToken(token)`, `listRecent(limit,offset)`, `setStatus(id,status)`, `touchActivity(id)`
+  <!-- spec-review R1: token 生成は _shared/spam.generateThreadToken に一本化。threadRepo.create は spam に生成を依頼し、UNIQUE 制約違反時はリトライ（再生成を spam に再依頼）。128-bit 保証=spam、一意性 DB 制約=db の二重防御 -->　
 - `messageRepo`: `add({threadId, sender, body})`, `listByThread(threadId)`
 - `rateLimitRepo`: `hitAndCount(key, windowStart)→count`
 - `statusCacheRepo`: `upsertMany(rows)`, `listAll()`

@@ -44,7 +44,8 @@
 - 完了ゲート: 全機能 `001`〜`004` 生成、Critical/High 解決
 
 ### Phase 3: 実装
-- 主コマンド: `/flow:tdd`（連続実装モード）
+- **Phase 0（scaffold、最初に実施。spec-review R2）**: Next.js(App Router)+TS+Tailwind 初期化 / Drizzle 設定 / shadcn 初期化 / `.env.example`（PREREQUISITES のキー）/ `scripts/dev.sh`+`stop.sh`（O36）/ `.github/workflows/ci.yml`+`dependabot.yml`（O37）/ `middleware.ts` 雛形。Class A。
+- 主コマンド: `/flow:tdd`（連続実装モード、scaffold 後に concept §1.3.4 優先度順）
 - E2E: `/flow:e2e`
 - 完了ゲート: 全機能 `101` + テスト通過 + Phase 単位コミット
 

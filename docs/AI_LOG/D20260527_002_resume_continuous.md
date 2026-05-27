@@ -140,4 +140,25 @@
   chosen_type: auto-recommended
   depends_on: [D20260527-029]
   context: 優先度 1 基盤、残り被参照数順（seo=landing/legal/service-status）。Class A。
+
+# 反復 7-15: /flow:feature email/auth/hub-client/spam/landing/service-status/inquiry/admin/legal
+# (各セッション D20260527_009〜017 に詳細、auto-pick で連続設計、Phase 2 全 12 完了)
+
+- id: D20260527-042
+  timestamp: 2026-05-27T16:20:00+09:00
+  command: /flow:auto
+  phase: Step 3 / 優先度判定（反復 16）
+  question: Phase 2 完了後の next-step
+  options:
+    - /flow:spec-review (P3.7 gate) (recommended)
+    - /flow:tdd (P4)
+  recommended: /flow:spec-review (P3.7 gate)
+  chosen: /flow:spec-review
+  chosen_type: auto-recommended
+  depends_on: [D20260527-041]
+  context: |
+    Phase 2 全 12 設計完了。P3.7 Spec-review gate（feature 4 文書完成 + 905 不在 + tdd 未着手）。
+    P4(tdd) より上位。ただし現状グリーンフィールド（実装コードゼロ）のため、brownfield 向けの
+    「既存コード再利用漏れ」検査価値は限定的、設計間整合の確認が主。auto-pick で進行。
+    user 承認「このまま実装まで連続自動」（Phase 3 実装も継続）。
 ```
