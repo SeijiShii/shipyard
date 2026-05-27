@@ -26,7 +26,7 @@
 | 1 | [_shared/db](./_shared/db/) | 実装完了（2026-05-27, 29/29 GREEN） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/db/INDEX.md) |
 | 1 | [_shared/ui](./_shared/ui/) | 実装完了（2026-05-27, 20 件 GREEN） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/ui/INDEX.md) |
 | 1 | [_shared/seo](./_shared/seo/) | 実装完了（2026-05-27, 11 件 GREEN） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/seo/INDEX.md) |
-| 1 | [_shared/email](./_shared/email/) | 設計済 | 001-003（E2E:N/A） | [INDEX](./_shared/email/INDEX.md) |
+| 1 | [_shared/email](./_shared/email/) | 実装完了（2026-05-27, 7 件 GREEN） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/email/INDEX.md) |
 | 1 | [_shared/auth](./_shared/auth/) | 設計済 | 001-003（E2E:N/A） | [INDEX](./_shared/auth/INDEX.md) |
 | 2 | [_shared/hub-client](./_shared/hub-client/) | 設計済 | 001-003（E2E:N/A） | [INDEX](./_shared/hub-client/INDEX.md) |
 | 2 | [_shared/spam](./_shared/spam/) | 設計済 | 001-003（E2E:N/A） | [INDEX](./_shared/spam/INDEX.md) |

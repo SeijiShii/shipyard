@@ -4,15 +4,16 @@
 **コマンド**: /flow:tdd（連続実装モード）
 **対象**: Phase 3 実装（Phase 0 scaffold → 優先度順 12 ターゲット）
 **実行者**: Claude (Opus 4.7)
-**状態**: 進行中（Phase 0 scaffold + _shared/db + ui + seo 完了。次 = _shared/email から継続）
-**含まれる decision**: D20260527-048 〜 D20260527-054
+**状態**: 進行中（Phase 0 scaffold + _shared/db + ui + seo + email 完了。次 = _shared/auth から継続）
+**含まれる decision**: D20260527-048 〜 D20260527-055
 
 ## 進行状況（連続実装モード、resume 用）
 - ✅ **Phase 0 scaffold**: Next.js+TS+Tailwind+Drizzle+Vitest+CI 一式、npm install 560pkg、smoke 2/2 + typecheck GREEN（commit d877710）
 - ✅ **Target 1 _shared/db**: 全 Phase 完了（実装完了）。Phase 1（schema+client, 6/6）+ Phase 2（5 repository CRUD/IDOR/制約, 21 件）+ Phase 3（migration 0000_init 生成 + dev seed）。**29/29 GREEN + typecheck クリーン**。テスト DB = pglite（in-memory PG, node env, migrate 1 回 + TRUNCATE 隔離）。実 Neon dev への migration 適用のみ release 工程（Class B）へ繰延。
 - ✅ **Target 2 _shared/ui**: 全 Phase 完了（実装完了）。トークン適用済 + cn + Button/Input/Textarea + StatusCard/StatusBadge + status マップ（lib/ui/status）+ Header/Footer + InfoButton/EmptyState/ProgressFeedback + Dock SVG line-art。**20 件 GREEN（全体 49/49）+ typecheck クリーン**。role/text 起点・絵文字不使用・状態は色+形+ラベル三重。視覚レビューは Phase 3 design --review-only。
 - ✅ **Target 3 _shared/seo**: 全 Phase 完了。buildMetadata（canonical/OGP/Twitter、noindex 分岐 SEC-002）+ JSON-LD（Website/Person/Org/Breadcrumb）+ sitemap/robots（admin/api/t 除外）+ next/og 動的 OG（純粋ロジック分離、pixel は Phase 3）。**11 件 GREEN（全体 60/60）+ typecheck クリーン**。新規依存ゼロ（next/og 同梱）。
-- ⬜ 残り 9 ターゲット: **次 = _shared/email** → auth → hub-client → spam → landing → service-status → inquiry → legal → admin（優先度順、各 TDD）
+- ✅ **Target 4 _shared/email**: 全 Phase 完了。Resend を Mailer interface で injectable 化（実キー不要 CI green）+ send 3 関数（best-effort, 1 回リトライ, EmailResult で呼び出し側を巻き込まない）+ テンプレ 3 種（HTML+text, リンクのみ）+ PII マスク。**7 件 GREEN（全体 67/67）+ typecheck クリーン**。PII 非混入 100%（SEC-001）。実送信は Release（実キー）。
+- ⬜ 残り 8 ターゲット: **次 = _shared/auth** → hub-client → spam → landing → service-status → inquiry → legal → admin（優先度順、各 TDD）
 
 > 観察（follow-up、本 target の阻害でない）: ESLint 設定が scaffold 未初期化（`next lint` が対話プロンプト）。CI の lint step に影響しうる → Phase 0 scaffold 側の bookkeeping。GREEN ゲートは typecheck + unit で担保。
 - ⬜ その後: /flow:e2e（E2E gate）→ /flow:design --review-only（視覚）→ /flow:wording（文言）→ /flow:release（実キー+デプロイ、Class B）
@@ -148,4 +149,20 @@
   context: |
     buildMetadata の noindex 分岐で /t/[token] を検索除外（SEC-002、分岐 100%）。
     sitemap/robots が admin/api/t を除外。SITE_URL は env 注入でテスト再現性。11 件 GREEN。
+
+- id: D20260527-055
+  timestamp: 2026-05-27T15:39:00+09:00
+  command: /flow:tdd
+  phase: Target 4 _shared/email / Phase 1-2
+  question: メール送信の失敗ハンドリング契約とテンプレ実装方式
+  options:
+    - best-effort（EmailResult 返却、例外を投げない）+ .ts HTML テンプレ (recommended)
+    - 例外を投げて呼び出し側で catch / react-email .tsx テンプレ
+  recommended: best-effort EmailResult + .ts テンプレ
+  chosen: send* は EmailResult（{ok,id}|{ok:false,error}）を返し例外を投げない（スレッド作成を巻き込まない、§5.2）。1 回リトライ。テンプレは .ts HTML 文字列（react-email 依存回避、純粋テスト可能）。Resend は Mailer interface で injectable（実キー不要）
+  chosen_type: auto-recommended
+  depends_on: [D20260527-048, D20260527-054]
+  context: |
+    PII 非混入（本文はリンクのみ、ログ error は maskEmail）= SEC-001 必須 100%。
+    SITE_URL は lib/seo/config.siteUrl() 再利用。実送信は Release（実キー）。7 件 GREEN。
 ```
