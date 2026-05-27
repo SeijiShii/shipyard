@@ -4,8 +4,8 @@
 **コマンド**: /flow:tdd（連続実装モード）
 **対象**: Phase 3 実装（Phase 0 scaffold → 優先度順 12 ターゲット）
 **実行者**: Claude (Opus 4.7)
-**状態**: 進行中（Phase 0 scaffold + _shared/db + ui + seo + email 完了。次 = _shared/auth から継続）
-**含まれる decision**: D20260527-048 〜 D20260527-055
+**状態**: 進行中（Phase 0 scaffold + _shared/db + ui + seo + email + auth 完了。次 = _shared/hub-client から継続）
+**含まれる decision**: D20260527-048 〜 D20260527-056
 
 ## 進行状況（連続実装モード、resume 用）
 - ✅ **Phase 0 scaffold**: Next.js+TS+Tailwind+Drizzle+Vitest+CI 一式、npm install 560pkg、smoke 2/2 + typecheck GREEN（commit d877710）
@@ -13,7 +13,8 @@
 - ✅ **Target 2 _shared/ui**: 全 Phase 完了（実装完了）。トークン適用済 + cn + Button/Input/Textarea + StatusCard/StatusBadge + status マップ（lib/ui/status）+ Header/Footer + InfoButton/EmptyState/ProgressFeedback + Dock SVG line-art。**20 件 GREEN（全体 49/49）+ typecheck クリーン**。role/text 起点・絵文字不使用・状態は色+形+ラベル三重。視覚レビューは Phase 3 design --review-only。
 - ✅ **Target 3 _shared/seo**: 全 Phase 完了。buildMetadata（canonical/OGP/Twitter、noindex 分岐 SEC-002）+ JSON-LD（Website/Person/Org/Breadcrumb）+ sitemap/robots（admin/api/t 除外）+ next/og 動的 OG（純粋ロジック分離、pixel は Phase 3）。**11 件 GREEN（全体 60/60）+ typecheck クリーン**。新規依存ゼロ（next/og 同梱）。
 - ✅ **Target 4 _shared/email**: 全 Phase 完了。Resend を Mailer interface で injectable 化（実キー不要 CI green）+ send 3 関数（best-effort, 1 回リトライ, EmailResult で呼び出し側を巻き込まない）+ テンプレ 3 種（HTML+text, リンクのみ）+ PII マスク。**7 件 GREEN（全体 67/67）+ typecheck クリーン**。PII 非混入 100%（SEC-001）。実送信は Release（実キー）。
-- ⬜ 残り 8 ターゲット: **次 = _shared/auth** → hub-client → spam → landing → service-status → inquiry → legal → admin（優先度順、各 TDD）
+- ✅ **Target 5 _shared/auth**: 全 Phase 完了。Clerk middleware（admin のみ保護、訪問者導線は matcher 対象外=認証ゼロ D004）+ requireOperator（injectable resolver、未認証 401/allowlist 外 403）+ isOperator + ClerkProvider（admin layout 限定）。Clerk セッション取得は clerk.ts に分離し operator.ts を純ロジック化。**9 件 GREEN（全体 76/76）+ typecheck クリーン**。認可分岐 100%（SEC-002）。実認証は Release（Clerk 実キー）。
+- ⬜ 残り 7 ターゲット（priority-1 _shared 完了）: **次 = _shared/hub-client（優先度 2）** → spam → landing → service-status → inquiry → legal → admin（優先度順、各 TDD）
 
 > 観察（follow-up、本 target の阻害でない）: ESLint 設定が scaffold 未初期化（`next lint` が対話プロンプト）。CI の lint step に影響しうる → Phase 0 scaffold 側の bookkeeping。GREEN ゲートは typecheck + unit で担保。
 - ⬜ その後: /flow:e2e（E2E gate）→ /flow:design --review-only（視覚）→ /flow:wording（文言）→ /flow:release（実キー+デプロイ、Class B）
@@ -165,4 +166,20 @@
   context: |
     PII 非混入（本文はリンクのみ、ログ error は maskEmail）= SEC-001 必須 100%。
     SITE_URL は lib/seo/config.siteUrl() 再利用。実送信は Release（実キー）。7 件 GREEN。
+
+- id: D20260527-056
+  timestamp: 2026-05-27T15:44:00+09:00
+  command: /flow:tdd
+  phase: Target 5 _shared/auth / Phase 1-2
+  question: Clerk 依存をどう切り出してテスト可能にするか
+  options:
+    - operator.ts を Clerk 非依存の純ロジックに + Clerk resolver を clerk.ts に分離 + requireOperator は SessionResolver 注入 (recommended)
+    - operator.ts で直接 Clerk auth() を呼ぶ
+  recommended: Clerk 分離 + injectable resolver
+  chosen: operator.ts（isOperator/isProtectedAdminPath/requireOperator）は Clerk を import せず純ロジック。clerk.ts に clerkSessionResolver を隔離。requireOperator は SessionResolver を引数注入（401/403 を RequireResult で型表現）。middleware は clerkMiddleware で admin のみ protect、訪問者導線は matcher 対象外
+  chosen_type: auto-recommended
+  depends_on: [D20260527-048]
+  context: |
+    実 Clerk キー不要で認可分岐 100% テスト（SEC-002）。D004 認証ゼロ維持を isProtectedAdminPath で担保。
+    ClerkProvider は admin layout 限定（公開分離）。実サインインは Release。9 件 GREEN。
 ```

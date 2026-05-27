@@ -1,9 +1,12 @@
 # _shared/auth ドキュメントインデックス
 
-**最終更新**: 2026-05-27 12:35
-**生成元**: /flow:concept (初期化)
+**最終更新**: 2026-05-27 15:44
+**生成元**: /flow:concept (初期化) / /flow:tdd (実装完了)
 
 <!-- auto-generated-start -->
+
+## 状態: 実装完了 (2026-05-27)
+Phase 1（config+isOperator+requireOperator）+ Phase 2（Clerk middleware + resolver + admin layout）完了。単体 9 件 GREEN。allowlist/認可/保護パス分岐 100%（SEC-002）。実認証は Release（Clerk 実キー）。
 
 ## 機能概要 (短縮、詳細は README.md)
 （README.md 参照）
@@ -15,6 +18,8 @@
 | 002 | 002_auth_PLAN.md | PLAN | 設計済 | 2026-05-27 | middleware + requireOperator |
 | 003 | 003_auth_UNIT_TEST.md | UNIT_TEST | 設計済 | 2026-05-27 | allowlist/認可分岐 + 訪問者通過 |
 | 004 | (E2E スキップ) | — | N/A | — | cross-cutting |
+| 101 | 101_auth_IMPL_REPORT.md | IMPL_REPORT | 実装完了 | 2026-05-27 | middleware/requireOperator/isOperator |
+| 102 | 102_auth_UNIT_TEST_REPORT.md | UNIT_TEST_REPORT | 実装完了 | 2026-05-27 | 9 件 GREEN（認可分岐 100%） |
 
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
