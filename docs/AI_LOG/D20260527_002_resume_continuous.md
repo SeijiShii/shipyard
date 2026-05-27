@@ -94,4 +94,37 @@
     concept §1.3.4 優先度順、優先度 1 基盤の _shared/db（全機能が依存）から着手。
     Class A（設計文書生成、git tracked）。context heavy のため .flow-needs-compact marker
     書込（非ブロッキング、compact は透過処理）→ そのまま継続。
+
+- id: D20260527-028
+  timestamp: 2026-05-27T14:48:00+09:00
+  command: /flow:auto
+  phase: Step 4.5 / continuous 継続確認
+  question: Phase 2 以降をこのまま連続自動で進めるか
+  options:
+    - このまま連続自動（ルール通り） (recommended)
+    - 機能設計だけ先に完了
+    - 1 歩ずつ確認
+  recommended: このまま連続自動（ルール通り）
+  chosen: このまま連続自動（ルール通り）
+  chosen_type: explicit-choice
+  depends_on: []
+  context: |
+    user present だが明示的に full autonomous 継続を承認。Wording gate (UI 文言 human) と
+    Release gate (Class B デプロイ) のみで pause、他は auto-pick。§4.5.2b 準拠で
+    「区切り/context」では停止しない。
+
+- id: D20260527-029
+  timestamp: 2026-05-27T14:49:00+09:00
+  command: /flow:auto
+  phase: Step 3 / 優先度判定（反復 5）
+  question: 反復 5 の auto-pick
+  options:
+    - /flow:feature _shared/ui (recommended)
+  recommended: /flow:feature _shared/ui
+  chosen: /flow:feature _shared/ui
+  chosen_type: auto-recommended
+  depends_on: [D20260527-025, D20260527-024]
+  context: |
+    優先度 1 基盤、被参照数最大（全機能が UI 基盤を利用）。design-system.md（D024）の
+    トークン/コンポーネント仕様を実装計画に落とす。Class A。
 ```
