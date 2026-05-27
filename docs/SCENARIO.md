@@ -68,12 +68,13 @@
 ## 5. 現在地カーソル
 
 <!-- AUTO-GENERATED:BEGIN scenario-cursor -->
-- 現在フェーズ: Phase 1（概念設計）
-- 進行中ターゲット: concept（初版生成完了）
-- 最終更新セッション: D20260527_001_concept_initial
-- 最終更新時刻: 2026-05-27 12:35
-- 完了フェーズ: []
-- 次の推奨コマンド: /flow:secure --phase=design --scope=concept（Phase 1 完了ゲート）→ /flow:estimate → /flow:design
+- 現在フェーズ: Phase 2（機能設計）着手
+- 進行中ターゲット: （次）_shared/db（優先度 1、基盤から）
+- 最終更新セッション: D20260527_005_design_system
+- 最終更新時刻: 2026-05-27 14:30
+- 完了フェーズ: [Phase 1（concept + secure(design) + initial estimate）, Phase 1.5（design SoT）]
+- 次の推奨コマンド: /flow:feature _shared/db（concept §1.3.4 優先度順、基盤 → 機能）
+- 備考: design SoT のトークン適用 + headless 視覚レビューは Phase 3 実装後に /flow:design --review-only（Design gate P4.4(b)）
 <!-- AUTO-GENERATED:END scenario-cursor -->
 
 ## 6. 変更履歴

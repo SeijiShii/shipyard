@@ -59,4 +59,22 @@
     反復1 で secure(concept) 完了 → Critical/High は accepted-as-requirement で解決済。
     §3.0a bootstrap step 1 = 初回 estimate（docs/estimates/initial_* 不在）。
     Phase 1 完了ゲートの「初回見積生成」を満たす。Class A。
+
+- id: D20260527-022
+  timestamp: 2026-05-27T14:20:00+09:00
+  command: /flow:auto
+  phase: Step 3 / 優先度判定（反復 3）
+  question: 反復 3 の auto-pick
+  options:
+    - /flow:design --system-only (recommended)
+    - /flow:feature _shared/db
+  recommended: /flow:design --system-only
+  chosen: /flow:design --system-only
+  chosen_type: auto-recommended
+  depends_on: [D20260527-006]
+  context: |
+    §3.0a bootstrap step 2 = design SoT（docs/design/design-system.md 不在）。
+    P4.4(a) Design gate。実装コード未生成のため --system-only（SoT doc のみ生成、
+    トークン適用 + headless 視覚レビューは Phase 3 実装後の P4.4(b) で実施）。
+    デザイン方向は D20260527-006（信頼感 × ミニマル × クラフト感）確定済。Class A。
 ```
