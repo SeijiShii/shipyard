@@ -69,13 +69,13 @@
 ## 5. 現在地カーソル
 
 <!-- AUTO-GENERATED:BEGIN scenario-cursor -->
-- 現在フェーズ: Phase 2 完了 → Phase 3（実装）着手前
-- 進行中ターゲット: （次ゲート）Spec-review（P3.7）→ 実装 tdd
-- 最終更新セッション: D20260527_017_feature_legal
-- 最終更新時刻: 2026-05-27 16:18
-- 完了フェーズ: [Phase 1（concept + secure + estimate）, Phase 1.5（design SoT）, Phase 2（全 12 ターゲット設計: 横断 7 + 機能 5、001-004 生成）]
-- 次の推奨コマンド: /flow:spec-review（P3.7、tdd 着手前の設計レビュー）→ /flow:tdd（優先度順実装）→ /flow:e2e
-- 備考: Phase 3 実装は project scaffold（Next.js/Drizzle/Clerk 等の初期化、PLAN の Phase 3.5 app/api bootstrap）から。視覚レビューは画面実装後 /flow:design --review-only（P4.4(b)）。リリースは /flow:release（Class B、実キー + デプロイ）
+- 現在フェーズ: Phase 3（実装）unit 完了 → Phase 4（公開準備）= Release gate（実キー必須）着手前
+- 進行中ターゲット: （次ゲート）P4.7 Release gate = /flow:release（実 API キー FILL → 動作確認 → デプロイ）
+- 最終更新セッション: D20260527_020_e2e_continuous
+- 最終更新時刻: 2026-05-27 16:33
+- 完了フェーズ: [Phase 1（concept+secure+estimate）, Phase 1.5（design SoT）, Phase 2（全 12 設計）, Phase 3 unit（scaffold + 横断 7 + 機能 5、150/150 GREEN、production build green）]
+- 次の推奨コマンド: /flow:release（P4.7、実キー FILL → ローカルスマホ動作確認 → デプロイ）。E2E（Playwright 004 journey）+ 視覚レビュー（/flow:design --review-only）+ /flow:wording は実キー環境で実行
+- 備考: no-key/Class-A 作業は出し尽くし済（12 ターゲット unit + production build 検証 + 公開ページ graceful 化）。残りは実バックエンド（Neon/Clerk/Turnstile/Resend）必須 = Class C キー入力（人間）。E2E の 004 journey は実データ依存のため no-key 実行不可、Release のローカルスマホ動作確認 + 実キー環境の Playwright で被覆。
 <!-- AUTO-GENERATED:END scenario-cursor -->
 
 ## 6. 変更履歴
