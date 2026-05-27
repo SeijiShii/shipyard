@@ -12,10 +12,22 @@ const THREAD_STATUSES: ThreadStatus[] = ["open", "closed"];
 const MAX_TOKEN_RETRIES = 3;
 
 function isUniqueViolation(err: unknown): boolean {
-  const e = err as { code?: string; message?: string } | null;
+  // drizzle はドライバ例外を DrizzleQueryError でラップするため cause 連鎖を辿る。
+  // Postgres unique_violation = code 23505。
+  const codes: string[] = [];
+  const msgs: string[] = [];
+  let cur = err as
+    | { code?: unknown; message?: unknown; cause?: unknown }
+    | null
+    | undefined;
+  for (let i = 0; i < 5 && cur; i++) {
+    if (cur.code != null) codes.push(String(cur.code));
+    if (cur.message != null) msgs.push(String(cur.message));
+    cur = cur.cause as typeof cur;
+  }
   return (
-    e?.code === "23505" ||
-    /duplicate key|unique constraint|idx_threads_token/i.test(e?.message ?? "")
+    codes.includes("23505") ||
+    /duplicate key|unique constraint|idx_threads_token/i.test(msgs.join(" "))
   );
 }
 
