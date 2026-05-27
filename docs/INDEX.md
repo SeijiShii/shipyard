@@ -14,7 +14,7 @@
 ## 機能フォルダ
 | 優先度 | 基盤 | フォルダ | 状態 | 設計完了 | 改修件数 | バグ修正件数 | クレーム件数 | INDEX |
 |---|---|---|---|---|---|---|---|---|
-| 3 | ❌ | [landing](./landing/) | 設計待ち | 0/4 | 0 | 0 | 0 | [INDEX](./landing/INDEX.md) |
+| 3 | ❌ | [landing](./landing/) | 設計済 | 4/4 | 0 | 0 | 0 | [INDEX](./landing/INDEX.md) |
 | 3 | ❌ | [service-status](./service-status/) | 設計待ち | 0/4 | 0 | 0 | 0 | [INDEX](./service-status/INDEX.md) |
 | 3 | ❌ | [inquiry](./inquiry/) | 設計待ち | 0/4 | 0 | 0 | 0 | [INDEX](./inquiry/INDEX.md) |
 | 3 | ❌ | [legal](./legal/) | 設計待ち | 0/4 | 0 | 0 | 0 | [INDEX](./legal/INDEX.md) |
