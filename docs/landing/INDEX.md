@@ -1,9 +1,12 @@
 # landing ドキュメントインデックス
 
-**最終更新**: 2026-05-27 12:35
-**生成元**: /flow:concept (初期化)
+**最終更新**: 2026-05-27 16:04
+**生成元**: /flow:concept (初期化) / /flow:tdd (unit 実装完了)
 
 <!-- auto-generated-start -->
+
+## 状態: unit 実装完了 (2026-05-27)
+Phase 1（page + Hero）+ Phase 2（Value/ConsultPitch + 稼働一覧埋込）完了。単体 5 件 GREEN。JSON-LD/OGP 配線、CTA→/contact。**E2E（004）+ 視覚レビュー + wording は後続ゲート**。
 
 ## 機能概要 (短縮、詳細は README.md)
 （README.md 参照）
@@ -14,7 +17,9 @@
 | 001 | 001_landing_SPEC.md | SPEC | 設計済 | 2026-05-27 | LP（ヒーロー/価値/コンサル/O41 入口理解） |
 | 002 | 002_landing_PLAN.md | PLAN | 設計済 | 2026-05-27 | page + Hero/Value/ConsultPitch |
 | 003 | 003_landing_UNIT_TEST.md | UNIT_TEST | 設計済 | 2026-05-27 | セクション render + CTA + metadata |
-| 004 | 004_landing_E2E_TEST.md | E2E_TEST | 設計済 | 2026-05-27 | journey + Level1/2 視覚検証 |
+| 004 | 004_landing_E2E_TEST.md | E2E_TEST | 設計済（未実行） | 2026-05-27 | journey + Level1/2（/flow:e2e） |
+| 101 | 101_landing_IMPL_REPORT.md | IMPL_REPORT | 実装完了 | 2026-05-27 | page/Hero/Value/ConsultPitch + JsonLd |
+| 102 | 102_landing_UNIT_TEST_REPORT.md | UNIT_TEST_REPORT | 実装完了 | 2026-05-27 | 5 件 GREEN（CTA/metadata/JsonLd） |
 
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
