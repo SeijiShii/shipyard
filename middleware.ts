@@ -1,15 +1,16 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-// Phase 0 scaffold skeleton (spec-review R2)。
-// 実認可 (Clerk + allowlist, requireOperator) は _shared/auth で実装予定
-// (docs/_shared/auth/002_auth_PLAN.md)。現状は matcher 定義のみの pass-through。
-export function middleware(_req: NextRequest) {
-  return NextResponse.next();
-}
+// 運用者認証 — docs/_shared/auth/001_auth_SPEC.md §2
+// admin のみ保護。訪問者導線（/, /contact, /t/*, /services, /legal）は matcher に含めず
+// 認証ゼロを維持（D004）。allowlist の二重防御は requireOperator（lib/auth/operator.ts）。
+const isAdminRoute = createRouteMatcher(["/admin(.*)", "/api/admin(.*)"]);
 
-// 訪問者導線 (/, /contact, /t/*, /services, /legal) は対象外 (認証ゼロ維持、D004)。
-// admin のみ保護対象 (実装は _shared/auth)。
+export default clerkMiddleware(async (auth, req) => {
+  if (isAdminRoute(req)) {
+    await auth.protect(); // 未認証は Clerk サインインへ（AUTH-E1）
+  }
+});
+
 export const config = {
   matcher: ["/admin/:path*", "/api/admin/:path*"],
 };
