@@ -127,4 +127,17 @@
   context: |
     優先度 1 基盤、被参照数最大（全機能が UI 基盤を利用）。design-system.md（D024）の
     トークン/コンポーネント仕様を実装計画に落とす。Class A。
+
+- id: D20260527-031
+  timestamp: 2026-05-27T14:58:00+09:00
+  command: /flow:auto
+  phase: Step 3 / 優先度判定（反復 6）
+  question: 反復 6 の auto-pick
+  options:
+    - /flow:feature _shared/seo (recommended)
+  recommended: /flow:feature _shared/seo
+  chosen: /flow:feature _shared/seo
+  chosen_type: auto-recommended
+  depends_on: [D20260527-029]
+  context: 優先度 1 基盤、残り被参照数順（seo=landing/legal/service-status）。Class A。
 ```

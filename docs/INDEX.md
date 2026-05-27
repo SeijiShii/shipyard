@@ -25,7 +25,7 @@
 |---|---|---|---|---|
 | 1 | [_shared/db](./_shared/db/) | 設計済 | 001-003（E2E:N/A） | [INDEX](./_shared/db/INDEX.md) |
 | 1 | [_shared/ui](./_shared/ui/) | 設計済 | 001-003（E2E:N/A） | [INDEX](./_shared/ui/INDEX.md) |
-| 1 | [_shared/seo](./_shared/seo/) | 設計待ち | 0 | [INDEX](./_shared/seo/INDEX.md) |
+| 1 | [_shared/seo](./_shared/seo/) | 設計済 | 001-003（E2E:N/A） | [INDEX](./_shared/seo/INDEX.md) |
 | 1 | [_shared/email](./_shared/email/) | 設計待ち | 0 | [INDEX](./_shared/email/INDEX.md) |
 | 1 | [_shared/auth](./_shared/auth/) | 設計待ち | 0 | [INDEX](./_shared/auth/INDEX.md) |
 | 2 | [_shared/hub-client](./_shared/hub-client/) | 設計待ち | 0 | [INDEX](./_shared/hub-client/INDEX.md) |
