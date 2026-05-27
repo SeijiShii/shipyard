@@ -28,3 +28,7 @@ exports/
 # os
 .DS_Store
 Thumbs.db
+
+# next types (auto-generated)
+next-env.d.ts
+*.tsbuildinfo

@@ -161,4 +161,21 @@
     P4(tdd) より上位。ただし現状グリーンフィールド（実装コードゼロ）のため、brownfield 向けの
     「既存コード再利用漏れ」検査価値は限定的、設計間整合の確認が主。auto-pick で進行。
     user 承認「このまま実装まで連続自動」（Phase 3 実装も継続）。
+
+- id: D20260527-047
+  timestamp: 2026-05-27T16:32:00+09:00
+  command: /flow:auto
+  phase: Step 3 / 優先度判定（反復 17）
+  question: spec-review 後の next-step
+  options:
+    - /flow:tdd (Phase 3 実装、Phase 0 scaffold から) (recommended)
+  recommended: /flow:tdd
+  chosen: /flow:tdd
+  chosen_type: auto-recommended
+  depends_on: [D20260527-044]
+  context: |
+    P3.7 spec-review 完了（905/SPEC_REVIEW 生成）→ P4 次フェーズ = Phase 3 実装。
+    spec-review R2 に従い Phase 0 project scaffold（Next.js/Drizzle/shadcn/env/scripts/CI）
+    から着手、その後 concept §1.3.4 優先度順。Class A（git tracked）。
+    注: 実装は network(npm install) を要する。sandbox 制約があれば tdd 側で判断。
 ```

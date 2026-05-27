@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ink & Teal tokens — docs/design/design-system.md §2 */
+:root {
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --surface-subtle: #f3f1ec;
+  --border: #e6e2d9;
+  --ink: #1e2722;
+  --ink-muted: #5c625d;
+  --primary: #0e7c72;
+  --primary-hover: #0b645c;
+  --primary-subtle: #e2f1ef;
+  --accent: #5eaaa2;
+  --status-up: #2f9e44;
+  --status-down: #d97706;
+  --status-unknown: #9ca3af;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, "Noto Sans JP", sans-serif;
+  line-height: 1.7;
+}
