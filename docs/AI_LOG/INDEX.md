@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-27 17:05 (+09:00)
-**総セッション数**: 21
-**総 decision 数**: 68
+**最終更新**: 2026-05-27 22:11 (+09:00)
+**総セッション数**: 22
+**総 decision 数**: 70
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260527_022_secure_product.md](./D20260527_022_secure_product.md) | 2026-05-27 | /flow:secure | product-wide (all) | D20260527-069〜070 | 完了 |
 | [D20260527_021_audit_standard.md](./D20260527_021_audit_standard.md) | 2026-05-27 | /flow:audit | standard | D20260527-067〜068 | 完了 |
 | [D20260527_020_e2e_continuous.md](./D20260527_020_e2e_continuous.md) | 2026-05-27 | /flow:e2e | continuous (P4.5 gate) | D20260527-064〜066 | 完了 |
 | [D20260527_019_tdd_continuous.md](./D20260527_019_tdd_continuous.md) | 2026-05-27 | /flow:tdd | continuous (全12ターゲット unit) | D20260527-048〜063 | 完了 |

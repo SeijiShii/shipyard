@@ -1,6 +1,10 @@
 # dependencies
 node_modules/
 
+# flow 一時マーカー (transient、ローカルのみ。tracked しない)
+.flow-loop-active
+.flow-needs-compact
+
 # next.js
 .next/
 out/
