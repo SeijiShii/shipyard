@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-27 14:05 (+09:00)
-**総セッション数**: 3
-**総 decision 数**: 19
+**最終更新**: 2026-05-27 14:18 (+09:00)
+**総セッション数**: 4
+**総 decision 数**: 21
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,8 +14,9 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260527_004_estimate_whole.md](./D20260527_004_estimate_whole.md) | 2026-05-27 | /flow:estimate | whole | D20260527-021 | 完了 |
 | [D20260527_003_secure_concept.md](./D20260527_003_secure_concept.md) | 2026-05-27 | /flow:secure | concept | D20260527-015〜019 | 完了 |
-| [D20260527_002_resume_continuous.md](./D20260527_002_resume_continuous.md) | 2026-05-27 | /flow:auto | continuous | D20260527-014〜 | 進行中 |
+| [D20260527_002_resume_continuous.md](./D20260527_002_resume_continuous.md) | 2026-05-27 | /flow:auto | continuous | D20260527-014, 020〜 | 進行中 |
 | [D20260527_001_concept_initial.md](./D20260527_001_concept_initial.md) | 2026-05-27 | /flow:concept | initial | D20260527-001〜013 | 完了 |
 
 ## decision_id 索引（grep 用、新しい順）

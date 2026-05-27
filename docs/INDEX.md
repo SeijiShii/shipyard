@@ -34,7 +34,7 @@
 ## 見積もり
 | ファイル | 種別 | 最終更新 |
 |---|---|---|
-| (まだなし。`/flow:estimate` で生成) | | |
+| [estimates/initial_20260527.md](./estimates/initial_20260527.md) | 全体・初回(rough) | 2026-05-27 |
 
 ## AI アクセスガイド
 - プロジェクト全体を理解したい → `concept.md`

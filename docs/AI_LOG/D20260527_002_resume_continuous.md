@@ -42,4 +42,21 @@
     Phase 1 完了ゲート（SCENARIO §3）= secure(design,concept) + estimate。
     §3.0a bootstrap step 1 (estimate) は「secure Critical/High 解決済」を前提とするため
     secure を先に実行。Class A (AI_LOG tracked、可逆)。P1 SEC finding は現状なし。
+
+- id: D20260527-020
+  timestamp: 2026-05-27T14:10:00+09:00
+  command: /flow:auto
+  phase: Step 3 / 優先度判定（反復 2）
+  question: 反復 2 の auto-pick
+  options:
+    - /flow:estimate (initial) (recommended)
+    - /flow:design
+  recommended: /flow:estimate
+  chosen: /flow:estimate
+  chosen_type: auto-recommended
+  depends_on: [D20260527-014]
+  context: |
+    反復1 で secure(concept) 完了 → Critical/High は accepted-as-requirement で解決済。
+    §3.0a bootstrap step 1 = 初回 estimate（docs/estimates/initial_* 不在）。
+    Phase 1 完了ゲートの「初回見積生成」を満たす。Class A。
 ```
