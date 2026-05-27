@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-27 15:40 (+09:00)
-**総セッション数**: 13
-**総 decision 数**: 37
+**最終更新**: 2026-05-27 15:50 (+09:00)
+**総セッション数**: 14
+**総 decision 数**: 38
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260527_014_feature_service-status.md](./D20260527_014_feature_service-status.md) | 2026-05-27 | /flow:feature | service-status | D20260527-038 | 完了 |
 | [D20260527_013_feature_landing.md](./D20260527_013_feature_landing.md) | 2026-05-27 | /flow:feature | landing | D20260527-037 | 完了 |
 | [D20260527_012_feature__shared_spam.md](./D20260527_012_feature__shared_spam.md) | 2026-05-27 | /flow:feature | _shared/spam | D20260527-036 | 完了 |
 | [D20260527_011_feature__shared_hub-client.md](./D20260527_011_feature__shared_hub-client.md) | 2026-05-27 | /flow:feature | _shared/hub-client | D20260527-035 | 完了 |
