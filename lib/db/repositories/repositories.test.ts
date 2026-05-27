@@ -94,6 +94,16 @@ describe("threadRepo", () => {
     expect(await createThreadRepo(db).findByToken("does-not-exist")).toBeNull();
   });
 
+  it("findById: admin 経路（id）で取得 / 不在は null", async () => {
+    const inquirerId = await seedInquirer();
+    const repo = createThreadRepo(db);
+    const { id } = await repo.create({ inquirerId });
+    expect((await repo.findById(id))?.id).toBe(id);
+    expect(
+      await repo.findById("00000000-0000-0000-0000-000000000000"),
+    ).toBeNull();
+  });
+
   it("U-B2: 既定 generator は毎回異なる token を生成", async () => {
     const inquirerId = await seedInquirer();
     const repo = createThreadRepo(db);

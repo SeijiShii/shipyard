@@ -20,7 +20,10 @@ function isUniqueViolation(err: unknown): boolean {
 }
 
 // generateToken は injectable（テストで衝突を強制でき、_shared/spam 実装後はそちらに差し替え可）。
-export function createThreadRepo(db: DB, opts: { generateToken?: () => string } = {}) {
+export function createThreadRepo(
+  db: DB,
+  opts: { generateToken?: () => string } = {},
+) {
   const generateToken = opts.generateToken ?? generateThreadToken;
 
   return {
@@ -34,7 +37,11 @@ export function createThreadRepo(db: DB, opts: { generateToken?: () => string } 
         try {
           const inserted = await db
             .insert(threads)
-            .values({ inquirerId: input.inquirerId, subject: input.subject ?? null, token })
+            .values({
+              inquirerId: input.inquirerId,
+              subject: input.subject ?? null,
+              token,
+            })
             .returning({ id: threads.id, token: threads.token });
           return { id: inserted[0].id, token: inserted[0].token };
         } catch (err) {
@@ -45,12 +52,28 @@ export function createThreadRepo(db: DB, opts: { generateToken?: () => string } 
           throw err;
         }
       }
-      throw new Error("threadRepo.create: token のリトライ上限に達しました", { cause: lastErr });
+      throw new Error("threadRepo.create: token のリトライ上限に達しました", {
+        cause: lastErr,
+      });
     },
 
     // SEC-002 IDOR: visitor がスレッドに到達できる唯一の経路。
     async findByToken(token: string): Promise<Thread | null> {
-      const rows = await db.select().from(threads).where(eq(threads.token, token)).limit(1);
+      const rows = await db
+        .select()
+        .from(threads)
+        .where(eq(threads.token, token))
+        .limit(1);
+      return rows[0] ?? null;
+    },
+
+    // id 経由アクセス（admin = Clerk 認証済のみ。visitor は使わない＝token 経路のみ、SEC-002）。
+    async findById(id: string): Promise<Thread | null> {
+      const rows = await db
+        .select()
+        .from(threads)
+        .where(eq(threads.id, id))
+        .limit(1);
       return rows[0] ?? null;
     },
 
@@ -71,7 +94,10 @@ export function createThreadRepo(db: DB, opts: { generateToken?: () => string } 
     },
 
     async touchActivity(id: string): Promise<void> {
-      await db.update(threads).set({ lastActivityAt: new Date() }).where(eq(threads.id, id));
+      await db
+        .update(threads)
+        .set({ lastActivityAt: new Date() })
+        .where(eq(threads.id, id));
     },
   };
 }
