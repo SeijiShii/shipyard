@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-27 12:35 (+09:00)
-**総セッション数**: 1
-**総 decision 数**: 13
+**最終更新**: 2026-05-27 14:05 (+09:00)
+**総セッション数**: 3
+**総 decision 数**: 19
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,12 +14,20 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
-| [D20260527_001_concept_initial.md](./D20260527_001_concept_initial.md) | 2026-05-27 | /flow:concept | initial | D20260527-001〜010 | 完了 |
+| [D20260527_003_secure_concept.md](./D20260527_003_secure_concept.md) | 2026-05-27 | /flow:secure | concept | D20260527-015〜019 | 完了 |
+| [D20260527_002_resume_continuous.md](./D20260527_002_resume_continuous.md) | 2026-05-27 | /flow:auto | continuous | D20260527-014〜 | 進行中 |
+| [D20260527_001_concept_initial.md](./D20260527_001_concept_initial.md) | 2026-05-27 | /flow:concept | initial | D20260527-001〜013 | 完了 |
 
 ## decision_id 索引（grep 用、新しい順）
 
 | ID | command | phase | chosen (短縮) | type | ファイル |
 |---|---|---|---|---|---|
+| D20260527-019 | /flow:secure | O25/O27/O28 | 対応済み/deps 繰延 | auto-recommended | D20260527_003_secure_concept.md |
+| D20260527-018 | /flow:secure | O24 入力検証 | accepted-as-requirement (High) | auto-recommended | D20260527_003_secure_concept.md |
+| D20260527-017 | /flow:secure | O23 認可/IDOR | accepted-as-requirement (High) | auto-recommended | D20260527_003_secure_concept.md |
+| D20260527-016 | /flow:secure | O26 PII ログ | accepted-as-requirement (Critical) | auto-recommended | D20260527_003_secure_concept.md |
+| D20260527-015 | /flow:secure | PJ 性質判定 | 複数U/公開/個人情報あり | auto-recommended | D20260527_003_secure_concept.md |
+| D20260527-014 | /flow:auto | 反復 1 | /flow:secure --phase=design | auto-recommended | D20260527_002_resume_continuous.md |
 | D20260527-013 | /flow:concept | Step 7.7 / Git | git init + 自動コミット | auto-recommended | D20260527_001_concept_initial.md |
 | D20260527-012 | /flow:concept | Step 7.5 / preferences | すべて更新 | auto-recommended | D20260527_001_concept_initial.md |
 | D20260527-011 | /flow:concept | Step 5.5 / wants | アーカイブして空に | auto-recommended | D20260527_001_concept_initial.md |

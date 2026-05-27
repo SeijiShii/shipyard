@@ -149,6 +149,18 @@ types/                       # 共通型（hub-client contract 等）
 | プライバシー | 問い合わせ者のメール + 本文を保存 → プライバシーポリシー必須。アナリティクスは cookieless（consent banner 不要） | §9 法務、メール収集 |
 | 運用・監視 | Sentry エラー監視（無料）、自前コストログ + 無料枠超過アラート、撤退手順文書化 | §4.6 / §4.7 |
 
+<!-- auto-generated-start -->
+### 3.7 セキュリティ要件（auto-added by /flow:secure, 2026-05-27）
+
+L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Critical/High を要件化:
+
+- **[SEC-001] PII ログ漏洩防止（法令必須, O26）**: Sentry `beforeSend` で email / 問い合わせ本文 / トークンをマスク。エラーメッセージに DB 内容・本文を含めない。Vercel Web Analytics イベントに PII を入れない（cookieless + anonymous ID のみ）。
+- **[SEC-002] 認可 / IDOR 防止（O23）**: thread.token は暗号論的乱数（128-bit 以上、URL-safe）。全 thread/message 取得・追記エンドポイントで token 一致をサーバー側検証（連番 id を URL に露出しない）。`/admin/*` + admin API は Clerk + allowlist(seiji) で RBAC。
+- **[SEC-003] 入力検証 / XSS 防止（O24）**: API 入力は Zod スキーマで検証（email 形式・本文長上限）。問い合わせ本文は表示時にプレーンテキスト扱い（`dangerouslySetInnerHTML` 禁止、Markdown 許可時は `rehype-sanitize`）。HUB status URL は env 固定で SSRF 低リスク。
+- **（対応済み, O27）レート制限 / ボット対策**: 問い合わせは不可視スタック（Turnstile + honeypot + timing + rate limit + MX/使い捨てチェック）で対応済み（§4.3 / `_shared/spam`）。
+- **（対応済み, O25）秘密情報**: `.env*.local` を `.gitignore` 除外、秘密はサーバー側 env のみ、公開値は Turnstile SITE_KEY / Clerk PUBLISHABLE_KEY のみ（§4.5.3 / §10.7）。
+<!-- auto-generated-end -->
+
 ## 4. 全体アーキテクチャ
 
 ```
@@ -467,6 +479,42 @@ types/                       # 共通型（hub-client contract 等）
 - **推奨**: 案 A。理由: 安全サブセットを HUB 側で保証するのが PII/内部指標漏れ防止に最も堅い。HUB 未実装の間は shipyard 側でモック contract（案 A の形）を使って開発を進める。
 - **判断期限**: `service-status` 機能設計（`/flow:feature`）着手前
 - **担当**: seiji（HUB 側は別タスク `service-hub /flow:revise`）
+
+### [論点-002] [SEC-001] 個人情報のログ漏洩防止: Critical（法令必須）
+
+- **status**: `accepted-as-requirement`
+- **status 履歴**: 2026-05-27 14:00 open → 2026-05-27 14:00 accepted-as-requirement（§3.7 NFR に要件化）
+- **影響範囲**: §3.7, §6, §9, inquiry / admin / _shared/email
+- **観点 ID**: O26_pii_logging（legal_required=true）
+- **severity**: Critical
+- **検出根拠**: Sentry / Analytics への PII（email・本文・token）混入対策が SPEC 未明示
+- **推奨**: §3.7 [SEC-001] の要件を inquiry / admin SPEC で具体化
+- **判断期限**: 実装着手前
+- **L1 レポート**: `./SECURITY_REVIEW_20260527.md`（SEC-001）
+
+### [論点-003] [SEC-002] 認可漏れ / thread IDOR + admin RBAC: High
+
+- **status**: `accepted-as-requirement`
+- **status 履歴**: 2026-05-27 14:00 open → 2026-05-27 14:00 accepted-as-requirement（§3.7 NFR に要件化）
+- **影響範囲**: §3.7, §1.3 admin/inquiry, §5.1 thread/message
+- **観点 ID**: O23_authorization_check
+- **severity**: High
+- **検出根拠**: thread/message エンドポイントの token 所有者検証（IDOR 防止）が SPEC 未明示
+- **推奨**: §3.7 [SEC-002] の要件を inquiry / admin SPEC で具体化
+- **判断期限**: 実装着手前
+- **L1 レポート**: `./SECURITY_REVIEW_20260527.md`（SEC-002）
+
+### [論点-004] [SEC-003] 入力検証 / 問い合わせ本文 XSS: High
+
+- **status**: `accepted-as-requirement`
+- **status 履歴**: 2026-05-27 14:00 open → 2026-05-27 14:00 accepted-as-requirement（§3.7 NFR に要件化）
+- **影響範囲**: §3.7, §5, inquiry / admin / _shared/ui
+- **観点 ID**: O24_input_validation
+- **severity**: High
+- **検出根拠**: 問い合わせ本文の XSS 対策・API 入力スキーマ（Zod）が SPEC 未明示
+- **推奨**: §3.7 [SEC-003] の要件を inquiry SPEC で具体化
+- **判断期限**: 実装着手前
+- **L1 レポート**: `./SECURITY_REVIEW_20260527.md`（SEC-003）
 
 ## 9. 法務・コンプライアンス書類
 
