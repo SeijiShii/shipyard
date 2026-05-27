@@ -4,8 +4,8 @@
 **コマンド**: /flow:tdd（連続実装モード）
 **対象**: Phase 3 実装（Phase 0 scaffold → 優先度順 12 ターゲット）
 **実行者**: Claude (Opus 4.7)
-**状態**: 進行中（scaffold + _shared/db,ui,seo,email,auth,hub-client 完了。次 = _shared/spam から継続）
-**含まれる decision**: D20260527-048 〜 D20260527-057
+**状態**: 進行中（scaffold + _shared 全 7 完了。次 = landing（機能, 優先度 3）から継続）
+**含まれる decision**: D20260527-048 〜 D20260527-058
 
 ## 進行状況（連続実装モード、resume 用）
 - ✅ **Phase 0 scaffold**: Next.js+TS+Tailwind+Drizzle+Vitest+CI 一式、npm install 560pkg、smoke 2/2 + typecheck GREEN（commit d877710）
@@ -15,7 +15,8 @@
 - ✅ **Target 4 _shared/email**: 全 Phase 完了。Resend を Mailer interface で injectable 化（実キー不要 CI green）+ send 3 関数（best-effort, 1 回リトライ, EmailResult で呼び出し側を巻き込まない）+ テンプレ 3 種（HTML+text, リンクのみ）+ PII マスク。**7 件 GREEN（全体 67/67）+ typecheck クリーン**。PII 非混入 100%（SEC-001）。実送信は Release（実キー）。
 - ✅ **Target 5 _shared/auth**: 全 Phase 完了。Clerk middleware（admin のみ保護、訪問者導線は matcher 対象外=認証ゼロ D004）+ requireOperator（injectable resolver、未認証 401/allowlist 外 403）+ isOperator + ClerkProvider（admin layout 限定）。Clerk セッション取得は clerk.ts に分離し operator.ts を純ロジック化。**9 件 GREEN（全体 76/76）+ typecheck クリーン**。認可分岐 100%（SEC-002）。実認証は Release（Clerk 実キー）。
 - ✅ **Target 6 _shared/hub-client**: 全 Phase 完了。Zod contract（暗黙 strip で安全サブセットのみ受信、内部指標破棄）+ mock（論点-001）+ fetchHubStatus（injectable fetch, timeout, 検証）+ refreshStatusCache/getCachedStatus（HUB ダウンで前回値保持）。**12 件 GREEN（全体 88/88）+ typecheck クリーン**。Cron route は service-status へ繰延、実 HUB 結合は [論点-001] 解決後。
-- ⬜ 残り 6 ターゲット: **次 = _shared/spam（優先度 2）** → landing → service-status → inquiry → legal → admin（優先度順、各 TDD）
+- ✅ **Target 7 _shared/spam**: 全 Phase 完了。verifySubmission 5 段合議（honeypot/timing/rate/Turnstile/email）+ generateThreadToken（R1 単一生成元、db/token は re-export 化）+ rate-limit（ip/email を sha256 hash key）+ email-checks（使い捨て/MX injectable）+ turnstile（injectable）。**17 件 GREEN（全体 105/105）+ typecheck クリーン**。5 段+PII 100%。[論点-005] = 案A（fail-closed reject）既定採用（切替可）。実 Turnstile は Release。
+- ⬜ **_shared 横断 全 7 完了**。残り 5 機能ターゲット: **次 = landing（優先度 3, UI）** → service-status → inquiry → legal → admin（各 TDD）
 
 > 観察（follow-up、本 target の阻害でない）: ESLint 設定が scaffold 未初期化（`next lint` が対話プロンプト）。CI の lint step に影響しうる → Phase 0 scaffold 側の bookkeeping。GREEN ゲートは typecheck + unit で担保。
 - ⬜ その後: /flow:e2e（E2E gate）→ /flow:design --review-only（視覚）→ /flow:wording（文言）→ /flow:release（実キー+デプロイ、Class B）
@@ -199,4 +200,21 @@
   context: |
     [論点-001] HUB 未実装の間は mock で開発（HUB-E4）、実 URL 切替は env のみ。
     strip（余剰破棄）と fallback（HUB ダウンで cache 保持）が分岐 100%。12 件 GREEN。
+
+- id: D20260527-058
+  timestamp: 2026-05-27T15:53:00+09:00
+  command: /flow:tdd
+  phase: Target 7 _shared/spam / Phase 1-3 + 論点-005
+  question: 5 段防御の構成 + token 一本化(R1) + Turnstile 障害時フェイル方針(論点-005)
+  options:
+    - 全段 injectable + token を spam に一本化(db/token 再エクスポート) + Turnstile 障害=fail-closed reject 既定(案A) (recommended)
+    - token は db 維持 / Turnstile 障害=fail-open(案B)
+  recommended: injectable + R1 一本化 + 案A(fail-closed)
+  chosen: Turnstile/MX/rateLimitRepo/now を injectable 化（実依存なし 100% テスト）。generateThreadToken を spam に一本化し db/token は re-export（R1、循環なし、db 21/21 再 GREEN）。[論点-005]=案A fail-closed（reject + 再試行案内）を既定（turnstileFailClosed で切替可、可逆）。ip/email は sha256 hash で rate key（SEC-001）。reject 理由は内部コード、ユーザーは GENERIC_REJECT_MESSAGE（U-P2）
+  chosen_type: auto-recommended
+  depends_on: [D20260527-048, D20260527-050, D20260527-052]
+  context: |
+    [論点-005] は推奨の案A（スパム流入より一時的送信不可の害が小さい）を採用。最終確認は
+    inquiry 実装時/seiji（設定切替で可逆）。5 段分岐 + PII ハッシュ 100%。実 Turnstile は Release。
+    spec-review R3（古い rate_limits 窓 cleanup）は service-status cron に相乗りで別途配線予定。
 ```

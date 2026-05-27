@@ -1,9 +1,12 @@
 # _shared/spam ドキュメントインデックス
 
-**最終更新**: 2026-05-27 12:35
-**生成元**: /flow:concept (初期化)
+**最終更新**: 2026-05-27 15:53
+**生成元**: /flow:concept (初期化) / /flow:tdd (実装完了)
 
 <!-- auto-generated-start -->
+
+## 状態: 実装完了 (2026-05-27)
+Phase 1（token + 純ロジック）+ Phase 2（rate-limit + email-checks）+ Phase 3（turnstile + verify 5 段）完了。単体 17 件 GREEN。5 段分岐 + PII ハッシュ 100%。token は spam に一本化（R1、db/token は re-export）。[論点-005] は案A（fail-closed）を既定採用。実 Turnstile 結合は Release。
 
 ## 機能概要 (短縮、詳細は README.md)
 （README.md 参照）
@@ -15,6 +18,8 @@
 | 002 | 002_spam_PLAN.md | PLAN | 設計済 | 2026-05-27 | verify/turnstile/email/rate-limit/token |
 | 003 | 003_spam_UNIT_TEST.md | UNIT_TEST | 設計済 | 2026-05-27 | 5 段防御 + PII ハッシュ + token |
 | 004 | (E2E スキップ) | — | N/A | — | cross-cutting |
+| 101 | 101_spam_IMPL_REPORT.md | IMPL_REPORT | 実装完了 | 2026-05-27 | verify 5 段/turnstile/email/rate/token（R1） |
+| 102 | 102_spam_UNIT_TEST_REPORT.md | UNIT_TEST_REPORT | 実装完了 | 2026-05-27 | 17 件 GREEN（5 段+PII 100%、論点-005 案A） |
 
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
