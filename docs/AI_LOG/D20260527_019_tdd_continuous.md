@@ -4,8 +4,8 @@
 **コマンド**: /flow:tdd（連続実装モード）
 **対象**: Phase 3 実装（Phase 0 scaffold → 優先度順 12 ターゲット）
 **実行者**: Claude (Opus 4.7)
-**状態**: 進行中（Phase 0 scaffold + _shared/db + ui + seo + email + auth 完了。次 = _shared/hub-client から継続）
-**含まれる decision**: D20260527-048 〜 D20260527-056
+**状態**: 進行中（scaffold + _shared/db,ui,seo,email,auth,hub-client 完了。次 = _shared/spam から継続）
+**含まれる decision**: D20260527-048 〜 D20260527-057
 
 ## 進行状況（連続実装モード、resume 用）
 - ✅ **Phase 0 scaffold**: Next.js+TS+Tailwind+Drizzle+Vitest+CI 一式、npm install 560pkg、smoke 2/2 + typecheck GREEN（commit d877710）
@@ -14,7 +14,8 @@
 - ✅ **Target 3 _shared/seo**: 全 Phase 完了。buildMetadata（canonical/OGP/Twitter、noindex 分岐 SEC-002）+ JSON-LD（Website/Person/Org/Breadcrumb）+ sitemap/robots（admin/api/t 除外）+ next/og 動的 OG（純粋ロジック分離、pixel は Phase 3）。**11 件 GREEN（全体 60/60）+ typecheck クリーン**。新規依存ゼロ（next/og 同梱）。
 - ✅ **Target 4 _shared/email**: 全 Phase 完了。Resend を Mailer interface で injectable 化（実キー不要 CI green）+ send 3 関数（best-effort, 1 回リトライ, EmailResult で呼び出し側を巻き込まない）+ テンプレ 3 種（HTML+text, リンクのみ）+ PII マスク。**7 件 GREEN（全体 67/67）+ typecheck クリーン**。PII 非混入 100%（SEC-001）。実送信は Release（実キー）。
 - ✅ **Target 5 _shared/auth**: 全 Phase 完了。Clerk middleware（admin のみ保護、訪問者導線は matcher 対象外=認証ゼロ D004）+ requireOperator（injectable resolver、未認証 401/allowlist 外 403）+ isOperator + ClerkProvider（admin layout 限定）。Clerk セッション取得は clerk.ts に分離し operator.ts を純ロジック化。**9 件 GREEN（全体 76/76）+ typecheck クリーン**。認可分岐 100%（SEC-002）。実認証は Release（Clerk 実キー）。
-- ⬜ 残り 7 ターゲット（priority-1 _shared 完了）: **次 = _shared/hub-client（優先度 2）** → spam → landing → service-status → inquiry → legal → admin（優先度順、各 TDD）
+- ✅ **Target 6 _shared/hub-client**: 全 Phase 完了。Zod contract（暗黙 strip で安全サブセットのみ受信、内部指標破棄）+ mock（論点-001）+ fetchHubStatus（injectable fetch, timeout, 検証）+ refreshStatusCache/getCachedStatus（HUB ダウンで前回値保持）。**12 件 GREEN（全体 88/88）+ typecheck クリーン**。Cron route は service-status へ繰延、実 HUB 結合は [論点-001] 解決後。
+- ⬜ 残り 6 ターゲット: **次 = _shared/spam（優先度 2）** → landing → service-status → inquiry → legal → admin（優先度順、各 TDD）
 
 > 観察（follow-up、本 target の阻害でない）: ESLint 設定が scaffold 未初期化（`next lint` が対話プロンプト）。CI の lint step に影響しうる → Phase 0 scaffold 側の bookkeeping。GREEN ゲートは typecheck + unit で担保。
 - ⬜ その後: /flow:e2e（E2E gate）→ /flow:design --review-only（視覚）→ /flow:wording（文言）→ /flow:release（実キー+デプロイ、Class B）
@@ -182,4 +183,20 @@
   context: |
     実 Clerk キー不要で認可分岐 100% テスト（SEC-002）。D004 認証ゼロ維持を isProtectedAdminPath で担保。
     ClerkProvider は admin layout 限定（公開分離）。実サインインは Release。9 件 GREEN。
+
+- id: D20260527-057
+  timestamp: 2026-05-27T15:48:00+09:00
+  command: /flow:tdd
+  phase: Target 6 _shared/hub-client / Phase 1-3
+  question: HUB 安全サブセットの実装 + Cron route の置き場所
+  options:
+    - Zod 暗黙 strip で安全サブセット + fetch/repo/now を injectable + Cron は service-status へ (recommended)
+    - .strict() で余剰 reject / 本横断に Cron route 同梱
+  recommended: Zod strip + injectable + Cron は service-status
+  chosen: z.object のデフォルト strip で内部指標を破棄（安全サブセット、§1.2）。fetch/statusCacheRepo/now を injectable（実 HUB・実 DB 不要で 100% テスト）。refresh 失敗は前回値保持（graceful）。Cron route は service-status 側で配線（hub-client は純 lib）
+  chosen_type: auto-recommended
+  depends_on: [D20260527-048, D20260527-052]
+  context: |
+    [論点-001] HUB 未実装の間は mock で開発（HUB-E4）、実 URL 切替は env のみ。
+    strip（余剰破棄）と fallback（HUB ダウンで cache 保持）が分岐 100%。12 件 GREEN。
 ```

@@ -1,9 +1,12 @@
 # _shared/hub-client ドキュメントインデックス
 
-**最終更新**: 2026-05-27 12:35
-**生成元**: /flow:concept (初期化)
+**最終更新**: 2026-05-27 15:48
+**生成元**: /flow:concept (初期化) / /flow:tdd (実装完了)
 
 <!-- auto-generated-start -->
+
+## 状態: 実装完了 (2026-05-27)
+Phase 1（contract Zod + mock）+ Phase 2（client）+ Phase 3（cache）完了。単体 12 件 GREEN。安全サブセット strip / フォールバック分岐 100%。Cron route は service-status で配線、実 HUB 結合は [論点-001] 解決後。
 
 ## 機能概要 (短縮、詳細は README.md)
 （README.md 参照）
@@ -15,6 +18,8 @@
 | 002 | 002_hub-client_PLAN.md | PLAN | 設計済 | 2026-05-27 | Zod + client + cache + mock |
 | 003 | 003_hub-client_UNIT_TEST.md | UNIT_TEST | 設計済 | 2026-05-27 | 安全サブセット strip + フォールバック |
 | 004 | (E2E スキップ) | — | N/A | — | cross-cutting |
+| 101 | 101_hub-client_IMPL_REPORT.md | IMPL_REPORT | 実装完了 | 2026-05-27 | contract/client/cache/mock |
+| 102 | 102_hub-client_UNIT_TEST_REPORT.md | UNIT_TEST_REPORT | 実装完了 | 2026-05-27 | 12 件 GREEN（strip/fallback 100%） |
 
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
