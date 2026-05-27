@@ -1,5 +1,5 @@
 import { getRepos } from "@/lib/db/repositories";
-import { getCachedStatus } from "@/lib/hub/cache";
+import { loadStatusSafe } from "@/lib/service-status/load";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { websiteJsonLd, personJsonLd } from "@/lib/seo/jsonld";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -15,8 +15,8 @@ export const metadata = buildMetadata({ path: "/" });
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  // 稼働一覧は cache のみ（HUB を叩かない）。取得失敗時も StatusList が EmptyState で graceful。
-  const services = await getCachedStatus({ repo: getRepos().statusCache });
+  // 稼働一覧は cache のみ（HUB を叩かない）。DB 不可でも EmptyState で graceful（L-E1）。
+  const services = await loadStatusSafe(() => getRepos().statusCache);
   return (
     <>
       <JsonLd data={[websiteJsonLd(), personJsonLd()]} />
@@ -24,7 +24,9 @@ export default async function HomePage() {
       <main>
         <Hero />
         <section className="mx-auto max-w-3xl px-6 py-8">
-          <h2 className="mb-4 text-xl font-semibold text-ink">いま動いているサービス</h2>
+          <h2 className="mb-4 text-xl font-semibold text-ink">
+            いま動いているサービス
+          </h2>
           <StatusList services={services} />
         </section>
         <ValueSection />
