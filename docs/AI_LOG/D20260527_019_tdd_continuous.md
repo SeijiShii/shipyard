@@ -4,13 +4,16 @@
 **コマンド**: /flow:tdd（連続実装モード）
 **対象**: Phase 3 実装（Phase 0 scaffold → 優先度順 12 ターゲット）
 **実行者**: Claude (Opus 4.7)
-**状態**: 進行中（Phase 0 scaffold + _shared/db 全 Phase 完了。次 = _shared/ui から継続）
-**含まれる decision**: D20260527-048 〜 D20260527-052
+**状態**: 進行中（Phase 0 scaffold + _shared/db + _shared/ui 完了。次 = _shared/seo から継続）
+**含まれる decision**: D20260527-048 〜 D20260527-053
 
 ## 進行状況（連続実装モード、resume 用）
 - ✅ **Phase 0 scaffold**: Next.js+TS+Tailwind+Drizzle+Vitest+CI 一式、npm install 560pkg、smoke 2/2 + typecheck GREEN（commit d877710）
 - ✅ **Target 1 _shared/db**: 全 Phase 完了（実装完了）。Phase 1（schema+client, 6/6）+ Phase 2（5 repository CRUD/IDOR/制約, 21 件）+ Phase 3（migration 0000_init 生成 + dev seed）。**29/29 GREEN + typecheck クリーン**。テスト DB = pglite（in-memory PG, node env, migrate 1 回 + TRUNCATE 隔離）。実 Neon dev への migration 適用のみ release 工程（Class B）へ繰延。
-- ⬜ 残り 11 ターゲット: **次 = _shared/ui** → seo → email → auth → hub-client → spam → landing → service-status → inquiry → legal → admin（優先度順、各 TDD）
+- ✅ **Target 2 _shared/ui**: 全 Phase 完了（実装完了）。トークン適用済 + cn + Button/Input/Textarea + StatusCard/StatusBadge + status マップ（lib/ui/status）+ Header/Footer + InfoButton/EmptyState/ProgressFeedback + Dock SVG line-art。**20 件 GREEN（全体 49/49）+ typecheck クリーン**。role/text 起点・絵文字不使用・状態は色+形+ラベル三重。視覚レビューは Phase 3 design --review-only。
+- ⬜ 残り 10 ターゲット: **次 = _shared/seo** → email → auth → hub-client → spam → landing → service-status → inquiry → legal → admin（優先度順、各 TDD）
+
+> 観察（follow-up、本 target の阻害でない）: ESLint 設定が scaffold 未初期化（`next lint` が対話プロンプト）。CI の lint step に影響しうる → Phase 0 scaffold 側の bookkeeping。GREEN ゲートは typecheck + unit で担保。
 - ⬜ その後: /flow:e2e（E2E gate）→ /flow:design --review-only（視覚）→ /flow:wording（文言）→ /flow:release（実キー+デプロイ、Class B）
 - **resume**: `/flow:auto` 再起動で .flow-loop-active + 本サマリ + CLAUDE.md（テスト情報）から Phase 2 を継続
 **ファイル**: `D20260527_019_tdd_continuous.md`
@@ -111,4 +114,21 @@
   context: |
     DoD §7 のうち「実 dev 適用確認」のみ実キー必要のため release。
     db target は 29/29 GREEN + typecheck クリーンで「実装完了」。次対象 _shared/ui へ。
+
+- id: D20260527-053
+  timestamp: 2026-05-27T15:30:00+09:00
+  command: /flow:tdd
+  phase: Target 2 _shared/ui / Phase 1-3
+  question: UI 基盤の実装範囲と status ラベルの置き場所
+  options:
+    - 全 12 コンポーネント + status マップを lib/ui/status に集約 (recommended)
+    - 各コンポーネントに status ラベルを inline
+  recommended: status マップ集約 + 注入可能ユーティリティ
+  chosen: status マップを lib/ui/status.ts に集約（StatusBadge/StatusCard 共有、分岐100%）、daysSince/now/year を injectable 化。Icon は lucide 直 import、layout への Header/Footer 配置は feature 側へ繰延
+  chosen_type: auto-recommended
+  depends_on: [D20260527-048]
+  context: |
+    design SoT（Ink & Teal）準拠。role/text 起点テスト、絵文字不使用、状態は色+形+ラベル三重。
+    O38（一般向けラベル）/ O41（InfoButton）/ O45（ProgressFeedback 嘘進捗禁止）を実装。
+    視覚レビュー（SoT §9）は画面実装後の Phase 3 design --review-only。20 件 GREEN。
 ```
