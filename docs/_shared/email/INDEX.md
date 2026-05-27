@@ -11,7 +11,10 @@
 ## ファイル一覧（番号順）
 | 番号 | ファイル | 種別 | 状態 | 最終更新 | 短い説明 |
 |---|---|---|---|---|---|
-| (まだ設計文書なし。`/flow:feature _shared/email` で生成) |
+| 001 | 001_email_SPEC.md | SPEC | 設計済 | 2026-05-27 | Resend send 3 関数 + テンプレ（PII 非混入） |
+| 002 | 002_email_PLAN.md | PLAN | 設計済 | 2026-05-27 | lib/email injectable + テンプレ |
+| 003 | 003_email_UNIT_TEST.md | UNIT_TEST | 設計済 | 2026-05-27 | mock send + PII 検証 |
+| 004 | (E2E スキップ) | — | N/A | — | cross-cutting |
 
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
@@ -19,15 +22,16 @@
 | (なし。`/flow:revise` / `/flow:fix` / `/flow:claim` で生成) |
 
 ## 関連
-- 親 concept: `../concept.md` §1.3.2 _shared/email 行
-- 実装コード: §1.4 参照
+- 親 concept: `../../concept.md` §6 外部連携 / §3.7 SEC-001
+- 被依存: inquiry, admin
+- 実装コード: `lib/email/`（§1.4 参照）
 
 ## AI アクセスガイド（読み込み順推奨）
 - 機能概要 → README.md
-- 仕様詳細 → 001_*_SPEC.md (まだ未生成)
+- 仕様詳細 → 001_email_SPEC.md §1
 
 ## 機能性質タグ
-- (まだ未確定。`/flow:feature` 実行時に決定)
+- cross-cutting（メール送信基盤）
 
 <!-- auto-generated-end -->
 

@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-27 15:02 (+09:00)
-**総セッション数**: 8
-**総 decision 数**: 32
+**最終更新**: 2026-05-27 15:08 (+09:00)
+**総セッション数**: 9
+**総 decision 数**: 33
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260527_009_feature__shared_email.md](./D20260527_009_feature__shared_email.md) | 2026-05-27 | /flow:feature | _shared/email | D20260527-033 | 完了 |
 | [D20260527_008_feature__shared_seo.md](./D20260527_008_feature__shared_seo.md) | 2026-05-27 | /flow:feature | _shared/seo | D20260527-032 | 完了 |
 | [D20260527_007_feature__shared_ui.md](./D20260527_007_feature__shared_ui.md) | 2026-05-27 | /flow:feature | _shared/ui | D20260527-030 | 完了 |
 | [D20260527_006_feature__shared_db.md](./D20260527_006_feature__shared_db.md) | 2026-05-27 | /flow:feature | _shared/db | D20260527-026〜027 | 完了 |
