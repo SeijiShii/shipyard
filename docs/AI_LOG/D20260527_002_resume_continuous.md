@@ -77,4 +77,21 @@
     P4.4(a) Design gate。実装コード未生成のため --system-only（SoT doc のみ生成、
     トークン適用 + headless 視覚レビューは Phase 3 実装後の P4.4(b) で実施）。
     デザイン方向は D20260527-006（信頼感 × ミニマル × クラフト感）確定済。Class A。
+
+- id: D20260527-025
+  timestamp: 2026-05-27T14:35:00+09:00
+  command: /flow:auto
+  phase: Step 3 / 優先度判定（反復 4）
+  question: 反復 4 の auto-pick
+  options:
+    - /flow:feature _shared/db (recommended)
+  recommended: /flow:feature _shared/db
+  chosen: /flow:feature _shared/db
+  chosen_type: auto-recommended
+  depends_on: [D20260527-022]
+  context: |
+    bootstrap 初期フロー(0 concept→1 estimate→2 design)完了。step 3 = 最初の feature 設計。
+    concept §1.3.4 優先度順、優先度 1 基盤の _shared/db（全機能が依存）から着手。
+    Class A（設計文書生成、git tracked）。context heavy のため .flow-needs-compact marker
+    書込（非ブロッキング、compact は透過処理）→ そのまま継続。
 ```
