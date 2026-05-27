@@ -68,13 +68,13 @@
 ## 5. 現在地カーソル
 
 <!-- AUTO-GENERATED:BEGIN scenario-cursor -->
-- 現在フェーズ: Phase 2（機能設計）着手
-- 進行中ターゲット: （次）_shared/db（優先度 1、基盤から）
-- 最終更新セッション: D20260527_005_design_system
-- 最終更新時刻: 2026-05-27 14:30
-- 完了フェーズ: [Phase 1（concept + secure(design) + initial estimate）, Phase 1.5（design SoT）]
-- 次の推奨コマンド: /flow:feature _shared/db（concept §1.3.4 優先度順、基盤 → 機能）
-- 備考: design SoT のトークン適用 + headless 視覚レビューは Phase 3 実装後に /flow:design --review-only（Design gate P4.4(b)）
+- 現在フェーズ: Phase 2 完了 → Phase 3（実装）着手前
+- 進行中ターゲット: （次ゲート）Spec-review（P3.7）→ 実装 tdd
+- 最終更新セッション: D20260527_017_feature_legal
+- 最終更新時刻: 2026-05-27 16:18
+- 完了フェーズ: [Phase 1（concept + secure + estimate）, Phase 1.5（design SoT）, Phase 2（全 12 ターゲット設計: 横断 7 + 機能 5、001-004 生成）]
+- 次の推奨コマンド: /flow:spec-review（P3.7、tdd 着手前の設計レビュー）→ /flow:tdd（優先度順実装）→ /flow:e2e
+- 備考: Phase 3 実装は project scaffold（Next.js/Drizzle/Clerk 等の初期化、PLAN の Phase 3.5 app/api bootstrap）から。視覚レビューは画面実装後 /flow:design --review-only（P4.4(b)）。リリースは /flow:release（Class B、実キー + デプロイ）
 <!-- AUTO-GENERATED:END scenario-cursor -->
 
 ## 6. 変更履歴

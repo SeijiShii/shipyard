@@ -17,7 +17,7 @@
 | 3 | ❌ | [landing](./landing/) | 設計済 | 4/4 | 0 | 0 | 0 | [INDEX](./landing/INDEX.md) |
 | 3 | ❌ | [service-status](./service-status/) | 設計済 | 4/4 | 0 | 0 | 0 | [INDEX](./service-status/INDEX.md) |
 | 3 | ❌ | [inquiry](./inquiry/) | 設計済 | 4/4 | 0 | 0 | 0 | [INDEX](./inquiry/INDEX.md) |
-| 3 | ❌ | [legal](./legal/) | 設計待ち | 0/4 | 0 | 0 | 0 | [INDEX](./legal/INDEX.md) |
+| 3 | ❌ | [legal](./legal/) | 設計済 | 4/4 | 0 | 0 | 0 | [INDEX](./legal/INDEX.md) |
 | 4 | ❌ | [admin](./admin/) | 設計済 | 4/4 | 0 | 0 | 0 | [INDEX](./admin/INDEX.md) |
 
 ## 横断フォルダ
