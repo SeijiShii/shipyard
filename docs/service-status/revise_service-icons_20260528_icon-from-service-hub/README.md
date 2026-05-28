@@ -5,7 +5,7 @@
 - **対象機能**: [../README.md](../README.md)
 - **基準 SPEC**: [../001_service-status_SPEC.md](../001_service-status_SPEC.md)
 - **改修要望**: service-hub から各サービスの iconUrl を受け取り、shipyard の稼働サービス一覧 (LP トップ「いま動いているサービス」セクション、`/services` 等) に表示する機能を追加。視覚的識別性向上 + 信頼感強化 (concept §1.1 UC#1)。
-- **状態**: 設計完了 → 実装待ち (`/flow:tdd` で 101-103 生成、Phase 5 MIGRATION は drizzle で apply)
+- **状態**: 実装完了 (2026-05-28、commit `d5ddb1b` + `d0bc4d4` + `ca38739`、172/172 tests GREEN、全パイプライン疎通)
 
 ## CF-20260528-016 (F) 対外契約変更フラグ = YES
 
