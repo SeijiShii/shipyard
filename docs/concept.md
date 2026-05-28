@@ -523,8 +523,9 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 
 ### [論点-006] inquiry メールテンプレ仕様 — やり取り内容を本文に含める (問い合わせ人はサイトに戻らない前提)
 
-- **status**: open
-- **status 履歴**: 2026-05-28 13:55 open (D20260528_007 release Phase 1.2 でユーザー指摘により発覚)
+- **status**: `resolved` (2026-05-28、D20260528_017 revise 設計完了で案 (c) 採用)
+- **status 履歴**: 2026-05-28 13:55 open (D20260528_007 release Phase 1.2 でユーザー指摘により発覚) → 2026-05-28 19:50 resolved (D20260528_017_revise_inquiry_mail-include-reply で **案 (c) 採用**: 運用者返信本文のみ含める、訪問者本人宛 mail のため SEC-001 対象外、escapeHtml で SEC-003 防御、過去履歴は含めない)
+- **解決根拠**: `./inquiry/revise_mail-include-reply_20260528_include-operator-reply/001_REVISE_SPEC.md` (本 revise 設計、実装は `/flow:tdd` で後段)
 - **影響範囲**: `docs/inquiry/001_inquiry_SPEC.md` (メール通知部) / `lib/email/` テンプレート / 関連 unit/E2E test
 - **検出根拠**: 元 concept §1.1 UC#5「訪問者がリンク or ブラウザ保持でスレッドに戻り追記」を**前提変更**: 「問い合わせ人はこちらの対応を確認するためにこのサイトには来ない」。よってメール = subject + link 通知では不十分で、**メール本文に運用者返信の全文 (やり取り内容) を含める**必要がある。bot 対策の Mail verification は引き続き不要 (Turnstile + honeypot + timing + rate limit + MX で対応)。
 - **詰めるべき問い**:

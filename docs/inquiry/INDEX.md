@@ -24,7 +24,7 @@ core service（createInquiry/addReply）+ schema + storage + ThreadView + contac
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
 |---|---|---|---|---|---|
-| (なし。`/flow:revise` / `/flow:fix` / `/flow:claim` で生成) |
+| revise_mail-include-reply_20260528_include-operator-reply/ | revise | mail-include-reply | 設計完了 (実装待ち) | [論点-006] 案 (c) reconcile — 運用者返信本文を mail に含める ([INDEX](./revise_mail-include-reply_20260528_include-operator-reply/INDEX.md)) | [INDEX](./revise_mail-include-reply_20260528_include-operator-reply/INDEX.md) |
 
 ## 関連
 - 親 concept: `../concept.md` §1.3.1 inquiry 行 / §3.7 SEC-001/002/003 / §5.2
