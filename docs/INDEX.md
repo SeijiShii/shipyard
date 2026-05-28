@@ -1,12 +1,12 @@
 # プロジェクトドキュメントインデックス
 
-**最終更新**: 2026-05-27 12:35
+**最終更新**: 2026-05-28 11:50
 **生成元**: /flow:concept、/flow:feature 等が自動更新
 
 <!-- auto-generated-start -->
 
 ## 中央書類
-- [`./concept.md`](./concept.md) — 全体概念設計（最新更新: 2026-05-27）
+- [`./concept.md`](./concept.md) — 全体概念設計（最新更新: 2026-05-28 メッセージング転換）
 - [`./SCENARIO.md`](./SCENARIO.md) — 開発シナリオ（next-step 判断用）
 - [`./DOC_MAP.md`](./DOC_MAP.md) — AI 用エントリポイント（目的別アクセスガイド）
 - [`./PREREQUISITES.md`](./PREREQUISITES.md) — 実装前準備チェックリスト

@@ -1,1 +1,1 @@
-<!-- cleared by /flow:concept @ 2026-05-27 13:20 — 全話題は concept.md / §8 [論点-001] に反映済み。原本は docs/_archive/wants_20260527.md -->
+<!-- cleared by /flow:concept @ 2026-05-28 11:50 — メッセージング転換 (「共に考える相談相手」スタンス) は concept.md §冒頭表/§1/§1.1 UC#3 + AI_LOG D20260528-001 に反映済み。後続 /flow:revise landing で LP SPEC へ展開予定。前回原本は docs/_archive/wants_20260527.md -->
