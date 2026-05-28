@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-28 16:30 (+09:00)
-**総セッション数**: 30
-**総 decision 数**: 100
+**最終更新**: 2026-05-28 16:45 (+09:00)
+**総セッション数**: 32
+**総 decision 数**: 102
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,8 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260528_011_audit_standard.md](./D20260528_011_audit_standard.md) | 2026-05-28 | /flow:audit | standard | D20260528-037 | 完了 (改善: High 1→0、Medium 2 新規) |
+| [D20260528_010_resume_continuous.md](./D20260528_010_resume_continuous.md) | 2026-05-28 | /flow:auto | continuous loop (反復 6+) | D20260528-036 | 進行中 |
 | [D20260528_009_revise_service-status_service-icons.md](./D20260528_009_revise_service-status_service-icons.md) | 2026-05-28 | /flow:revise | service-status — service-icons | D20260528-028〜035 | 完了 |
 | [D20260528_008_resume_continuous.md](./D20260528_008_resume_continuous.md) | 2026-05-28 | /flow:auto | continuous loop (反復 5) | D20260528-024 | 進行中 |
 | [D20260528_007_release_shipyard.md](./D20260528_007_release_shipyard.md) | 2026-05-28 | /flow:release | shipyard 初回 | D20260528-022〜027 | 進行中 (Phase 2 動作確認中) |
