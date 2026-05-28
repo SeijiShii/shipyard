@@ -9,8 +9,8 @@ export interface AdminReplyDeps {
   threads: ThreadRepo;
   messages: MessageRepo;
   inquirers: InquirerRepo;
-  // 問い合わせ者への返信通知（リンクのみ、本文を載せない＝SEC-001）。best-effort。
-  notifyReply: (to: string, token: string) => Promise<unknown>;
+  // 返信通知 ([論点-006] 案 c、本人宛=SEC-001 対象外で運用者返信本文を含める、D20260528_017)。best-effort。
+  notifyReply: (to: string, token: string, body: string) => Promise<unknown>;
 }
 
 export type AdminReplyResult = { ok: true } | { ok: false; status: 404 };
@@ -28,7 +28,7 @@ export async function adminReply(
   const inquirer = await deps.inquirers.findById(thread.inquirerId);
   if (inquirer?.email) {
     try {
-      await deps.notifyReply(inquirer.email, thread.token);
+      await deps.notifyReply(inquirer.email, thread.token, body);
     } catch {
       /* best-effort: メール失敗で返信追加を巻き込まない */
     }
@@ -41,7 +41,10 @@ export interface AdminCloseDeps {
 }
 export type AdminCloseResult = { ok: true } | { ok: false; status: 404 };
 
-export async function adminClose(threadId: string, deps: AdminCloseDeps): Promise<AdminCloseResult> {
+export async function adminClose(
+  threadId: string,
+  deps: AdminCloseDeps,
+): Promise<AdminCloseResult> {
   const thread = await deps.threads.findById(threadId);
   if (!thread) return { ok: false, status: 404 };
   await deps.threads.setStatus(thread.id, "closed"); // UC-A3 stateful
