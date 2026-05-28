@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-28 19:55 (+09:00)
-**総セッション数**: 39
-**総 decision 数**: 110
+**最終更新**: 2026-05-28 20:05 (+09:00)
+**総セッション数**: 41
+**総 decision 数**: 112
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,8 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260528_020_audit_full.md](./D20260528_020_audit_full.md) | 2026-05-28 | /flow:audit | full (release-pre 必須監査) | D20260528-048 | 完了 (**悪化**: High 1 新規 = O48 v2 contract drift、Medium 3、Low 2、AUDIT-structure-001 3 連続常習化) |
+| [D20260528_019_resume_continuous.md](./D20260528_019_resume_continuous.md) | 2026-05-28 | /flow:auto | continuous loop (D018 後再開、release-pre ハードゲート判定) | D20260528-047 | 進行中 |
 | [D20260528_018_tdd_inquiry_revise_mail-include-reply.md](./D20260528_018_tdd_inquiry_revise_mail-include-reply.md) | 2026-05-28 | /flow:tdd | inquiry mail-include-reply 実装 (Phase 1+2、172→174 GREEN) | D20260528-046 | 完了 ([論点-006] reconcile 完遂) |
 | [D20260528_017_revise_inquiry_mail-include-reply.md](./D20260528_017_revise_inquiry_mail-include-reply.md) | 2026-05-28 | /flow:revise | inquiry mail-include-reply ([論点-006] 案 c reconcile) | D20260528-044/045 | 完了 (4 文書生成、SEC-001 vs [論点-006] 衝突 = 訪問者本人宛例外で解決) |
 | [D20260528_016_audit_standard.md](./D20260528_016_audit_standard.md) | 2026-05-28 | /flow:audit | standard (本日 2 回目) | D20260528-042 | 完了 (改善: O56 favicon 解消、Medium 2→1) |
