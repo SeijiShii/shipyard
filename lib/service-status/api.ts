@@ -9,6 +9,7 @@ export interface PublicServiceView {
   url: string;
   status: string;
   since: string | null;
+  iconUrl: string | null; // service-icons revise (公開安全、LP 表示)
   fetchedAt: string;
 }
 
@@ -20,12 +21,19 @@ export function toPublicStatus(rows: ServiceStatusRow[]): PublicServiceView[] {
     url: r.url,
     status: r.status,
     since: r.since ?? null,
-    fetchedAt: r.fetchedAt instanceof Date ? r.fetchedAt.toISOString() : String(r.fetchedAt),
+    iconUrl: r.iconUrl ?? null, // service-icons revise
+    fetchedAt:
+      r.fetchedAt instanceof Date
+        ? r.fetchedAt.toISOString()
+        : String(r.fetchedAt),
   }));
 }
 
 // Vercel Cron の認可（CRON_SECRET、外部からの手動叩き防止、S-E2/U-E2）。
-export function isAuthorizedCron(authHeader: string | null, secret: string | undefined): boolean {
+export function isAuthorizedCron(
+  authHeader: string | null,
+  secret: string | undefined,
+): boolean {
   if (!secret) return false;
   return authHeader === `Bearer ${secret}`;
 }

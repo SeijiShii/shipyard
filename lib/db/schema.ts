@@ -18,7 +18,9 @@ export const inquirers = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     email: text("email").notNull(), // PII（SEC-001: ログ非出力）
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
   },
   (t) => ({
     emailIdx: index("idx_inquirers_email").on(t.email),
@@ -35,7 +37,9 @@ export const threads = pgTable(
     token: text("token").notNull(), // 128-bit, spam.generateThreadToken（SEC-002）
     subject: text("subject"),
     status: text("status").notNull().default("open"), // 'open' | 'closed'
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
     lastActivityAt: timestamp("last_activity_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -55,7 +59,9 @@ export const messages = pgTable(
       .references(() => threads.id, { onDelete: "cascade" }),
     sender: text("sender").notNull(), // 'visitor' | 'operator'
     body: text("body").notNull(), // 表示時プレーンテキスト（SEC-003）
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
   },
   (t) => ({
     threadIdx: index("idx_messages_thread").on(t.threadId, t.createdAt),
@@ -81,7 +87,10 @@ export const serviceStatusCache = pgTable("service_status_cache", {
   status: text("status").notNull(), // 'up' | 'down' | 'unknown'
   since: date("since"),
   lastCheckedAt: timestamp("last_checked_at", { withTimezone: true }),
-  fetchedAt: timestamp("fetched_at", { withTimezone: true }).notNull().defaultNow(),
+  iconUrl: text("icon_url"), // nullable, service-icons revise (Phase 5 MIGRATION)
+  fetchedAt: timestamp("fetched_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });
 
 export type ThreadStatus = "open" | "closed";

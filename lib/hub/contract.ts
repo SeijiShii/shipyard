@@ -14,6 +14,8 @@ export const serviceStatusSchema = z.object({
   status: z.enum(["up", "down", "unknown"]), // 不正値は reject (U-E4)
   since: z.string().optional(),
   lastCheckedAt: z.string().optional(), // 実 service-hub は camelCase (shipyard 内部 DB schema と同じ)
+  // service-icons revise (spec-review R3): 無効 URL は service エントリ保持で iconUrl のみ undefined 降格
+  iconUrl: z.string().url().optional().catch(undefined),
 });
 
 // 実 service-hub は直接 Service[] を返すが、shipyard 内部 consumer は { generated_at, services } 形を期待。

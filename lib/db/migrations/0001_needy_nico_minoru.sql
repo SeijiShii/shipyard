@@ -1,0 +1,1 @@
+ALTER TABLE "service_status_cache" ADD COLUMN "icon_url" text;

@@ -15,8 +15,19 @@ describe("StatusList (U-1, U-E1, U-E4)", () => {
       <StatusList
         now={NOW}
         services={[
-          { slug: "a", name: "稼働アプリ", url: "https://a.example.com", status: "up", since: "2026-05-01" },
-          { slug: "b", name: "停止アプリ", url: "https://b.example.com", status: "down" },
+          {
+            slug: "a",
+            name: "稼働アプリ",
+            url: "https://a.example.com",
+            status: "up",
+            since: "2026-05-01",
+          },
+          {
+            slug: "b",
+            name: "停止アプリ",
+            url: "https://b.example.com",
+            status: "down",
+          },
         ]}
       />,
     );
@@ -36,7 +47,12 @@ describe("StatusList (U-1, U-E1, U-E4)", () => {
   });
 
   it("U-E4: 不明 status は確認中にフォールバック", () => {
-    render(<StatusList now={NOW} services={[{ slug: "x", name: "謎アプリ", status: "???" }]} />);
+    render(
+      <StatusList
+        now={NOW}
+        services={[{ slug: "x", name: "謎アプリ", status: "???" }]}
+      />,
+    );
     expect(screen.getByText("確認中")).toBeInTheDocument();
   });
 });
@@ -51,7 +67,7 @@ describe("uptimeDays (U-2, U-B2)", () => {
 });
 
 describe("toPublicStatus (U-3, U-B1)", () => {
-  it("安全サブセットのみ返す（内部/余剰フィールドを含まない）", () => {
+  it("安全サブセットのみ返す（内部/余剰フィールドを含まない、iconUrl は公開対象）", () => {
     const rows = [
       {
         slug: "a",
@@ -60,6 +76,7 @@ describe("toPublicStatus (U-3, U-B1)", () => {
         status: "up",
         since: "2026-01-01",
         lastCheckedAt: null,
+        iconUrl: null,
         fetchedAt: new Date("2026-05-27T00:00:00Z"),
         internalCost: 999, // 内部指標（来ても出さない）
       },
@@ -71,10 +88,29 @@ describe("toPublicStatus (U-3, U-B1)", () => {
       url: "https://a",
       status: "up",
       since: "2026-01-01",
+      iconUrl: null,
       fetchedAt: "2026-05-27T00:00:00.000Z",
     });
     expect(pub[0]).not.toHaveProperty("internalCost");
     expect(pub[0]).not.toHaveProperty("lastCheckedAt");
+  });
+
+  // service-icons revise (D20260528-039): iconUrl 公開
+  it("U-IC5-pub: iconUrl ありの row は公開出力に含む (service-icons revise)", () => {
+    const rows = [
+      {
+        slug: "hana-memo",
+        name: "花メモ",
+        url: "https://hana-memo.givers.work/",
+        status: "up",
+        since: null,
+        lastCheckedAt: null,
+        iconUrl: "https://hana-memo.givers.work/favicon.svg",
+        fetchedAt: new Date("2026-05-28T00:00:00Z"),
+      },
+    ] as unknown as ServiceStatusRow[];
+    const pub = toPublicStatus(rows);
+    expect(pub[0].iconUrl).toBe("https://hana-memo.givers.work/favicon.svg");
   });
 });
 

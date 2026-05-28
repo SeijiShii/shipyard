@@ -111,6 +111,41 @@ describe("contract (U-1, U-E3, U-E4, U-B1, U-B2)", () => {
     expect(parsed.lastCheckedAt).toBe("2026-05-28T00:00:00Z");
     expect(parsed).not.toHaveProperty("last_checked_at");
   });
+
+  // service-icons revise (D20260528-039、R3 + R7): iconUrl optional + graceful catch
+  it("U-IC1: iconUrl ありの parse 成功 + URL 保持", () => {
+    const parsed = serviceStatusSchema.parse({
+      slug: "hana-memo",
+      name: "花メモ",
+      url: "https://hana-memo.givers.work/",
+      status: "up",
+      iconUrl: "https://hana-memo.givers.work/favicon.svg",
+    });
+    expect(parsed.iconUrl).toBe("https://hana-memo.givers.work/favicon.svg");
+  });
+
+  it("U-IC7: 無効 iconUrl は undefined に降格、service エントリは保持 (R3 graceful)", () => {
+    const parsed = serviceStatusSchema.parse({
+      slug: "x",
+      name: "X",
+      url: "https://x",
+      status: "up",
+      iconUrl: "not-a-url",
+    });
+    expect(parsed.iconUrl).toBeUndefined();
+    expect(parsed.slug).toBe("x"); // service エントリは strip されない
+  });
+
+  it("U-IC8: 空文字 iconUrl も undefined 降格 (R3)", () => {
+    const parsed = serviceStatusSchema.parse({
+      slug: "x",
+      name: "X",
+      url: "https://x",
+      status: "up",
+      iconUrl: "",
+    });
+    expect(parsed.iconUrl).toBeUndefined();
+  });
 });
 
 describe("fetchHubStatus (U-2, U-E1)", () => {
@@ -167,6 +202,39 @@ describe("refreshStatusCache (U-3, U-E2) / getCachedStatus (U-4)", () => {
     expect(upsertMany).toHaveBeenCalledTimes(1);
     const rows = upsertMany.mock.calls[0][0];
     expect(rows[0]).toMatchObject({ slug: "example-a", fetchedAt: now });
+  });
+
+  // service-icons revise (D20260528-039、R7): U-3 拡張 — iconUrl propagation 機械担保
+  it("U-3-icon: iconUrl 含む hub response で upsertMany 引数に iconUrl が伝搬する (R1)", async () => {
+    const { repo, upsertMany } = mockRepo();
+    const res = await refreshStatusCache({
+      repo,
+      fetchStatus: async () => ({
+        generated_at: "2026-05-28T00:00:00Z",
+        services: [
+          {
+            slug: "hana-memo",
+            name: "花メモ",
+            url: "https://hana-memo.givers.work/",
+            status: "up" as const,
+            iconUrl: "https://hana-memo.givers.work/favicon.svg",
+          },
+        ],
+      }),
+    });
+    expect(res).toEqual({ ok: true, updated: 1 });
+    const rows = upsertMany.mock.calls[0][0];
+    expect(rows[0].iconUrl).toBe("https://hana-memo.givers.work/favicon.svg");
+  });
+
+  it("U-3-icon-null: iconUrl 不在の hub response で upsertMany 引数 iconUrl=null", async () => {
+    const { repo, upsertMany } = mockRepo();
+    await refreshStatusCache({
+      repo,
+      fetchStatus: async () => MOCK_HUB_STATUS, // mock は iconUrl 持たない
+    });
+    const rows = upsertMany.mock.calls[0][0];
+    expect(rows[0].iconUrl).toBeNull();
   });
 
   it("U-E2: fetch 失敗時はキャッシュを更新しない（前回値維持）", async () => {
