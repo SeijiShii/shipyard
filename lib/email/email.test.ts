@@ -53,18 +53,60 @@ describe("sendThreadLink (U-1)", () => {
   });
 });
 
-describe("sendReplyNotification (U-2, U-P1)", () => {
-  it("リンクのみ、本文プレビュー非含有", async () => {
+// [論点-006] reconcile (D20260528_017_revise_inquiry_mail-include-reply、案 c):
+// 訪問者本人宛 mail に運用者返信本文を含める (SEC-001 対象外、本人通知)。
+// 旧 U-2/U-P1「リンクのみ、本文プレビュー非含有」を反転 → 本文含む方針へ。
+describe("sendReplyNotification (U-IR1, U-IR3 — 本文含む)", () => {
+  it("U-IR3: subject + html/text に運用者返信本文 + link + 案内文を含む", async () => {
     const { mailer, send } = mockMailer();
     await sendReplyNotification(
       { mailer },
-      { to: "user@example.com", token: "RT9" },
+      {
+        to: "user@example.com",
+        token: "RT9",
+        body: "ご返信ありがとうございます。来週ミーティングいかがでしょうか。",
+      },
     );
     const msg = send.mock.calls[0][0] as EmailMessage;
     expect(msg.subject).toBe("返信が届きました");
     expect(msg.html).toContain("/t/RT9");
-    expect(msg.html).not.toContain(INQUIRY_BODY);
-    expect(msg.text).not.toContain(INQUIRY_BODY);
+    expect(msg.html).toContain("ご返信ありがとうございます");
+    expect(msg.text).toContain("ご返信ありがとうございます");
+    // R4: 「このメールへの返信は受け付けていません」案内
+    expect(msg.html).toContain("返信は受け付けていません");
+    expect(msg.text).toContain("返信は受け付けていません");
+  });
+
+  it("U-IR2: html ブランチで body の XSS 攻撃文字列が escape される (SEC-003 防御)", async () => {
+    const { mailer, send } = mockMailer();
+    await sendReplyNotification(
+      { mailer },
+      {
+        to: "user@example.com",
+        token: "RT9",
+        body: "<script>alert(1)</script>",
+      },
+    );
+    const msg = send.mock.calls[0][0] as EmailMessage;
+    // literal script tag は含まれない、escape された &lt;script&gt; のみ
+    expect(msg.html).not.toContain("<script>alert(1)</script>");
+    expect(msg.html).toContain("&lt;script&gt;");
+  });
+
+  it("U-IR6: body 改行が html/text 両方で保持される (pre wrap / plain \\n)", async () => {
+    const { mailer, send } = mockMailer();
+    const body = "1 行目\n2 行目\n3 行目";
+    await sendReplyNotification(
+      { mailer },
+      { to: "user@example.com", token: "RT9", body },
+    );
+    const msg = send.mock.calls[0][0] as EmailMessage;
+    // html: <pre white-space:pre-wrap> でラップされ改行を視覚的に保持
+    expect(msg.html).toContain("white-space:pre-wrap");
+    expect(msg.html).toContain("1 行目");
+    expect(msg.html).toContain("2 行目");
+    // text: plain \n 改行を維持
+    expect(msg.text).toContain("1 行目\n2 行目\n3 行目");
   });
 });
 
@@ -124,7 +166,7 @@ describe("PII マスク (U-P2)", () => {
     });
     const res = await sendReplyNotification(
       { mailer: { send } },
-      { to: "victim@example.com", token: "T" },
+      { to: "victim@example.com", token: "T", body: "return" },
     );
     expect(res.ok).toBe(false);
     if (!res.ok) {

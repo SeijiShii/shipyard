@@ -10,7 +10,9 @@ import { newInquiryEmail } from "./templates/newInquiry";
 
 const RETRIES = 1; // 1 回リトライ（初回 + 1 = 最大 2 試行、MAIL-E1）
 
-export type EmailResult = { ok: true; id: string } | { ok: false; error: string };
+export type EmailResult =
+  | { ok: true; id: string }
+  | { ok: false; error: string };
 
 export interface SendDeps {
   mailer: Mailer;
@@ -19,10 +21,17 @@ export interface SendDeps {
 }
 
 function from(deps: SendDeps): string {
-  return deps.from ?? process.env.MAIL_FROM ?? "shipyard <noreply@shipyard.example.com>";
+  return (
+    deps.from ??
+    process.env.MAIL_FROM ??
+    "shipyard <noreply@shipyard.example.com>"
+  );
 }
 
-async function deliver(mailer: Mailer, msg: EmailMessage): Promise<EmailResult> {
+async function deliver(
+  mailer: Mailer,
+  msg: EmailMessage,
+): Promise<EmailResult> {
   let lastErr: unknown;
   for (let attempt = 0; attempt <= RETRIES; attempt++) {
     try {
@@ -48,10 +57,10 @@ export async function sendThreadLink(
 
 export async function sendReplyNotification(
   deps: SendDeps,
-  { to, token }: { to: string; token: string },
+  { to, token, body }: { to: string; token: string; body: string },
 ): Promise<EmailResult> {
   const url = `${siteUrl()}/t/${token}`;
-  const { subject, html, text } = replyNotificationEmail({ url });
+  const { subject, html, text } = replyNotificationEmail({ url, body });
   return deliver(deps.mailer, { from: from(deps), to, subject, html, text });
 }
 
@@ -62,5 +71,11 @@ export async function sendNewInquiryNotification(
   const operator = deps.operatorEmail ?? process.env.OPERATOR_EMAIL ?? "";
   const adminUrl = `${siteUrl()}/admin/threads/${threadId}`;
   const { subject, html, text } = newInquiryEmail({ adminUrl });
-  return deliver(deps.mailer, { from: from(deps), to: operator, subject, html, text });
+  return deliver(deps.mailer, {
+    from: from(deps),
+    to: operator,
+    subject,
+    html,
+    text,
+  });
 }
