@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { StatusList } from "./StatusList";
 import { uptimeDays } from "@/lib/service-status/uptime";
 import { toPublicStatus, isAuthorizedCron } from "@/lib/service-status/api";
@@ -54,6 +54,105 @@ describe("StatusList (U-1, U-E1, U-E4)", () => {
       />,
     );
     expect(screen.getByText("確認中")).toBeInTheDocument();
+  });
+});
+
+// service-icons revise (D20260528-039、Phase 2 UI)
+describe("StatusCard ServiceIcon (U-IC2〜U-IC10)", () => {
+  it("U-IC2: iconUrl あり → <img src> が DOM に存在 (装飾画像 alt='')", () => {
+    const { container } = render(
+      <StatusList
+        now={NOW}
+        services={[
+          {
+            slug: "hana-memo",
+            name: "花メモ",
+            url: "https://hana-memo.givers.work/",
+            status: "up",
+            iconUrl: "https://hana-memo.givers.work/favicon.svg",
+          },
+        ]}
+      />,
+    );
+    const img = container.querySelector(
+      'img[src="https://hana-memo.givers.work/favicon.svg"]',
+    );
+    expect(img).not.toBeNull();
+    // R4: 装飾画像 alt="" + role="presentation"
+    expect(img?.getAttribute("alt")).toBe("");
+    expect(img?.getAttribute("role")).toBe("presentation");
+    expect(img?.getAttribute("loading")).toBe("lazy");
+  });
+
+  it("U-IC3: iconUrl 不在 → イニシャル 1 文字 fallback (Array.from で grapheme)", () => {
+    const { container } = render(
+      <StatusList
+        now={NOW}
+        services={[
+          {
+            slug: "a",
+            name: "花メモ",
+            url: "https://a",
+            status: "up",
+          },
+        ]}
+      />,
+    );
+    // <img> なし
+    expect(container.querySelector("img")).toBeNull();
+    // イニシャル "花" が表示される
+    expect(screen.getByText("花")).toBeInTheDocument();
+  });
+
+  it("U-IC4: onError 発火 → React state でフォールバックに切り替え", () => {
+    const { container } = render(
+      <StatusList
+        now={NOW}
+        services={[
+          {
+            slug: "x",
+            name: "壊れた",
+            url: "https://x",
+            status: "up",
+            iconUrl: "https://example.com/404.png",
+          },
+        ]}
+      />,
+    );
+    const img = container.querySelector("img");
+    expect(img).not.toBeNull();
+    fireEvent.error(img!);
+    // フォールバック切替後は <img> 消える + イニシャル "壊" 表示
+    expect(container.querySelector("img")).toBeNull();
+    expect(screen.getByText("壊")).toBeInTheDocument();
+  });
+
+  it("U-IC9: name 空 + iconUrl 不在 → '?' fallback (defensive)", () => {
+    render(
+      <StatusList
+        now={NOW}
+        services={[{ slug: "x", name: "", status: "up", url: "https://x" }]}
+      />,
+    );
+    expect(screen.getByText("?")).toBeInTheDocument();
+  });
+
+  it("U-IC10: emoji name + iconUrl 不在 → 絵文字 1 文字 (grapheme cluster)", () => {
+    render(
+      <StatusList
+        now={NOW}
+        services={[
+          {
+            slug: "x",
+            name: "🌸花メモ",
+            url: "https://x",
+            status: "up",
+          },
+        ]}
+      />,
+    );
+    // Array.from で先頭 grapheme = "🌸"
+    expect(screen.getByText("🌸")).toBeInTheDocument();
   });
 });
 

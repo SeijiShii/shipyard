@@ -10,6 +10,7 @@ export interface StatusListItem {
   url?: string | null;
   status: string;
   since?: string | null;
+  iconUrl?: string | null; // service-icons revise (passthrough to StatusCard、表示集約は StatusCard)
 }
 
 export function StatusList({
@@ -20,7 +21,9 @@ export function StatusList({
   now?: Date;
 }) {
   if (services.length === 0) {
-    return <EmptyState message="準備中です。動いているサービスをまもなく掲載します。" />;
+    return (
+      <EmptyState message="準備中です。動いているサービスをまもなく掲載します。" />
+    );
   }
   return (
     <ul className="flex flex-col gap-3">
