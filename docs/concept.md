@@ -559,6 +559,20 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 - **担当**: seiji
 - **関連**: `./landing/103_landing_E2E_REPORT.md` / `./landing/revise_messaging-shift_20260528_tone-shift-together-thinking/103_REVISE_E2E_REPORT.md` / `./AI_LOG/D20260528_005_e2e_landing.md`
 
+### [論点-007] service-icons フォールバック背景色のデザイントークン
+
+- **status**: `resolved` (2026-05-28、spec-review D20260528_013 D1)
+- **status 履歴**: 2026-05-28 14:30 open (D20260528_009_revise_service-status_service-icons SPEC §9 で登録) → 2026-05-28 17:10 resolved (D20260528_013_spec-review D20260528-039 D1)
+- **影響範囲**: `docs/service-status/revise_service-icons_*/001_REVISE_SPEC.md §9`, `components/status/StatusCard.tsx` (ServiceIcon component), `docs/design/design-system.md §3`
+- **検出根拠**: service-hub から取得した iconUrl が不在 / 読み込み失敗時のフォールバック背景色を design SoT の何のトークンで実装するか未確定
+- **候補案**:
+  - 案 A (推奨): 単一色 (`var(--primary-subtle)` = #E2F1EF、design SoT §3 で定義済の teal 薄) — シンプル、統一感、design SoT §6 ミニマル路線整合
+  - 案 B: service 名 hash → HSL 色生成 (multi-color) — 多様性はあるが「ランダム色」が誠実トーン (charter §2.2) と相反、撤退コスト高
+- **決定**: **案 A 採用** (spec-review D20260528-039 D1、auto-recommended)
+- **実装**: `components/status/StatusCard.tsx` 内 `ServiceIcon` component で `style={{ backgroundColor: "var(--primary-subtle)" }}` + `text-primary` 文字色 + イニシャル 1 文字 (`Array.from(name)[0]`、UTF-8 grapheme cluster 対応)、tdd 完遂 (D20260528_015、commit `d0bc4d4`)
+- **担当**: seiji
+- **関連**: `./service-status/revise_service-icons_20260528_icon-from-service-hub/001_REVISE_SPEC.md §9` / `./service-status/revise_service-icons_20260528_icon-from-service-hub/905_SPEC_REVIEW.md §4 D1` / `./AI_LOG/D20260528_013_spec-review_service-status-revise-icons.md` / `./AI_LOG/D20260528_015_tdd_service-status_revise_service-icons.md`
+
 ## 9. 法務・コンプライアンス書類
 
 > 公開 PJ かつ問い合わせ者のメール + 本文を収集・保存するため、プライバシーポリシー必須。**本サイトでの課金はないため特定商取引法表記は不要**。
