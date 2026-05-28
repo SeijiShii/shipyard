@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-28 11:50 (+09:00)
-**総セッション数**: 23
-**総 decision 数**: 72
+**最終更新**: 2026-05-28 12:15 (+09:00)
+**総セッション数**: 24
+**総 decision 数**: 81
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260528_002_revise_landing_messaging-shift.md](./D20260528_002_revise_landing_messaging-shift.md) | 2026-05-28 | /flow:revise | landing — messaging-shift | D20260528-003〜011 | 完了 |
 | [D20260528_001_concept_update_messaging.md](./D20260528_001_concept_update_messaging.md) | 2026-05-28 | /flow:concept | update — messaging shift | D20260528-001〜002 | 完了 |
 | [D20260527_022_secure_product.md](./D20260527_022_secure_product.md) | 2026-05-27 | /flow:secure | product-wide (all) | D20260527-069〜070 | 完了 |
 | [D20260527_021_audit_standard.md](./D20260527_021_audit_standard.md) | 2026-05-27 | /flow:audit | standard | D20260527-067〜068 | 完了 |
@@ -42,6 +43,15 @@
 
 | ID | command | phase | chosen (短縮) | type | ファイル |
 |---|---|---|---|---|---|
+| D20260528-011 | /flow:revise | Step 4.1 / マイグレーション要否 | 不要 (Phase 5 skip) | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
+| D20260528-010 | /flow:revise | Step 3.2 / タグ判定 | feature 維持 | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
+| D20260528-009 | /flow:revise | Step 3.1 / E ロールバック | git revert | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
+| D20260528-008 | /flow:revise | Step 3.1 / D 既存テスト | 全維持 + U-T1〜T4 追加 | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
+| D20260528-007 | /flow:revise | Step 3.1 / C リリース | 一括 | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
+| D20260528-006 | /flow:revise | Step 3.1 / B 後方互換 | 互換維持 | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
+| D20260528-005 | /flow:revise | Step 3.1 / A 動機 | concept 転換との同期 | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
+| D20260528-004 | /flow:revise | Step 2.2 / Read スコープ | docs/landing/* + design SoT 該当節 + concept §1.1/§1 | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
+| D20260528-003 | /flow:revise | Step 1.2 / 改修要望取得 | 親セッション (Skill 引数) 経由 | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
 | D20260528-002 | /flow:concept | LP SPEC 反映タイミング | 後続 /flow:revise landing | auto-recommended | D20260528_001_concept_update_messaging.md |
 | D20260528-001 | /flow:concept | Step 1.5 / wants 取り込み | A. 冒頭表+§1+§1.1 UC#3 全面再ライト | explicit-choice | D20260528_001_concept_update_messaging.md |
 | D20260527-019 | /flow:secure | O25/O27/O28 | 対応済み/deps 繰延 | auto-recommended | D20260527_003_secure_concept.md |

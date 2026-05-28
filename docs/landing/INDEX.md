@@ -1,7 +1,7 @@
 # landing ドキュメントインデックス
 
-**最終更新**: 2026-05-27 16:04
-**生成元**: /flow:concept (初期化) / /flow:tdd (unit 実装完了)
+**最終更新**: 2026-05-28 12:15
+**生成元**: /flow:concept (初期化) / /flow:tdd (unit 実装完了) / /flow:revise (messaging-shift 設計完了)
 
 <!-- auto-generated-start -->
 
@@ -24,7 +24,7 @@ Phase 1（page + Hero）+ Phase 2（Value/ConsultPitch + 稼働一覧埋込）�
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
 |---|---|---|---|---|---|
-| (なし。`/flow:revise` / `/flow:fix` / `/flow:claim` で生成) |
+| [revise_messaging-shift_20260528_tone-shift-together-thinking/](./revise_messaging-shift_20260528_tone-shift-together-thinking/) | revise | messaging-shift | 設計完了 (実装待ち) | LP メッセージング転換 (lead-gen → 「共に考える相談相手」スタンス) | [INDEX](./revise_messaging-shift_20260528_tone-shift-together-thinking/INDEX.md) |
 
 ## 関連
 - 親 concept: `../concept.md` §1.3.1 landing 行 / §4.8
