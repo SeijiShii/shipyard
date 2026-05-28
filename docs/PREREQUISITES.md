@@ -18,7 +18,6 @@
 | Clerk | `CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` | 運用者(admin)認証 | clerk.com | Free 10k MAU |
 | Sentry | `SENTRY_DSN` | エラー監視 | sentry.io | Free 5,000 events/月 |
 | service-hub status | `HUB_STATUS_URL`（+ 必要なら `HUB_STATUS_API_KEY`） | 稼働一覧取得 | （HUB 側で発行、[論点-001]） | read-only |
-| service-hub service-info (O48 v2) | `HUB_SERVICE_INFO_SECRET` | HUB が shipyard `GET /api/hub/service-info` を pull する際の Bearer 認証 (全サービス共通シークレット 1 本、CF-20260528-019 favicon-projection 改訂) | `openssl rand -hex 32` で生成 → HUB 側に同値共有 | — |
 
 ## 2. BaaS / インフラアカウント（§4.3）
 

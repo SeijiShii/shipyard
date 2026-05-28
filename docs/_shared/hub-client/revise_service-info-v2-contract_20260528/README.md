@@ -5,7 +5,7 @@
 - **対象機能**: `../README.md` (_shared/hub-client、ただし service-info producer は `lib/hub/service-info.ts` で標準 feature 境界外、本 revise で同 folder 配下に取り込む)
 - **基準 SPEC**: `../001_hub-client_SPEC.md` (consumer 側、service-info producer は未掲載 = 本 revise で初の SPEC 化)
 - **改修要望**: AUDIT_20260528_2000 (release-pre 必須監査、High 1 件) の唯一の High finding を撃ち落とす。perspectives.md O48 (CF-20260528-010 + CF-20260528-019) で v2 改訂された contract に shipyard producer 側 (`lib/hub/service-info.ts` + `app/api/hub/service-info/route.ts` + .env*) を追従させる。具体: (1) `HUB_SHARED_SECRET` → `HUB_SERVICE_INFO_SECRET` rename (全サービス共通シークレットへ統一)、(2) ServiceInfo に `iconUrl?: string` 追加 (favicon-projection)、(3) `schemaVersion=2` bump、(4) test 拡張 + PREREQUISITES/concept §6 同期
-- **状態**: 実装完了 (2026-05-28、176 tests GREEN、Phase 1 commit `11b3d8d` + Phase 2/reports 本 commit)
+- **状態**: **revert** (2026-05-28 21:00 release Phase 1 中の [論点-008] 確定で「shipyard は service-hub の pull 対象外、O48 skip_if 該当」と判明、本 revise + tdd 実装は overkill だったため全削除。本フォルダの設計文書 4 + 101/102 レポートは**不変履歴として残置** = 「require だけで判定し skip_if を見落とした audit 誤検出 → revise→tdd retrofit → ユーザー認識確認で revert」の learning 事例として参照可。詳細は concept.md §8 [論点-008])
 
 ## このフォルダに置くドキュメント
 

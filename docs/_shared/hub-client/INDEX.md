@@ -24,7 +24,7 @@ Phase 1（contract Zod + mock）+ Phase 2（client）+ Phase 3（cache）完了�
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
 |---|---|---|---|---|---|
-| [revise_service-info-v2-contract_20260528/](./revise_service-info-v2-contract_20260528/) | revise | service-info-v2-contract (AUDIT-perspective-001) | 実装完了 (2026-05-28、176 GREEN) | O48 v2 favicon-projection 契約 retrofit: HUB_SHARED_SECRET → HUB_SERVICE_INFO_SECRET rename + iconUrl 追加 + schemaVersion=2 bump | [INDEX](./revise_service-info-v2-contract_20260528/INDEX.md) |
+| [revise_service-info-v2-contract_20260528/](./revise_service-info-v2-contract_20260528/) | revise | service-info-v2-contract (AUDIT-perspective-001) | **revert** (2026-05-28、[論点-008] PJ 性質判定誤り確定で全削除) | O48 v2 retrofit は overkill だった (shipyard は pull 対象外、skip_if 該当)、設計文書は learning 履歴として残置 | [INDEX](./revise_service-info-v2-contract_20260528/INDEX.md) |
 
 ## 関連
 - 親 concept: `../../concept.md` §6 / §5.2 / §8 [論点-001]

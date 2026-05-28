@@ -40,6 +40,7 @@ shipyard は、seiji が運用している自作マイクロサービス群を�
 - 訪問者（問い合わせ側）のアカウント登録・ログイン（メアド + トークン URL で足りる）
 - 外部 AI サービスの呼び出し（shipyard 自体は AI を叩かない。§6 参照）
 - 特定商取引法表記（有償サービスではないため不要。§9 参照）
+- **`/api/hub/service-info` (O48 producer)** — shipyard は **service-hub registry に登録しない方針** (HUB ダッシュボードの showcase 表示対象外、[論点-008] 2026-05-28 確定)。shipyard は service-hub の **consumer のみ** (status API の read-only 消費)、自身は pull 対象でないため **perspectives.md O48 `skip_if: [service-hub 管理対象外]` 該当**。本 PJ では service-info producer (`lib/hub/service-info.ts` + `/api/hub/service-info`) を実装しない
 
 ### 1.3 ドキュメントフォルダ分割設計
 
@@ -435,7 +436,6 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 | 連携先 | 用途 | 方式 | 認証 |
 |---|---|---|---|
 | service-hub `GET /api/public/status` | 稼働サービス一覧（安全サブセット） | REST（read-only、定期 fetch + キャッシュ） | 公開 API（不要） or 軽い API キー（HUB 側方針次第、[論点-001]） |
-| service-hub ← shipyard `GET /api/hub/service-info`（**公開する側**、O48 v2） | service-hub が shipyard 自身の稼働/アプリ層指標を pull (schemaVersion=2、`iconUrl` favicon-projection 含む) | REST（HUB が pull、最小固定契約 + iconUrl optional + extra/optional） | `HUB_SERVICE_INFO_SECRET`（env、Bearer 検証、全サービス共通シークレット 1 本、読み取り専用）。契約 SoT=service-hub、CF-20260528-019 v2 favicon-projection 改訂反映済 |
 | Resend | 返信通知 / 新着通知メール | REST API / SDK | `RESEND_API_KEY`（env、サーバー側） |
 | Cloudflare Turnstile | 不可視スパム判定 | サイトキー（クライアント）+ シークレット検証（サーバー） | `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` |
 | Clerk | 運用者(admin)認証 | SDK | `CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` |
@@ -573,6 +573,22 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 - **実装**: `components/status/StatusCard.tsx` 内 `ServiceIcon` component で `style={{ backgroundColor: "var(--primary-subtle)" }}` + `text-primary` 文字色 + イニシャル 1 文字 (`Array.from(name)[0]`、UTF-8 grapheme cluster 対応)、tdd 完遂 (D20260528_015、commit `d0bc4d4`)
 - **担当**: seiji
 - **関連**: `./service-status/revise_service-icons_20260528_icon-from-service-hub/001_REVISE_SPEC.md §9` / `./service-status/revise_service-icons_20260528_icon-from-service-hub/905_SPEC_REVIEW.md §4 D1` / `./AI_LOG/D20260528_013_spec-review_service-status-revise-icons.md` / `./AI_LOG/D20260528_015_tdd_service-status_revise_service-icons.md`
+
+### [論点-008] shipyard 自身を service-hub registry に登録するか (O48 適用判定) — pull 対象外確定
+
+- **status**: `resolved` (2026-05-28、release Phase 1 中のユーザー認識確認で確定)
+- **status 履歴**:
+  - 2026-05-27 17:00 [implicit] AUDIT_20260527_1700 §3 [AUDIT-perspective-001] で「O48 require: マイクロサービス連発 → shipyard 該当 = service-info 未実装 (High)」と検出 (`skip_if: service-hub 管理対象外` の評価を省略した誤判定の起点)
+  - 2026-05-28 (D20260528_007 release 初回) lib/hub/service-info.ts + /api/hub/service-info を実装 (誤検知による overkill)
+  - 2026-05-28 20:00 AUDIT_20260528_2000 で「O48 v2 favicon-projection 契約 drift = High 1」と再検出 (同じく skip_if 未評価)
+  - 2026-05-28 20:20 D20260528_022 で v2 retrofit 完遂 (HUB_SHARED_SECRET → HUB_SERVICE_INFO_SECRET rename + iconUrl 追加 + schemaVersion=2、依然 PJ 性質判定誤りに基づく)
+  - 2026-05-28 20:30 AUDIT_20260528_2030 で High 0 解消 (誤解消)
+  - 2026-05-28 21:00 release Phase 1 で **ユーザー認識「shipyard は ServiceHUB の pull 対象ではない」確認** → O48 retrofit revert 判断 (resolved)
+- **影響範囲**: §1.2 スコープ (明示除外行追加) / §6 外部連携 (service-info row 削除) / `lib/hub/service-info.ts` + `app/api/hub/service-info/route.ts` + test 全削除 / `.env*.example` HUB_SERVICE_INFO_SECRET 行削除 / `docs/PREREQUISITES.md` §1 service-info row 削除 / 過去 audit 履歴 (AUDIT_20260528_2000/2030) は不変履歴として残置 (注記なし、本論点で context 提供)
+- **決定**: **shipyard は service-hub の consumer のみ** (status API read-only 消費) = perspectives.md O48 `skip_if: [service-hub 管理対象外]` 該当。本 PJ では O48 producer 実装を**しない**。HUB registry にも shipyard 自身を登録しない (seiji が HUB admin で shipyard を登録対象から除外)。
+- **担当**: seiji
+- **learning (flow-suite 補強 candidate, CF-20260528-022)**: perspectives.md O48 の `require: [マイクロサービス連発]` だけで判定すると、本 PJ のような「マイクロサービスだが consumer 役割のみ」を誤判定する。**audit.md #4 観点反映で `require` + `skip_if` 両方を必ず参照、`skip_if` のキーワード (`service-hub 管理対象外` 等) を concept のどこから判定するかの SoT が必要** (PJ 性質判定根拠の明示化)。本 PJ では §1.2 「含まないもの」に明示行を追加 (本論点解決と同 commit)。perspectives.md / audit.md の評価ロジック強化案として `~/.claude/flow-data/command-feedback-inbox.md` に追記候補。
+- **関連**: `./AUDIT_20260528_2000.md` §3.2 (誤検出) / `./AUDIT_20260528_2030.md` §3.2 (誤解消) / `./_shared/hub-client/revise_service-info-v2-contract_20260528/` (revise 設計 + tdd 履歴、不変保存) / `./AI_LOG/D20260528_020_audit_full.md` + `D20260528_021_revise__shared_hub-client_service-info-v2-contract.md` + `D20260528_022_tdd__shared_hub-client_revise_service-info-v2-contract.md` + `D20260528_023_audit_full.md` (誤判定からの retrofit 履歴)
 
 ## 9. 法務・コンプライアンス書類
 

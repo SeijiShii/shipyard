@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-28 20:36 (+09:00)
-**総セッション数**: 45
-**総 decision 数**: 116
+**最終更新**: 2026-05-28 21:10 (+09:00)
+**総セッション数**: 46
+**総 decision 数**: 117
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260528_025_fix_o48-overkill-revert.md](./D20260528_025_fix_o48-overkill-revert.md) | 2026-05-28 | /flow:release (inline fix) | [論点-008] 確定 + O48 retrofit 全 revert (audit→revise→tdd 誤判定からの整合性回復、170 GREEN) | D20260528-053 | 完了 |
 | [D20260528_024_scenario_update.md](./D20260528_024_scenario_update.md) | 2026-05-28 | /flow:scenario | --update (§5 refresh、AUDIT-structure-001 4 連続常習化 reconcile) | D20260528-052 | 完了 |
 | [D20260528_023_audit_full.md](./D20260528_023_audit_full.md) | 2026-05-28 | /flow:audit | full (release-pre 再実行) | D20260528-051 | 完了 (**改善**: High 1→0、Medium 3→2、AUDIT-perspective-001 解消 ✅、release-pre ハードゲート通過、AUDIT-structure-001 4 連続常習化深化) |
 | [D20260528_022_tdd__shared_hub-client_revise_service-info-v2-contract.md](./D20260528_022_tdd__shared_hub-client_revise_service-info-v2-contract.md) | 2026-05-28 | /flow:tdd | _shared/hub-client revise_service-info-v2-contract (Phase 1+2、174→176 GREEN、AUDIT-perspective-001 撃ち落とし完遂) | D20260528-050 | 完了 |

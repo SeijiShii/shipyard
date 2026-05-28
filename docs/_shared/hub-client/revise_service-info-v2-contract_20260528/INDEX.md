@@ -2,7 +2,7 @@
 
 **issue / slug**: `service-info-v2-contract` (起点 = AUDIT-perspective-001)
 **実施日**: 2026-05-28
-**状態**: 実装完了 (2026-05-28、176 tests GREEN)
+**状態**: **revert** (2026-05-28 21:00、[論点-008] PJ 性質判定誤り確定で全削除、設計文書は不変履歴残置)
 
 <!-- auto-generated-start -->
 
