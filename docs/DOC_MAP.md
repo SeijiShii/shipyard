@@ -2,7 +2,7 @@
 
 **最終更新**: 2026-05-28 12:15 (+09:00)
 **最新コマンド**: /flow:revise (D20260528_002 — landing messaging-shift)
-**統計**: 機能フォルダ 5 / 横断フォルダ 7 / 改修件数 1 / バグ修正件数 0 / クレーム判定件数 0 / Open 論点 1 件
+**統計**: 機能フォルダ 5 / 横断フォルダ 7 / 改修件数 2 / バグ修正件数 0 / クレーム判定件数 0 / Open 論点 6 件 (001 resolved + 002〜007 open)
 
 > **このファイルは AI 用エントリポイント**。目的別に「どこから読めばいいか」「次に何を Read すべきか」を示す。
 
@@ -111,8 +111,9 @@ admin (優先度 4) ← db, auth, email, ui
 
 ## 9. 履歴サマリ（改修 / バグ修正 / クレーム判定）
 
-- **改修件数 (累計)**: 1 件
-  - 最新: `landing/revise_messaging-shift_20260528_tone-shift-together-thinking/` (LP メッセージング転換、設計完了 / 実装待ち)
+- **改修件数 (累計)**: 2 件
+  - 最新: `service-status/revise_service-icons_20260528_icon-from-service-hub/` (service-hub から icon 受信 → StatusList 表示、設計完了 / 実装待ち、CF-016 連動改修対象 = service-hub PJ)
+  - landing: `landing/revise_messaging-shift_20260528_tone-shift-together-thinking/` (LP メッセージング転換、設計完了 / Phase 1 unit 完了 10 件 GREEN / E2E 待ち)
 - **バグ修正件数 (累計)**: 0 件
 - **クレーム判定件数 (累計)**: 0 件
 

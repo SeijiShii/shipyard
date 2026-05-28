@@ -24,7 +24,7 @@ Phase 1（StatusList + uptime）+ Phase 2（/api/services + /api/cron + services
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
 |---|---|---|---|---|---|
-| (なし。`/flow:revise` / `/flow:fix` / `/flow:claim` で生成) |
+| [revise_service-icons_20260528_icon-from-service-hub/](./revise_service-icons_20260528_icon-from-service-hub/) | revise | service-icons | 設計完了 (実装待ち) | service-hub から iconUrl 受信 → StatusList で icon 表示 + フォールバック (CF-016 連動改修対象 = service-hub PJ) | [INDEX](./revise_service-icons_20260528_icon-from-service-hub/INDEX.md) |
 
 ## 関連
 - 親 concept: `../concept.md` §1.3.1 service-status 行 / §5.2
