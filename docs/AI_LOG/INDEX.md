@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-28 20:25 (+09:00)
-**総セッション数**: 43
-**総 decision 数**: 114
+**最終更新**: 2026-05-28 20:32 (+09:00)
+**総セッション数**: 44
+**総 decision 数**: 115
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260528_023_audit_full.md](./D20260528_023_audit_full.md) | 2026-05-28 | /flow:audit | full (release-pre 再実行) | D20260528-051 | 完了 (**改善**: High 1→0、Medium 3→2、AUDIT-perspective-001 解消 ✅、release-pre ハードゲート通過、AUDIT-structure-001 4 連続常習化深化) |
 | [D20260528_022_tdd__shared_hub-client_revise_service-info-v2-contract.md](./D20260528_022_tdd__shared_hub-client_revise_service-info-v2-contract.md) | 2026-05-28 | /flow:tdd | _shared/hub-client revise_service-info-v2-contract (Phase 1+2、174→176 GREEN、AUDIT-perspective-001 撃ち落とし完遂) | D20260528-050 | 完了 |
 | [D20260528_021_revise__shared_hub-client_service-info-v2-contract.md](./D20260528_021_revise__shared_hub-client_service-info-v2-contract.md) | 2026-05-28 | /flow:revise | _shared/hub-client — service-info-v2-contract (AUDIT-perspective-001 撃ち落とし) | D20260528-049 | 完了 (4 文書生成、Class A auto-pick、tdd 待ち) |
 | [D20260528_020_audit_full.md](./D20260528_020_audit_full.md) | 2026-05-28 | /flow:audit | full (release-pre 必須監査) | D20260528-048 | 完了 (**悪化**: High 1 新規 = O48 v2 contract drift、Medium 3、Low 2、AUDIT-structure-001 3 連続常習化) |
