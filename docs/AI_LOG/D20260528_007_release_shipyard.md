@@ -107,4 +107,79 @@
     を最初から source として用意」契約に従わず誤適用。ユーザー [flow] 指摘で発覚、CF-20260528-012
     として inbox 追記、本セッションでは §3.1c scaffold 4 ファイル生成 + FILL 対象を
     .env.production.local に修正。release.md 補強コミットは別途ユーザー承認後。
+
+- id: D20260528-024-shipyard
+  timestamp: 2026-05-28T13:40:00+09:00
+  command: /flow:release
+  phase: Step 0.5b / CF-20260528-014 DEV ファイル分離
+  question: 「便宜 DEV」キーの書込先を .env.production.local に書くことの是非
+  options:
+    - .env.production.local (誤、CF-013 env 分離違反 = test/dev と live が混在)
+    - .env.development.local (正、Next.js default + §0.5.3a SoT 案、§3.1c scaffold 拡張) (Recommended)
+  recommended: .env.development.local
+  chosen: .env.development.local
+  chosen_type: explicit-choice (CF-20260528-014 ユーザー指摘で修正)
+  depends_on: [D20260528-023]
+  context: |
+    Phase 1.2 Neon FILL 提示で「書込先 .env.production.local」と提示 → ユーザー [flow] 指摘
+    「DEV 用と本番用が同じファイルに交じる、.env.dev.local を作ったほうが良い」で発覚。
+    場当たり的補修でなく全体設計レベルで env-acquisition-guide §0.5 SoT を再確認 →
+    §0.5.2 「Phase 1 = .env.local」「Phase 3 = .env.production.local」の責任分担に対し
+    §3.1c scaffold が DEV 用ファイル欠落と判明。本 PJ では先取り実装で
+    .env.development.local + .env.development.example 生成、§0.5.3a FW 別 default の SoT
+    化 + release.md §3.1c scaffold 4→6 拡張 + §1.0b 書込先明示 + §1.2 SoT 引用ルール の
+    5 commits 補強を flow-suite に提案 (classifier 拒否でユーザー手動 commit 委譲)。
+    全体設計案 4 補強 + 本 PJ 即時適用は ユーザー "ok" で承認。
+
+- id: D20260528-025
+  timestamp: 2026-05-28T13:45:00+09:00
+  command: /flow:release
+  phase: Phase 1.2 / Neon FILL
+  question: Neon DATABASE_URL 取得
+  options: []
+  recommended: null
+  chosen: 設定済 (Pooled URL、sslmode=require&channel_binding=require、ap-southeast-1)
+  chosen_type: explicit-choice
+  depends_on: [D20260528-024-shipyard]
+  context: |
+    SoT §0.5.2 [Neon] DEV 操作 (zero-copy dev branch + Pooled URL) 通りに取得。
+    書込先: .env.development.local (CF-20260528-014 + §0.5.3a Next.js default)。
+
+- id: D20260528-026
+  timestamp: 2026-05-28T14:30:00+09:00
+  command: /flow:release
+  phase: Phase 1.2 / 仕様確認 (Resend FILL 前)
+  question: shipyard 仕様で Resend (メール送信) は使うか、Email バリデーションの扱い
+  options:
+    - 仕様確認: 使う + (a)(b) 入力検証は SEC-003 で必要 + (c) verification は不要 + (d)(e) 通知メールは必要
+    - **新要件発覚**: 「問い合わせ人はサイトに戻らない、メール本文にやり取り内容を含める」(ユーザー指摘) → inquiry SPEC revise 案件
+  recommended: 仕様確認 + 新要件登録
+  chosen: 仕様確認 + 新要件は [論点-006] 登録、Resend FILL は続行
+  chosen_type: explicit-choice
+  depends_on: [D20260528-025]
+  context: |
+    ユーザー [flow] 指摘「メールはこのサービスの仕様のどこに含まれているか、Email バリデーション
+    はしないはず」を契機に仕様再確認。concept §1.2 / §1.1 UC#4#5 / §4.1 / §4.3 / §3.7 SEC-003
+    で Resend (通知メール) + Zod 入力検証 + Spam MX チェックが仕様内、verification email は
+    UC#5「メアド + トークン URL で足りる」で不要、と整理。
+    追加でユーザー新要件「メール本文にやり取り内容を含める (サイトに戻らない前提)」を [論点-006]
+    として concept §8 登録、後段 /flow:revise inquiry で対応 (Phase 2 動作確認後・Phase 3 本番
+    デプロイ前)。本要件は Resend キー取得自体には影響しないため Phase 1.2 Resend FILL は続行。
+
+- id: D20260528-027
+  timestamp: 2026-05-28T14:45:00+09:00
+  command: /flow:release
+  phase: Phase 1.2 / 全 provider FILL 完了
+  question: Phase 1 FILL 完了状態
+  options: []
+  recommended: null
+  chosen: 完了 (DATABASE_URL / Clerk 3 / Resend 3 / Turnstile dummy 2 / 生成 2 / SITE_URL / COST_* = 11+4 var、必須 12 + 任意 3 のうち skip 4 = DEV では十分)
+  chosen_type: auto-recommended
+  depends_on: [D20260528-025, D20260528-026]
+  context: |
+    Resend FILL 完了 + Turnstile は scaffold で always-pass dummy 設定済 (DEV OK)。
+    CRON_SECRET + HUB_SHARED_SECRET は openssl rand -hex 32 で生成・書込 (Class A)。
+    HUB_STATUS_URL ([論点-001] 後)・SENTRY_DSN (本番のみ) は DEV では空 OK で skip。
+    全実値は AI_LOG に記録しない (release 原則 9)。
+    次: Phase 2 ローカル動作確認 (db:migrate → next dev → ブラウザ確認 → スマホ実機任意)。
 ```
