@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-28 12:15 (+09:00)
-**総セッション数**: 24
-**総 decision 数**: 81
+**最終更新**: 2026-05-28 12:35 (+09:00)
+**総セッション数**: 26
+**総 decision 数**: 87
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,8 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260528_004_tdd_landing_revise_messaging-shift.md](./D20260528_004_tdd_landing_revise_messaging-shift.md) | 2026-05-28 | /flow:tdd | revise — landing messaging-shift | D20260528-014〜017 | 完了 |
+| [D20260528_003_resume_continuous.md](./D20260528_003_resume_continuous.md) | 2026-05-28 | /flow:auto | continuous loop | D20260528-012〜013 | 進行中 |
 | [D20260528_002_revise_landing_messaging-shift.md](./D20260528_002_revise_landing_messaging-shift.md) | 2026-05-28 | /flow:revise | landing — messaging-shift | D20260528-003〜011 | 完了 |
 | [D20260528_001_concept_update_messaging.md](./D20260528_001_concept_update_messaging.md) | 2026-05-28 | /flow:concept | update — messaging shift | D20260528-001〜002 | 完了 |
 | [D20260527_022_secure_product.md](./D20260527_022_secure_product.md) | 2026-05-27 | /flow:secure | product-wide (all) | D20260527-069〜070 | 完了 |
@@ -43,6 +45,12 @@
 
 | ID | command | phase | chosen (短縮) | type | ファイル |
 |---|---|---|---|---|---|
+| D20260528-017 | /flow:tdd | Step 6 / 全テスト | 159/159 GREEN | auto-recommended | D20260528_004_tdd_landing_revise_messaging-shift.md |
+| D20260528-016 | /flow:tdd | Phase 1 / アンチパターン回避 | 「とは約束しません」型に書き換え | auto-recommended | D20260528_004_tdd_landing_revise_messaging-shift.md |
+| D20260528-015 | /flow:tdd | Phase 1 / copy.ts 外出し | 採用 | auto-recommended | D20260528_004_tdd_landing_revise_messaging-shift.md |
+| D20260528-014 | /flow:tdd | Step 4 / Phase 軽重 | 軽 (メイン直接) | auto-recommended | D20260528_004_tdd_landing_revise_messaging-shift.md |
+| D20260528-013 | /flow:auto | Step 4 / dispatch | /flow:tdd <landing-revise> | auto-recommended | D20260528_003_resume_continuous.md |
+| D20260528-012 | /flow:auto | Step 3 / 優先度判定 | P4 新規 revise 実装 | auto-recommended | D20260528_003_resume_continuous.md |
 | D20260528-011 | /flow:revise | Step 4.1 / マイグレーション要否 | 不要 (Phase 5 skip) | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
 | D20260528-010 | /flow:revise | Step 3.2 / タグ判定 | feature 維持 | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
 | D20260528-009 | /flow:revise | Step 3.1 / E ロールバック | git revert | auto-recommended | D20260528_002_revise_landing_messaging-shift.md |
