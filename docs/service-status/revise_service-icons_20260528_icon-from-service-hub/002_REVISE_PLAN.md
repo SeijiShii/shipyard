@@ -9,12 +9,14 @@
 
 | ファイル | 変更内容 (概要) | リスク | 関連 SPEC § |
 |---|---|---|---|
-| `lib/hub/contract.ts` | `serviceStatusSchema` に `iconUrl: z.string().url().optional()` 追加 (camelCase、直前 7e775a1 修正と整合) | 低 (optional、後方互換) | §2.2, §7.3 |
+| `lib/hub/contract.ts` | `serviceStatusSchema` に `iconUrl: z.string().url().optional().catch(undefined)` 追加 (camelCase、直前 7e775a1 修正と整合、無効 URL は graceful に undefined に降格) <!-- spec-review R3 --> | 低 (optional + catch、後方互換 + graceful) | §2.2, §7.3 |
 | `lib/db/schema.ts` | `serviceStatusCache` テーブルに `iconUrl: text("icon_url")` (nullable) 追加 | 中 (DB schema 変更、migration 要) | §2.3, §7.3 |
-| `lib/db/repositories/statusCache.ts` | `StatusCacheInput` 型に `iconUrl?: string \| null` 追加。`upsertMany` の INSERT/EXCLUDED に `iconUrl: r.iconUrl ?? null` + `iconUrl: sql\`excluded.icon_url\`` 追加。`listAll` は `$inferSelect` 経由で iconUrl 自動含有 | 低 (型補強のみ) | §2.2, §7.3 |
-| `lib/hub/cache.ts` | `refreshStatusCache` の `upsertMany` 引数に `iconUrl: s.iconUrl ?? null` 追加 | 低 (1 行追加) | §2.2 |
-| `features/service-status/StatusList.tsx` | StatusCard に icon 表示領域追加 (32×32px、丸角)。`iconUrl` あり → `<img>` (loading="lazy" + onerror フォールバック)、不在 → `<div>` イニシャル | 中 (UI 変更、視覚レビュー要) | §7.1 UC-S1 |
-| `features/service-status/service-status.test.tsx` | (Phase 3) 既存 7 件は維持 + icon 表示 / フォールバック / contract test 追加 | 低 | §7.4 + 003_REVISE_UNIT_TEST.md |
+| `lib/db/repositories/statusCache.ts` | `StatusCacheInput` 型に `iconUrl?: string \| null` 追加。`upsertMany` の **明示列挙 values mapping** に `iconUrl: r.iconUrl ?? null` 追加 + `onConflictDoUpdate.set` に `iconUrl: sql\`excluded.icon_url\`` 追加。**明示列挙パターンなので自動継承されない、行追加必須**。`listAll` は `$inferSelect` 経由で iconUrl 自動含有 <!-- spec-review R1: 明示列挙 mapping の漏れリスク強調 --> | **中** (明示列挙 mapping = 行追加漏れリスク、U-IC5 + 既存 U-3 拡張で機械担保) | §2.2, §7.3 |
+| `lib/hub/cache.ts` | `refreshStatusCache` の **明示列挙 mapping** に `iconUrl: s.iconUrl ?? null` 追加。**明示列挙パターン (spread 不使用、安全サブセット強制) なので自動継承されない、行追加必須**、漏らすと DB に永遠に保存されない <!-- spec-review R1 --> | **中** (mapping 漏れリスク高、既存 U-3 拡張で iconUrl assertion 担保) | §2.2 |
+| `components/status/StatusCard.tsx` | **StatusCardService 型に `iconUrl?: string \| null` 追加** + 単一行 UI 先頭に icon 表示領域 (32×32px、丸角 8px)。`iconUrl` あり → `<img alt="" role="presentation" loading="lazy" onerror={fallback}>` (装飾画像、WCAG 1.1.1)、不在/失敗 → `<div>` イニシャル (`Array.from(name)[0]`) + `var(--color-brand-bg-soft)` 背景 (design SoT §6 ミニマル路線、[論点-007] accepted) <!-- spec-review R2 + R4 + D1 --> | 中 (UI 変更、視覚レビュー要、a11y 装飾画像) | §7.1 UC-S1 |
+| `features/service-status/StatusList.tsx` | **StatusListItem 型に `iconUrl?: string \| null` 追加** (StatusCard へ passthrough のみ、表示集約は StatusCard) <!-- spec-review R2: StatusList は型 + passthrough shell、表示集約は StatusCard --> | 低 (型拡張 + passthrough) | §7.1 UC-S1 |
+| `app/page.tsx` / `app/services/page.tsx` | repo `listAll()` 戻り値が `$inferSelect` 経由で iconUrl 自動含有 → 変更不要、型透過の動作確認のみ <!-- spec-review R2: 型自動継承で mapping 不要、動作確認だけ --> | 低 (確認のみ) | §7.1 |
+| `features/service-status/service-status.test.tsx` | (Phase 3) 既存 7 件は維持 + icon 表示 / フォールバック / 読み込み失敗 + a11y `alt=""` 検証 test 追加 | 低 | §7.4 + 003_REVISE_UNIT_TEST.md |
 
 ## 2. 新規ファイル一覧
 
@@ -96,8 +98,8 @@ graph TD
 
 - **service-hub PJ contract 改訂が遅延** → shipyard Phase 1-2 実装は可能だが、ローカル動作確認で iconUrl 不在 = フォールバックのみ確認可。実 icon 表示確認は service-hub 改訂後。
 - **migration の本番 apply タイミング** = Phase 3 release 時に Neon main branch apply。preview deploy では dev branch 使う方針 (未デプロイ commit を main に migrate する前に preview で動作確認推奨)。
-- **icon URL のドメイン** = service-hub 管理の CDN (例: Cloudflare R2 / Vercel Image Optimization)。**shipyard 側で CSP `img-src` 制限**している場合は許可ドメイン追加が必要 (現状の CSP 設定確認 → 必要なら別 fix)。
-- **画像 alt 属性 (a11y)** = service name を alt に使う (例: `<img alt={name}>`)。screen reader 対応。
+- **icon URL のドメイン** = service-hub 管理の CDN (例: Cloudflare R2 / Vercel Image Optimization)。**現状 shipyard PJ に CSP 未設定** (grep 確認: `next.config.*` / `middleware.ts` / `app/` に `Content-Security-Policy` / `img-src` / `cspHeader` 無)、よって現状 img 取得制限なし。**将来 CSP 導入時は service-hub CDN ドメインを `img-src` 許可リストに追加必要** (drift 候補、retrofit 対象) <!-- spec-review R5: 現状無問題、将来再評価ポイント -->
+- **画像 alt 属性 (a11y)** = **装飾画像扱い `alt="" role="presentation"`** (service name は StatusCard 内で隣接 text として併記され、a11y name は text が担保。装飾画像にすることで screen reader 二重読みを回避、WCAG 1.1.1) <!-- spec-review R4 -->
 - **dark mode** (もし将来導入) = フォールバック背景色も dark/light で切替必要 (design トークン経由)。
 
 ## 9. 完了の定義 (DoD)

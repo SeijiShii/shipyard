@@ -12,18 +12,19 @@
 | ID | 対象 | 入力 | 期待出力 |
 |---|---|---|---|
 | **U-IC1** | contract (`lib/hub/contract.ts`) | `{slug, name, url, status, iconUrl: "https://cdn.example.com/icon.png"}` | parse 成功、iconUrl 保持 |
-| **U-IC2** | StatusList (icon 表示) | `services=[{...iconUrl: "https://cdn.example.com/icon.png"}]` で render | `<img src="https://cdn.example.com/icon.png" alt={name}>` が DOM に存在 |
-| **U-IC3** | StatusList (フォールバック) | `services=[{...iconUrl: undefined}]` で render | `<img>` なし、`<div>` にイニシャル 1 文字 (`name.slice(0,1)`) が表示される |
-| **U-IC4** | StatusList (読み込み失敗) | `<img>` の `onError` 発火を simulate | フォールバック `<div>` イニシャル表示に切替 (React state、`useState<boolean>`) |
-| **U-IC5** | repository (`statusCache.ts`) | `upsertMany([{...iconUrl: "https://..."}])` | DB INSERT で `icon_url` 列に値保存される (Drizzle mock or pglite) |
-| **U-IC6** | cache (`lib/hub/cache.ts`) | refresh で hub レスポンスに iconUrl 含む | `upsertMany` 引数の `iconUrl` が正しく渡される |
+| **U-IC2** | StatusCard (icon 表示) <!-- spec-review R2: 表示集約は StatusCard --> | `service={...iconUrl: "https://cdn.example.com/icon.png"}` で render | `<img src="https://cdn.example.com/icon.png" alt="" role="presentation">` が DOM に存在 <!-- spec-review R4: 装飾画像 alt="" --> |
+| **U-IC3** | StatusCard (フォールバック) | `service={...iconUrl: undefined}` で render | `<img>` なし、`<div>` にイニシャル 1 文字 (`Array.from(name)[0]`) + `var(--color-brand-bg-soft)` 背景 (design SoT §6) <!-- spec-review D1 --> |
+| **U-IC4** | StatusCard (読み込み失敗) | `<img>` の `onError` 発火を simulate | フォールバック `<div>` イニシャル表示に切替 (React state、`useState<boolean>`) |
+| **U-IC5** | repository (`statusCache.ts`) | `upsertMany([{...iconUrl: "https://..."}])` | DB INSERT で `icon_url` 列に値保存される (Drizzle mock or pglite)、**明示列挙 mapping 漏れの機械担保** <!-- spec-review R1 --> |
+| **U-IC6** | (削除、R7) | — | 既存 hub.test.ts U-3 を拡張 (§2 参照) — mockRepo パターン尊重で重複回避 <!-- spec-review R7 --> |
+| **U-IC11** | StatusListItem 型 + StatusCardService 型 | typecheck (型レベル) | iconUrl?: string \| null フィールドを受け入れる、`$inferSelect` 経由で listAll 戻り値型も iconUrl 含有 <!-- spec-review R2 --> |
 
 ### 1.2 異常系
 
 | ID | 対象 | 失敗条件 | 期待振る舞い |
 |---|---|---|---|
-| **U-IC7** | contract | iconUrl が無効 URL (`"not-a-url"`) | `serviceStatusSchema.parse` reject → 該当 service エントリ全体が strip (Zod default) |
-| **U-IC8** | contract | iconUrl が空文字 `""` | reject (z.string().url() は空文字 reject) |
+| **U-IC7** | contract (graceful) <!-- spec-review R3 --> | iconUrl が無効 URL (`"not-a-url"`) | `.catch(undefined)` で iconUrl のみ undefined に降格、**service エントリは保持** (graceful、他 field 維持) |
+| **U-IC8** | contract (graceful) <!-- spec-review R3 --> | iconUrl が空文字 `""` | `.catch(undefined)` で iconUrl のみ undefined に降格、service エントリは保持 |
 
 ### 1.3 境界値
 
@@ -37,7 +38,7 @@
 | ID | 対象 | 修正前 | 修正後 | 理由 |
 |---|---|---|---|---|
 | (既存) U-1〜U-7 service-status.test.tsx | 構造 / 状態 / EmptyState 等 | 既存 7 件アサーション (icon 関連なし) | **変更なし** | 既存テストは icon 関連 assertion を持たないため後方互換 |
-| (既存) hub.test.ts U-1〜U-C2 | contract / fetch / refresh | 既存 14 件 (commit 7e775a1 で 12→14) | **変更なし** + U-C3 (iconUrl 含む) 追加 | iconUrl 追加分のみ補強 |
+| (既存) hub.test.ts U-1〜U-C2 | contract / fetch / refresh | 既存 14 件 (commit 7e775a1 で 12→14) | **U-3 拡張** (cache.ts refresh で hub レスポンスに iconUrl 含む場合、upsertMany 引数 rows[0].iconUrl が正しく渡されることを assert) + U-C3 新規 (iconUrl 含む parse) | mockRepo パターン尊重 + cache.ts mapping 漏れの機械担保 <!-- spec-review R1 + R7 --> |
 
 ## 3. 削除テストケース
 

@@ -41,7 +41,7 @@ service-hub の公開 status API レスポンスに新規追加される `iconUr
 | 対象 | 変更前 | 変更後 |
 |---|---|---|
 | S-E3 status 不明値 | 'unknown' フォールバック | **変更なし** |
-| (新規) **icon URL 無効** (z.string().url() で reject) | — | Zod parse fail → service エントリ全体を strip (該当 service は表示されない、graceful)。実 service-hub は事前 validate 想定 |
+| (新規) **icon URL 無効** (z.string().url() で reject) | — | `.catch(undefined)` で graceful (iconUrl のみ undefined に降格、service エントリは保持してフォールバック表示) <!-- spec-review R3: 元 service エントリ全体 strip は UX 過剰反応、.catch(undefined) で graceful 化、SEC は他 field validate で担保 --> |
 | (新規) **icon 画像読み込み失敗** (ブラウザ側 `<img>` onerror) | — | フォールバック (イニシャル) に切替 (client 側 React state) |
 
 ## 3. 影響範囲
@@ -95,7 +95,7 @@ service-hub の公開 status API レスポンスに新規追加される `iconUr
 - **トリガー**: トップ表示 (landing が StatusList を埋込) or `/services`
 - **処理**: `getCachedStatus()` → StatusCard 一覧
   - 各 StatusCard 左端に **アイコン領域 (32×32px、丸角 8px)**:
-    - `iconUrl` あり → `<img src={iconUrl} alt={name} loading="lazy" onerror={fallback}>`
+    - `iconUrl` あり → `<img src={iconUrl} alt="" role="presentation" loading="lazy" onerror={fallback}>` <!-- spec-review R4: 装飾画像 alt="" (name は隣接 text で a11y name 担保、WCAG 1.1.1) -->
     - `iconUrl` 不在 / 読み込み失敗 → `<div>` に **service 名イニシャル 1 文字** (UTF-8 1 文字、`name.slice(0,1)`) + **ブランドカラー背景** (design SoT トークン `--color-brand-bg-soft` 等、固定 1 色)
   - 右側に 状態ドット + name + 稼働日数 + → 矢印
 - **出力**: 各サービスが視覚的に区別可能 + 状態 + 名前
@@ -130,7 +130,7 @@ export const serviceStatusCache = pgTable("service_status_cache", {
 ### 7.4 バリデーション・エラー (新仕様)
 
 - S-E1〜S-E3 (既存): **変更なし**
-- **新規 S-E4**: service-hub レスポンスの iconUrl が無効 URL (`z.string().url()` reject) → 該当 service エントリ全体を strip (Zod default 動作、graceful、PII なし)
+- **新規 S-E4**: service-hub レスポンスの iconUrl が無効 URL (`z.string().url()` reject) → `.catch(undefined)` で iconUrl のみ undefined に降格、service エントリは保持してフォールバック表示 (graceful、PII なし) <!-- spec-review R3: 元 service エントリ全体 strip は UX 過剰反応 -->
 - **新規 S-E5**: ブラウザ `<img>` 読み込み失敗 (404 / ネットワークエラー / CORS 等) → client 側 React state で `<div>` フォールバック (イニシャル) に切替
 
 ### 7.5 機能固有 NFR + 連携 (新仕様)
@@ -152,15 +152,11 @@ export const serviceStatusCache = pgTable("service_status_cache", {
 
 ## 9. 未決事項
 
-### [論点-007] icon フォールバック背景色のデザイントークン
-- **影響範囲**: design/design-system.md (新トークン or 既存 `--color-brand-bg-soft` 流用判断)
-- **詰めるべき問い**: フォールバック背景色は単一色 (例: teal 系) で OK か、service 名から hash 生成で multi-color か
-- **候補案**:
-  - 案 A (推奨): 単一色 (例: `var(--color-brand-bg-soft)`) — シンプル、統一感、design SoT §6 ミニマル路線
-  - 案 B: service 名 hash → HSL 色生成 — 多様性あるが「ランダム色」が誠実トーンと相反
-- **推奨**: 案 A (単一色、デザイン SoT §6 と整合)
-- **判断期限**: `/flow:tdd` 着手前 or 着手中の design SoT 確認時
-- **担当**: seiji
+### [論点-007] icon フォールバック背景色のデザイントークン — **accepted (spec-review D1)**
+- **影響範囲**: design/design-system.md (既存 `--color-brand-bg-soft` 流用)
+- **結論 (2026-05-28 spec-review D20260528-039 D1)**: 案 A 単一色 (`var(--color-brand-bg-soft)`) 採用、design SoT §6 ミニマル路線整合。実装は StatusCard.tsx 内インライン JSX (R2 + D4)。
+- **判断期限**: 解消済
+- **担当**: seiji <!-- spec-review D1: 案 A 単一色採用、design SoT §6 ミニマル路線整合 -->
 
 ## 10. 更新履歴
 
