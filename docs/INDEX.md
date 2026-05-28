@@ -28,7 +28,7 @@
 | 1 | [_shared/seo](./_shared/seo/) | 実装完了（2026-05-27, 11 件 GREEN） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/seo/INDEX.md) |
 | 1 | [_shared/email](./_shared/email/) | 実装完了（2026-05-27, 7 件 GREEN） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/email/INDEX.md) |
 | 1 | [_shared/auth](./_shared/auth/) | 実装完了（2026-05-27, 9 件 GREEN） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/auth/INDEX.md) |
-| 2 | [_shared/hub-client](./_shared/hub-client/) | 実装完了（2026-05-27, 12 件 GREEN） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/hub-client/INDEX.md) |
+| 2 | [_shared/hub-client](./_shared/hub-client/) | 実装完了（2026-05-27, 12 件 GREEN, revise#1 設計完了） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/hub-client/INDEX.md) |
 | 2 | [_shared/spam](./_shared/spam/) | 実装完了（2026-05-27, 17 件 GREEN） | 001-003,101-102（E2E:N/A） | [INDEX](./_shared/spam/INDEX.md) |
 
 ## 見積もり

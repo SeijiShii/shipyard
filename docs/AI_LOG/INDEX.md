@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-28 20:05 (+09:00)
-**総セッション数**: 41
-**総 decision 数**: 112
+**最終更新**: 2026-05-28 20:18 (+09:00)
+**総セッション数**: 42
+**総 decision 数**: 113
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260528_021_revise__shared_hub-client_service-info-v2-contract.md](./D20260528_021_revise__shared_hub-client_service-info-v2-contract.md) | 2026-05-28 | /flow:revise | _shared/hub-client — service-info-v2-contract (AUDIT-perspective-001 撃ち落とし) | D20260528-049 | 完了 (4 文書生成、Class A auto-pick、tdd 待ち) |
 | [D20260528_020_audit_full.md](./D20260528_020_audit_full.md) | 2026-05-28 | /flow:audit | full (release-pre 必須監査) | D20260528-048 | 完了 (**悪化**: High 1 新規 = O48 v2 contract drift、Medium 3、Low 2、AUDIT-structure-001 3 連続常習化) |
 | [D20260528_019_resume_continuous.md](./D20260528_019_resume_continuous.md) | 2026-05-28 | /flow:auto | continuous loop (D018 後再開、release-pre ハードゲート判定) | D20260528-047 | 進行中 |
 | [D20260528_018_tdd_inquiry_revise_mail-include-reply.md](./D20260528_018_tdd_inquiry_revise_mail-include-reply.md) | 2026-05-28 | /flow:tdd | inquiry mail-include-reply 実装 (Phase 1+2、172→174 GREEN) | D20260528-046 | 完了 ([論点-006] reconcile 完遂) |

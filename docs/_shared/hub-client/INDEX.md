@@ -1,7 +1,7 @@
 # _shared/hub-client ドキュメントインデックス
 
-**最終更新**: 2026-05-27 15:48
-**生成元**: /flow:concept (初期化) / /flow:tdd (実装完了)
+**最終更新**: 2026-05-28 20:15
+**生成元**: /flow:concept (初期化) / /flow:tdd (実装完了) / /flow:revise (service-info v2 retrofit 設計)
 
 <!-- auto-generated-start -->
 
@@ -24,7 +24,7 @@ Phase 1（contract Zod + mock）+ Phase 2（client）+ Phase 3（cache）完了�
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
 |---|---|---|---|---|---|
-| (なし。`/flow:revise` / `/flow:fix` / `/flow:claim` で生成) |
+| [revise_service-info-v2-contract_20260528/](./revise_service-info-v2-contract_20260528/) | revise | service-info-v2-contract (AUDIT-perspective-001) | 設計完了 (tdd 待ち) | O48 v2 favicon-projection 契約 retrofit: HUB_SHARED_SECRET → HUB_SERVICE_INFO_SECRET rename + iconUrl 追加 + schemaVersion=2 bump | [INDEX](./revise_service-info-v2-contract_20260528/INDEX.md) |
 
 ## 関連
 - 親 concept: `../../concept.md` §6 / §5.2 / §8 [論点-001]
