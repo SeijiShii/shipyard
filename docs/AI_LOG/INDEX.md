@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-28 12:35 (+09:00)
-**総セッション数**: 26
-**総 decision 数**: 87
+**最終更新**: 2026-05-28 12:45 (+09:00)
+**総セッション数**: 27
+**総 decision 数**: 90
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260528_005_e2e_landing.md](./D20260528_005_e2e_landing.md) | 2026-05-28 | /flow:e2e | landing | D20260528-018〜020 | 完了 (red, scaffold 待ち) |
 | [D20260528_004_tdd_landing_revise_messaging-shift.md](./D20260528_004_tdd_landing_revise_messaging-shift.md) | 2026-05-28 | /flow:tdd | revise — landing messaging-shift | D20260528-014〜017 | 完了 |
 | [D20260528_003_resume_continuous.md](./D20260528_003_resume_continuous.md) | 2026-05-28 | /flow:auto | continuous loop | D20260528-012〜013 | 進行中 |
 | [D20260528_002_revise_landing_messaging-shift.md](./D20260528_002_revise_landing_messaging-shift.md) | 2026-05-28 | /flow:revise | landing — messaging-shift | D20260528-003〜011 | 完了 |
@@ -45,6 +46,9 @@
 
 | ID | command | phase | chosen (短縮) | type | ファイル |
 |---|---|---|---|---|---|
+| D20260528-020 | /flow:e2e | Step 7 / loop 次展開 | flow:auto に委譲 (P4.45 Wording 推奨) | auto-recommended | D20260528_005_e2e_landing.md |
+| D20260528-019 | /flow:e2e | Step 2/4 / 実行可否 | scaffold fix seed 化、103 red | auto-recommended | D20260528_005_e2e_landing.md |
+| D20260528-018 | /flow:e2e | Step 1 / FW 検出 | Playwright (scaffold 未完了) | auto-recommended | D20260528_005_e2e_landing.md |
 | D20260528-017 | /flow:tdd | Step 6 / 全テスト | 159/159 GREEN | auto-recommended | D20260528_004_tdd_landing_revise_messaging-shift.md |
 | D20260528-016 | /flow:tdd | Phase 1 / アンチパターン回避 | 「とは約束しません」型に書き換え | auto-recommended | D20260528_004_tdd_landing_revise_messaging-shift.md |
 | D20260528-015 | /flow:tdd | Phase 1 / copy.ts 外出し | 採用 | auto-recommended | D20260528_004_tdd_landing_revise_messaging-shift.md |

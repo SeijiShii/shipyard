@@ -519,6 +519,24 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 - **判断期限**: 実装着手前
 - **L1 レポート**: `./SECURITY_REVIEW_20260527.md`（SEC-003）
 
+### [論点-005] Playwright E2E bootstrap (scaffold 不在)
+
+- **status**: open
+- **status 履歴**: 2026-05-28 12:45 open (D20260528_005 flow:e2e 初回起動で検出)
+- **影響範囲**: 全 feature 004 E2E 計画 (landing / service-status / inquiry / admin / legal)
+- **検出根拠**: `@playwright/test ^1.49.1` devDependencies 有り + `npm run e2e: playwright test` script 有りだが、`playwright.config.*` / `e2e/` / browser binary すべて未 scaffold。`/flow:e2e landing` で 103 red を 1 件記録
+- **詰めるべき問い**:
+  1. _shared/e2e として横断基盤化するか、各機能ごとに spec 散在させるか
+  2. dev server 起動に Neon dev branch + Clerk test mode を使うか、mock-only mode を整備するか
+  3. CI 統合 (GitHub Actions Playwright headless) はいつ着手するか
+- **候補案**:
+  - 案 A (推奨): `/flow:feature _shared/e2e` で横断基盤 feature として設計、Neon dev branch + Clerk test mode で公式 dev server fixture、CI 連携も同 feature 内で完結
+  - 案 B: 各機能 ad-hoc spec、共通 helper のみ `e2e/_helpers/` に切り出し
+- **推奨**: 案 A (基盤一元管理で長期保守性高、`/flow:auto` の E2E gate も target 単位で進められる)
+- **判断期限**: Release gate (P4.7) 通過後、本格運用前
+- **担当**: seiji
+- **関連**: `./landing/103_landing_E2E_REPORT.md` / `./landing/revise_messaging-shift_20260528_tone-shift-together-thinking/103_REVISE_E2E_REPORT.md` / `./AI_LOG/D20260528_005_e2e_landing.md`
+
 ## 9. 法務・コンプライアンス書類
 
 > 公開 PJ かつ問い合わせ者のメール + 本文を収集・保存するため、プライバシーポリシー必須。**本サイトでの課金はないため特定商取引法表記は不要**。

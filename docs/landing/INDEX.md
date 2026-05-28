@@ -1,7 +1,7 @@
 # landing ドキュメントインデックス
 
-**最終更新**: 2026-05-28 12:30
-**生成元**: /flow:concept (初期化) / /flow:tdd (unit 実装完了 + messaging-shift Phase 1 完了) / /flow:revise (messaging-shift 設計完了)
+**最終更新**: 2026-05-28 12:45
+**生成元**: /flow:concept (初期化) / /flow:tdd (unit 実装完了 + messaging-shift Phase 1 完了) / /flow:revise (messaging-shift 設計完了) / /flow:e2e (103 red、scaffold 待ち)
 
 <!-- auto-generated-start -->
 
@@ -19,7 +19,8 @@ Phase 1（page + Hero）+ Phase 2（Value/ConsultPitch + 稼働一覧埋込）�
 | 003 | 003_landing_UNIT_TEST.md | UNIT_TEST | 設計済 | 2026-05-27 | セクション render + CTA + metadata |
 | 004 | 004_landing_E2E_TEST.md | E2E_TEST | 設計済（未実行） | 2026-05-27 | journey + Level1/2（/flow:e2e） |
 | 101 | 101_landing_IMPL_REPORT.md | IMPL_REPORT | 実装完了 | 2026-05-27 | page/Hero/Value/ConsultPitch + JsonLd |
-| 102 | 102_landing_UNIT_TEST_REPORT.md | UNIT_TEST_REPORT | 実装完了 | 2026-05-27 | 5 件 GREEN（CTA/metadata/JsonLd） |
+| 102 | 102_landing_UNIT_TEST_REPORT.md | UNIT_TEST_REPORT | 実装完了 | 2026-05-27 | 5 件 GREEN（CTA/metadata/JsonLd）→ revise で 10 件 GREEN |
+| 103 | 103_landing_E2E_REPORT.md | E2E_REPORT | red (scaffold 待ち、[論点-005]) | 2026-05-28 | Playwright scaffold 未完了。unit U-T1〜T4 で観点は機械保証済 |
 
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |

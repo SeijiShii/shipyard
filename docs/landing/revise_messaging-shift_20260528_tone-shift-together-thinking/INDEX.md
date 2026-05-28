@@ -15,6 +15,7 @@
 | 004 | [004_REVISE_E2E_TEST.md](./004_REVISE_E2E_TEST.md) | E2E テスト計画 | 2026-05-28 |
 | 101 | [101_REVISE_IMPL_REPORT.md](./101_REVISE_IMPL_REPORT.md) | 実装レポート | 2026-05-28 |
 | 102 | [102_REVISE_UNIT_TEST_REPORT.md](./102_REVISE_UNIT_TEST_REPORT.md) | 単体テストレポート (10/10 GREEN) | 2026-05-28 |
+| 103 | [103_REVISE_E2E_REPORT.md](./103_REVISE_E2E_REPORT.md) | E2E レポート (red、scaffold 待ち、[論点-005]) | 2026-05-28 |
 
 ## 関連
 - 親機能 INDEX: [../INDEX.md](../INDEX.md)
