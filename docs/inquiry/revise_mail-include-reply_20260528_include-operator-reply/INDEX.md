@@ -2,7 +2,7 @@
 
 **issue / slug**: `mail-include-reply` / `include-operator-reply`
 **実施日**: 2026-05-28
-**状態**: 設計完了 → 実装待ち (`/flow:tdd revise_mail-include-reply_*` で 101-103 生成)
+**状態**: 実装完了 (Phase 1 `540e0d5` + Phase 2 `7f8f5e8`、174/174 tests GREEN)
 
 <!-- auto-generated-start -->
 
@@ -15,8 +15,8 @@
 | 003 | [003_REVISE_UNIT_TEST.md](./003_REVISE_UNIT_TEST.md) | 単体テスト計画 | 2026-05-28 |
 | 004 | [004_REVISE_E2E_TEST.md](./004_REVISE_E2E_TEST.md) | E2E テスト計画 | 2026-05-28 |
 | (005) | — | マイグレーション計画 | 不要 (DB schema 変更なし) |
-| 101 | (未生成) | 実装レポート | `/flow:tdd` で生成予定 |
-| 102 | (未生成) | 単体テストレポート | `/flow:tdd` で生成予定 |
+| 101 | [101_REVISE_IMPL_REPORT.md](./101_REVISE_IMPL_REPORT.md) | 実装レポート | 2026-05-28 |
+| 102 | [102_REVISE_UNIT_TEST_REPORT.md](./102_REVISE_UNIT_TEST_REPORT.md) | 単体テストレポート | 2026-05-28 |
 
 ## 関連
 

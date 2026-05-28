@@ -5,7 +5,7 @@
 - **対象機能**: [../README.md](../README.md)
 - **基準 SPEC**: [../001_inquiry_SPEC.md](../001_inquiry_SPEC.md)
 - **改修要望**: concept §1.1 UC#5 前提変更 (「問い合わせ人はこちらの対応を確認するためにこのサイトには来ない」) を受け、運用者→訪問者宛 reply notification mail に**運用者返信本文を含める**。訪問者はサイトに戻らずメールだけで対応内容を読める ([論点-006])。
-- **状態**: 設計中
+- **状態**: 実装完了 (2026-05-28、Phase 1 commit `540e0d5` + Phase 2 commit `7f8f5e8`、174/174 tests GREEN)
 
 ## 設計判断 (D20260528_017 reconcile)
 
