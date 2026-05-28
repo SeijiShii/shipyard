@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import Script from "next/script";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -60,7 +61,9 @@ export function ContactForm() {
   if (threadUrl) {
     return (
       <div className="flex flex-col gap-3">
-        <p className="text-ink">送信しました。このページからやり取りを続けられます。</p>
+        <p className="text-ink">
+          送信しました。このページからやり取りを続けられます。
+        </p>
         <a href={threadUrl} className="text-primary hover:text-primary-hover">
           やり取りを開く
         </a>
@@ -69,45 +72,55 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
-      {/* honeypot: 視覚的に隠す。bot が埋めると reject（UX 無影響） */}
-      <input
-        type="text"
-        name="company"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        className="hidden"
+    <>
+      {/* Cloudflare Turnstile widget script (auto-render mode、cf-turnstile class div を scan して widget を mount → cf-turnstile-response hidden input を auto-set)
+          DEV では testing key (1x000...AA, always-pass) で動作。本番でも同 script を使用。 */}
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="afterInteractive"
+        async
+        defer
       />
-      <label className="flex flex-col gap-1">
-        <span className="text-sm text-ink">メールアドレス</span>
-        <Input type="email" name="email" required autoComplete="email" />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span className="text-sm text-ink">件名（任意）</span>
-        <Input type="text" name="subject" />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span className="text-sm text-ink">お問い合わせ内容</span>
-        <Textarea name="body" required rows={6} />
-      </label>
-      {/* Turnstile widget（本番は CF スクリプトが cf-turnstile-response を埋める） */}
-      <div
-        className="cf-turnstile"
-        data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-      />
-      <input type="hidden" name="cf-turnstile-response" />
-      {error && (
-        <p role="alert" className="text-sm text-status-down">
-          {error}
-        </p>
-      )}
-      {stage >= 0 && stage < SUBMIT_STAGES.length && (
-        <ProgressFeedback stages={SUBMIT_STAGES} current={stage} />
-      )}
-      <Button type="submit" variant="primary">
-        送信する
-      </Button>
-    </form>
+      <form onSubmit={onSubmit} className="flex flex-col gap-4">
+        {/* honeypot: 視覚的に隠す。bot が埋めると reject（UX 無影響） */}
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="hidden"
+        />
+        <label className="flex flex-col gap-1">
+          <span className="text-sm text-ink">メールアドレス</span>
+          <Input type="email" name="email" required autoComplete="email" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-sm text-ink">件名（任意）</span>
+          <Input type="text" name="subject" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-sm text-ink">お問い合わせ内容</span>
+          <Textarea name="body" required rows={6} />
+        </label>
+        {/* Turnstile widget（本番は CF スクリプトが cf-turnstile-response を埋める） */}
+        <div
+          className="cf-turnstile"
+          data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+        />
+        <input type="hidden" name="cf-turnstile-response" />
+        {error && (
+          <p role="alert" className="text-sm text-status-down">
+            {error}
+          </p>
+        )}
+        {stage >= 0 && stage < SUBMIT_STAGES.length && (
+          <ProgressFeedback stages={SUBMIT_STAGES} current={stage} />
+        )}
+        <Button type="submit" variant="primary">
+          送信する
+        </Button>
+      </form>
+    </>
   );
 }

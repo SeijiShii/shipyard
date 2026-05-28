@@ -72,7 +72,7 @@ describe("contract (U-1, U-E3, U-E4, U-B1, U-B2)", () => {
     expect(parsed.services).toEqual([]);
   });
 
-  it("U-B2: since/last_checked_at 欠落は optional として許容", () => {
+  it("U-B2: since/lastCheckedAt 欠落は optional として許容", () => {
     const parsed = serviceStatusSchema.parse({
       slug: "x",
       name: "X",
@@ -80,6 +80,36 @@ describe("contract (U-1, U-E3, U-E4, U-B1, U-B2)", () => {
       status: "up",
     });
     expect(parsed.since).toBeUndefined();
+  });
+
+  // CF-20260528-016: 実 service-hub MVP contract 対応 (2026-05-28 実検証)
+  it("U-C1: 実 service-hub 形 (直接 Service[]) を accept + services key に wrap", () => {
+    const realHubResponse = [
+      {
+        slug: "hana-memo",
+        name: "花メモ",
+        url: "https://hana-memo.givers.work/",
+        status: "up",
+        lastCheckedAt: "2026-05-28T05:07:31.725Z",
+      },
+    ];
+    const parsed = publicStatusResponseSchema.parse(realHubResponse);
+    expect(parsed.services).toHaveLength(1);
+    expect(parsed.services[0].slug).toBe("hana-memo");
+    expect(parsed.services[0].lastCheckedAt).toBe("2026-05-28T05:07:31.725Z");
+    expect(parsed.generated_at).toBeTruthy(); // transform で擬似生成
+  });
+
+  it("U-C2: camelCase lastCheckedAt が保持される (snake_case ではない)", () => {
+    const parsed = serviceStatusSchema.parse({
+      slug: "x",
+      name: "X",
+      url: "https://x",
+      status: "up",
+      lastCheckedAt: "2026-05-28T00:00:00Z",
+    });
+    expect(parsed.lastCheckedAt).toBe("2026-05-28T00:00:00Z");
+    expect(parsed).not.toHaveProperty("last_checked_at");
   });
 });
 

@@ -12,10 +12,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:smoke": "vitest run --dir test/smoke",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:reset": "drizzle-kit drop && drizzle-kit migrate",
-    "e2e": "playwright test"
+    "db:generate": "bash scripts/with-env.sh drizzle-kit generate",
+    "db:migrate": "bash scripts/with-env.sh drizzle-kit migrate",
+    "db:reset": "bash scripts/with-env.sh drizzle-kit drop && bash scripts/with-env.sh drizzle-kit migrate",
+    "e2e": "bash scripts/with-env.sh playwright test"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.9.0",

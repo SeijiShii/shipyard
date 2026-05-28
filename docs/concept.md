@@ -479,9 +479,11 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
     利点: 安全サブセットに限定（内部指標を物理的に含めない）／ 表示に必要十分。欠点: HUB 側実装が前提（別タスク）。
   - 案 B: HUB が既存で別形を返す → shipyard 側で変換アダプタ。利点: HUB 改修不要な場合がある。欠点: 安全サブセット保証が shipyard 側責務になる（内部指標漏れリスク）。
 - **推奨**: 案 A。理由: 安全サブセットを HUB 側で保証するのが PII/内部指標漏れ防止に最も堅い。HUB 未実装の間は shipyard 側でモック contract（案 A の形）を使って開発を進める。
-- **status**: `accepted-with-mock`（2026-05-27、AUDIT_20260527_1700 / D20260527-057）。`_shared/hub-client` が案 A の提案 contract を **mock 採用**して実装完了（`lib/hub/mock.ts`、Zod で安全サブセット strip）。service-status も実装済。**service-hub 側で実 contract 確定後に env URL 切替 + 整合再確認**（実装は無改修想定）。逆方向の service-info 公開は O48 で実装済（§6）。
-- **判断期限**: ~~`service-status` 機能設計着手前~~ → 実装は mock で先行完了。実 HUB 確定は service-hub 側タスク（外部依存）。
-- **担当**: seiji（HUB 側は別タスク `service-hub /flow:revise`）
+- **status**: `resolved` (2026-05-28、D20260528_007 release Phase 1.2 で実 service-hub MVP 稼働確認 + contract drift 修正完了)
+  - 2026-05-27: `accepted-with-mock` (AUDIT_20260527_1700 / D20260527-057)。`_shared/hub-client` が案 A の提案 contract を mock 採用 (`lib/hub/mock.ts`)。
+  - 2026-05-28 確認: 実 service-hub MVP 稼働 (`https://service-hub.givers.work/api/public/status`、認証不要 + Clerk gate 唯一例外 + CORS `*` + cache `max-age=60` + GET/OPTIONS のみ)。
+  - 2026-05-28 drift 修正 (CF-20260528-016): 実 service-hub レスポンスは mock contract と 2 点で異なる: (1) top-level = `Service[]` 直接配列 (mock は `{ generated_at, services }` 形)、(2) timestamp = `lastCheckedAt` camelCase (mock は `last_checked_at` snake_case)。**shipyard 側で吸収** (mechanical default、下流が外部 contract に合わせる): `lib/hub/contract.ts` を Zod union (直接配列 + 旧 mock 形両対応) + transform で `{ generated_at, services }` に wrap (内部 consumer 互換)、`serviceStatusSchema` の `last_checked_at` → `lastCheckedAt` (shipyard 内部 DB schema は元々 camelCase で整合)。test U-C1/U-C2 追加、全 161 件 GREEN。逆方向 service-info 公開は O48 で実装済 (§6)。
+- **担当**: seiji
 
 ### [論点-002] [SEC-001] 個人情報のログ漏洩防止: Critical（法令必須）
 
@@ -518,6 +520,26 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 - **推奨**: §3.7 [SEC-003] の要件を inquiry SPEC で具体化
 - **判断期限**: 実装着手前
 - **L1 レポート**: `./SECURITY_REVIEW_20260527.md`（SEC-003）
+
+### [論点-006] inquiry メールテンプレ仕様 — やり取り内容を本文に含める (問い合わせ人はサイトに戻らない前提)
+
+- **status**: open
+- **status 履歴**: 2026-05-28 13:55 open (D20260528_007 release Phase 1.2 でユーザー指摘により発覚)
+- **影響範囲**: `docs/inquiry/001_inquiry_SPEC.md` (メール通知部) / `lib/email/` テンプレート / 関連 unit/E2E test
+- **検出根拠**: 元 concept §1.1 UC#5「訪問者がリンク or ブラウザ保持でスレッドに戻り追記」を**前提変更**: 「問い合わせ人はこちらの対応を確認するためにこのサイトには来ない」。よってメール = subject + link 通知では不十分で、**メール本文に運用者返信の全文 (やり取り内容) を含める**必要がある。bot 対策の Mail verification は引き続き不要 (Turnstile + honeypot + timing + rate limit + MX で対応)。
+- **詰めるべき問い**:
+  1. メール本文の構成: 返信本文全文 + (オプションで) スレッド URL + 過去のやり取り履歴を含めるか
+  2. 訪問者がメールに返信した場合、どう扱うか (a) reply-to で別チャネル / (b) 受信不可で「サイトで返信してください」案内 / (c) Resend inbound でメール → スレッド再投稿 (大規模実装)
+  3. concept §1.1 UC#5 の「ブラウザ保持でスレッドに戻り追記」は**任意導線**として残すか、廃止か
+  4. HTML mail / plain text の選択 (Resend は両対応)
+- **候補案**:
+  - 案 A (推奨): メール本文 = 返信本文全文 + サイトに戻る optional リンク (現状のサイト内スレッド UI は残す、戻りは任意)、訪問者の reply 受信は **(b) 不可・サイトで返信してください案内** (実装最小、Resend inbound 不要)、HTML + plain text 両対応 (Resend デフォルト)
+  - 案 B: 案 A + 過去やり取り履歴も含める (メール長くなるが訪問者の文脈把握が楽)
+  - 案 C: メール反復受信 ((c) Resend inbound) → 大規模実装、本 PJ MVP には過剰
+- **推奨**: 案 A (最小修正、訪問者 UX 向上、サイト内 UI 維持で seiji 側の admin 体験も変わらず)
+- **判断期限**: Phase 2 ローカル動作確認後・Phase 3 本番デプロイ**前**に確定 (本番で古いテンプレで送信しない)
+- **担当**: seiji
+- **関連**: `./AI_LOG/D20260528_007_release_shipyard.md` (Phase 1.2 で発覚) / 後段 `/flow:revise inquiry` で対応
 
 ### [論点-005] Playwright E2E bootstrap (scaffold 不在)
 

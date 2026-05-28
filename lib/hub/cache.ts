@@ -1,4 +1,7 @@
-import type { StatusCacheRepo, ServiceStatusRow } from "@/lib/db/repositories/statusCache";
+import type {
+  StatusCacheRepo,
+  ServiceStatusRow,
+} from "@/lib/db/repositories/statusCache";
 import { fetchHubStatus } from "./client";
 import type { PublicStatusResponse } from "./contract";
 
@@ -11,10 +14,14 @@ export interface CacheDeps {
   now?: Date;
 }
 
-export type RefreshResult = { ok: true; updated: number } | { ok: false; kept: true };
+export type RefreshResult =
+  | { ok: true; updated: number }
+  | { ok: false; kept: true };
 
 // HUB を取得して service_status_cache に upsert。失敗時はキャッシュを更新しない（HUB-E1/E2）。
-export async function refreshStatusCache(deps: CacheDeps): Promise<RefreshResult> {
+export async function refreshStatusCache(
+  deps: CacheDeps,
+): Promise<RefreshResult> {
   const fetchStatus = deps.fetchStatus ?? (() => fetchHubStatus());
   let data: PublicStatusResponse;
   try {
@@ -30,7 +37,7 @@ export async function refreshStatusCache(deps: CacheDeps): Promise<RefreshResult
       url: s.url,
       status: s.status,
       since: s.since ?? null,
-      lastCheckedAt: s.last_checked_at ? new Date(s.last_checked_at) : null,
+      lastCheckedAt: s.lastCheckedAt ? new Date(s.lastCheckedAt) : null,
       fetchedAt,
     })),
   );
@@ -38,6 +45,8 @@ export async function refreshStatusCache(deps: CacheDeps): Promise<RefreshResult
 }
 
 // キャッシュから一覧取得（HUB を叩かない）。
-export async function getCachedStatus(deps: { repo: StatusCacheRepo }): Promise<ServiceStatusRow[]> {
+export async function getCachedStatus(deps: {
+  repo: StatusCacheRepo;
+}): Promise<ServiceStatusRow[]> {
   return deps.repo.listAll();
 }
