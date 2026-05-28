@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-28 18:40 (+09:00)
-**総セッション数**: 36
-**総 decision 数**: 106
+**最終更新**: 2026-05-28 19:13 (+09:00)
+**総セッション数**: 37
+**総 decision 数**: 107
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260528_016_audit_standard.md](./D20260528_016_audit_standard.md) | 2026-05-28 | /flow:audit | standard (本日 2 回目) | D20260528-042 | 完了 (改善: O56 favicon 解消、Medium 2→1) |
 | [D20260528_015_tdd_service-status_revise_service-icons.md](./D20260528_015_tdd_service-status_revise_service-icons.md) | 2026-05-28 | /flow:tdd | service-icons revise (Phase 1+2、161→172 GREEN) | D20260528-041 | 完了 (全パイプライン疎通) |
 | [D20260528_014_design_favicon-setup.md](./D20260528_014_design_favicon-setup.md) | 2026-05-28 | (手動 favicon 配線) | O56 retrofit | D20260528-040 | 完了 (AUDIT-perspective-001 Medium reconcile) |
 | [D20260528_013_spec-review_service-status-revise-icons.md](./D20260528_013_spec-review_service-status-revise-icons.md) | 2026-05-28 | /flow:spec-review | service-icons revise (auto-pick) | D20260528-039 | 完了 (Critical 1 / High 1 / Medium 4 / Low 1 + 設計判断 5) |
