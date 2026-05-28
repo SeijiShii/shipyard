@@ -2,7 +2,7 @@
 
 **issue / slug**: `service-info-v2-contract` (起点 = AUDIT-perspective-001)
 **実施日**: 2026-05-28
-**状態**: 設計中
+**状態**: 実装完了 (2026-05-28、176 tests GREEN)
 
 <!-- auto-generated-start -->
 
@@ -13,6 +13,8 @@
 | 002 | [REVISE_PLAN](./002_REVISE_PLAN.md) | 変更計画書 | 2026-05-28 |
 | 003 | [REVISE_UNIT_TEST](./003_REVISE_UNIT_TEST.md) | 単体テスト計画 | 2026-05-28 |
 | 004 | [REVISE_E2E_TEST](./004_REVISE_E2E_TEST.md) | E2E テスト計画 | 2026-05-28 |
+| 101 | [REVISE_IMPL_REPORT](./101_REVISE_IMPL_REPORT.md) | 実装レポート | 2026-05-28 |
+| 102 | [REVISE_UNIT_TEST_REPORT](./102_REVISE_UNIT_TEST_REPORT.md) | 単体テストレポート (176 GREEN) | 2026-05-28 |
 
 ## 関連
 - 親機能 INDEX: `../INDEX.md`

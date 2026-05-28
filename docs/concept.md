@@ -435,7 +435,7 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 | 連携先 | 用途 | 方式 | 認証 |
 |---|---|---|---|
 | service-hub `GET /api/public/status` | 稼働サービス一覧（安全サブセット） | REST（read-only、定期 fetch + キャッシュ） | 公開 API（不要） or 軽い API キー（HUB 側方針次第、[論点-001]） |
-| service-hub ← shipyard `GET /api/hub/service-info`（**公開する側**、O48） | service-hub が shipyard 自身の稼働/アプリ層指標を pull | REST（HUB が pull、最小固定契約 + extra/optional） | `HUB_SHARED_SECRET`（env、Bearer 検証、読み取り専用）。契約 SoT=service-hub、確定後に再整合 |
+| service-hub ← shipyard `GET /api/hub/service-info`（**公開する側**、O48 v2） | service-hub が shipyard 自身の稼働/アプリ層指標を pull (schemaVersion=2、`iconUrl` favicon-projection 含む) | REST（HUB が pull、最小固定契約 + iconUrl optional + extra/optional） | `HUB_SERVICE_INFO_SECRET`（env、Bearer 検証、全サービス共通シークレット 1 本、読み取り専用）。契約 SoT=service-hub、CF-20260528-019 v2 favicon-projection 改訂反映済 |
 | Resend | 返信通知 / 新着通知メール | REST API / SDK | `RESEND_API_KEY`（env、サーバー側） |
 | Cloudflare Turnstile | 不可視スパム判定 | サイトキー（クライアント）+ シークレット検証（サーバー） | `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` |
 | Clerk | 運用者(admin)認証 | SDK | `CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` |
