@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-29 09:16 (+09:00)
-**総セッション数**: 50
-**総 decision 数**: 120
+**最終更新**: 2026-05-29 09:32 (+09:00)
+**総セッション数**: 52
+**総 decision 数**: 122
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,8 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260529_006_promote_shipyard.md](./D20260529_006_promote_shipyard.md) | 2026-05-29 | /flow:promote | shipyard 告知文生成 (note/X/FB → docs/marketing/、CF-20260529-002 生成パート) | D20260529-005 | 完了 |
+| [D20260529_005_release_shipyard.md](./D20260529_005_release_shipyard.md) | 2026-05-29 | /flow:release | --resume (本番デプロイ済を確認、Release+Promote gate 実態通過、subdomain/Turnstile/投稿 user 実施済) | D20260529-004 | 完了 |
 | [D20260529_004_secure_product-wide.md](./D20260529_004_secure_product-wide.md) | 2026-05-29 | /flow:secure | release-pre audit→secure pair (L1 delta + L4 deps、Critical/High 0 PASS) | D20260529-003 | 完了 |
 | [D20260529_003_scenario_update.md](./D20260529_003_scenario_update.md) | 2026-05-29 | /flow:scenario | --update (§3.0c drift シューティング、AUDIT-structure-001 5連続 撃ち落とし、O48 revert 反映 + deploy 手順訂正) | D20260529-002 | 完了 |
 | [D20260529_002_audit_full.md](./D20260529_002_audit_full.md) | 2026-05-29 | /flow:audit | full (release-pre 必須監査 再実行、HEAD 4a1466a O48 revert 後) | D20260529-001 | 完了 (**PASS**: Critical 0/High 0/Medium 1/Low 2、AUDIT-structure-001 SCENARIO §5 stale **5 連続**) |
