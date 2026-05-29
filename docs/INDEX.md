@@ -14,7 +14,7 @@
 ## 機能フォルダ
 | 優先度 | 基盤 | フォルダ | 状態 | 設計完了 | 改修件数 | バグ修正件数 | クレーム件数 | INDEX |
 |---|---|---|---|---|---|---|---|---|
-| 3 | ❌ | [landing](./landing/) | unit 実装完了（10件 GREEN, E2E 待ち, revise#1 unit 完了） | 4/4 | 1 | 0 | 0 | [INDEX](./landing/INDEX.md) |
+| 3 | ❌ | [landing](./landing/) | unit 実装完了（10件 GREEN, E2E 待ち, revise#1 unit 完了, revise#2 about-link 設計完了） | 4/4 | 2 | 0 | 0 | [INDEX](./landing/INDEX.md) |
 | 3 | ❌ | [service-status](./service-status/) | unit 実装完了（7件 GREEN, E2E 待ち, revise#1 設計完了） | 4/4 | 1 | 0 | 0 | [INDEX](./service-status/INDEX.md) |
 | 3 | ❌ | [inquiry](./inquiry/) | unit 実装完了（14件 GREEN, E2E 待ち） | 4/4 | 0 | 0 | 0 | [INDEX](./inquiry/INDEX.md) |
 | 3 | ❌ | [legal](./legal/) | unit 実装完了（5件 GREEN, E2E 待ち） | 4/4 | 0 | 0 | 0 | [INDEX](./legal/INDEX.md) |
