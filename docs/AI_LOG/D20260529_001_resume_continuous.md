@@ -3,8 +3,10 @@
 **実行日時**: 2026-05-29 (+09:00)
 **コマンド**: /flow:auto (引数なし = continuous loop, resume)
 **実行者**: Claude (Opus 4.8) + seiji
-**状態**: 進行中
-**含まれる decision**: (随時追記)
+**状態**: 完了 (loop は P5 全完了で終了、`.flow-loop-active` marker 削除済)
+**含まれる decision**: 反復 D002 audit → D003 scenario → D004 secure → D005 release → D006 promote → §5 reconcile
+
+> **loop サマリ (6 反復)**: §3.0c release-pre 必須監査ハードゲートから入り、audit full (PASS) → scenario drift 撃ち落とし → secure (PASS) → release --resume で **本番稼働済を発見** (deploy/subdomain/Turnstile/投稿 user 実施済の drift) → promote 告知文生成 (flow 未実行分) → Phase 5 reconcile + flow-suite CF-20260529-002 適用。**P5 全完了で停止**。
 
 ---
 
