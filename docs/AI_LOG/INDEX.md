@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-29 09:05 (+09:00)
-**総セッション数**: 48
-**総 decision 数**: 118
+**最終更新**: 2026-05-29 09:12 (+09:00)
+**総セッション数**: 49
+**総 decision 数**: 119
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260529_003_scenario_update.md](./D20260529_003_scenario_update.md) | 2026-05-29 | /flow:scenario | --update (§3.0c drift シューティング、AUDIT-structure-001 5連続 撃ち落とし、O48 revert 反映 + deploy 手順訂正) | D20260529-002 | 完了 |
 | [D20260529_002_audit_full.md](./D20260529_002_audit_full.md) | 2026-05-29 | /flow:audit | full (release-pre 必須監査 再実行、HEAD 4a1466a O48 revert 後) | D20260529-001 | 完了 (**PASS**: Critical 0/High 0/Medium 1/Low 2、AUDIT-structure-001 SCENARIO §5 stale **5 連続**) |
 | [D20260529_001_resume_continuous.md](./D20260529_001_resume_continuous.md) | 2026-05-29 | /flow:auto | continuous loop resume (§3.0c release-pre 鮮度ゲート → audit dispatch) | - | 進行中 |
 | [D20260528_025_fix_o48-overkill-revert.md](./D20260528_025_fix_o48-overkill-revert.md) | 2026-05-28 | /flow:release (inline fix) | [論点-008] 確定 + O48 retrofit 全 revert (audit→revise→tdd 誤判定からの整合性回復、170 GREEN) | D20260528-053 | 完了 |
