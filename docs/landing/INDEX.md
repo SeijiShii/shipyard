@@ -26,7 +26,7 @@ Phase 1（page + Hero）+ Phase 2（Value/ConsultPitch + 稼働一覧埋込）�
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
 |---|---|---|---|---|---|
 | [revise_messaging-shift_20260528_tone-shift-together-thinking/](./revise_messaging-shift_20260528_tone-shift-together-thinking/) | revise | messaging-shift | 実装完了 (Phase 1 unit 10/10 GREEN、E2E 待ち) | LP メッセージング転換 (lead-gen → 「共に考える相談相手」スタンス) | [INDEX](./revise_messaging-shift_20260528_tone-shift-together-thinking/INDEX.md) |
-| [revise_remove-about-link_20260529/](./revise_remove-about-link_20260529/) | revise | remove-about-link | 設計完了 (実装 /flow:tdd 待ち) | Header の壊れた「これは何？」(/about 404) リンク削除 + sitemap から /about 除去 (LP 自体が説明 = O41 充足) | [INDEX](./revise_remove-about-link_20260529/INDEX.md) |
+| [revise_remove-about-link_20260529/](./revise_remove-about-link_20260529/) | revise | remove-about-link | 実装完了 (170 GREEN、本番反映は次回デプロイ) | Header の壊れた「これは何？」(/about 404) リンク削除 + sitemap から /about 除去 (LP 自体が説明 = O41 充足) | [INDEX](./revise_remove-about-link_20260529/INDEX.md) |
 
 ## 関連
 - 親 concept: `../concept.md` §1.3.1 landing 行 / §4.8

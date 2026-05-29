@@ -13,7 +13,6 @@ export const MAKER_NAME = "shipyard";
 // 公開ページ（sitemap 対象）。/admin /api /t/[token] は含めない（SEC-002 / プライバシー）。
 export const PUBLIC_PATHS = [
   "/",
-  "/about",
   "/contact",
   "/legal/privacy",
   "/legal/terms",

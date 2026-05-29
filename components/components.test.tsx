@@ -154,7 +154,7 @@ describe("StatusCard (U-2, U-E2)", () => {
 });
 
 describe("Header (U-5) / Footer", () => {
-  it("U-5: ワードマーク + お問い合わせ + これは何?", () => {
+  it("U-5: ワードマーク + お問い合わせ（about リンクなし）", () => {
     render(<Header />);
     expect(screen.getByRole("link", { name: "shipyard" })).toHaveAttribute(
       "href",
@@ -164,9 +164,13 @@ describe("Header (U-5) / Footer", () => {
       "href",
       "/contact",
     );
+    // 「これは何？」(/about) リンクは削除済み（LP 自体が説明 = O41 充足、revise_remove-about-link_20260529）
+    expect(screen.queryByRole("link", { name: "これは何？" })).toBeNull();
     expect(
-      screen.getByRole("link", { name: "これは何？" }),
-    ).toBeInTheDocument();
+      screen
+        .queryAllByRole("link")
+        .some((a) => a.getAttribute("href") === "/about"),
+    ).toBe(false);
   });
 
   it("Footer: 法務リンク + 控えめなメイカー文脈", () => {

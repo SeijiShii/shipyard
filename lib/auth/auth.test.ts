@@ -44,7 +44,10 @@ describe("requireOperator (U-2, U-E1, U-E2)", () => {
     const res = await requireOperator(
       resolver({ userId: "u_1", email: "seiji@example.com" }),
     );
-    expect(res).toEqual({ ok: true, session: { userId: "u_1", email: "seiji@example.com" } });
+    expect(res).toEqual({
+      ok: true,
+      session: { userId: "u_1", email: "seiji@example.com" },
+    });
   });
 
   it("U-E1: 未認証 → 401", async () => {
@@ -73,7 +76,14 @@ describe("isProtectedAdminPath (U-B2)", () => {
   });
 
   it("訪問者導線は保護対象外（認証ゼロ維持、D004）", () => {
-    for (const p of ["/", "/contact", "/t/abc123", "/services", "/legal", "/privacy", "/about"]) {
+    for (const p of [
+      "/",
+      "/contact",
+      "/t/abc123",
+      "/services",
+      "/legal",
+      "/privacy",
+    ]) {
       expect(isProtectedAdminPath(p)).toBe(false);
     }
   });

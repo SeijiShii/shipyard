@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 
-// Header — design SoT §5/§7（ワードマーク + 「これは何？」+ お問い合わせ、ミニマル）。
+// Header — design SoT §5/§7（ワードマーク + お問い合わせ、ミニマル）。
+// 「これは何？」(/about) リンクは削除（LP 自体が説明 = O41 は LP Hero で充足、revise_remove-about-link_20260529）。
 
 export function Header({ className }: { className?: string }) {
   return (
@@ -8,9 +9,6 @@ export function Header({ className }: { className?: string }) {
       <div className="mx-auto flex max-w-5xl items-center gap-4 px-6 py-4">
         <a href="/" className="text-lg font-semibold text-ink">
           shipyard
-        </a>
-        <a href="/about" className="text-sm text-ink-muted hover:text-ink">
-          これは何？
         </a>
         <a
           href="/contact"
