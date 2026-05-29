@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-29 09:46 (+09:00)
-**総セッション数**: 53
-**総 decision 数**: 125
+**最終更新**: 2026-05-29 09:58 (+09:00)
+**総セッション数**: 54
+**総 decision 数**: 128
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,7 +14,8 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
-| [D20260529_007_revise_landing_remove-about-link.md](./D20260529_007_revise_landing_remove-about-link.md) | 2026-05-29 | /flow:revise | landing remove-about-link (Header /about 404 リンク + sitemap /about 削除、O41 は LP で充足) | D20260529-006〜008 | 完了 (設計、実装 /flow:tdd 待ち) |
+| [D20260529_008_resume_continuous.md](./D20260529_008_resume_continuous.md) | 2026-05-29 | /flow:auto | about 404 fix tdd 実装 + 本番 redeploy + smoke green (loop 完了) | D20260529-009〜011 | 完了 |
+| [D20260529_007_revise_landing_remove-about-link.md](./D20260529_007_revise_landing_remove-about-link.md) | 2026-05-29 | /flow:revise | landing remove-about-link (Header /about 404 リンク + sitemap /about 削除、O41 は LP で充足) | D20260529-006〜008 | 完了 (設計→tdd 実装+デプロイ済) |
 | [D20260529_006_promote_shipyard.md](./D20260529_006_promote_shipyard.md) | 2026-05-29 | /flow:promote | shipyard 告知文生成 (note/X/FB → docs/marketing/、CF-20260529-002 生成パート) | D20260529-005 | 完了 |
 | [D20260529_005_release_shipyard.md](./D20260529_005_release_shipyard.md) | 2026-05-29 | /flow:release | --resume (本番デプロイ済を確認、Release+Promote gate 実態通過、subdomain/Turnstile/投稿 user 実施済) | D20260529-004 | 完了 |
 | [D20260529_004_secure_product-wide.md](./D20260529_004_secure_product-wide.md) | 2026-05-29 | /flow:secure | release-pre audit→secure pair (L1 delta + L4 deps、Critical/High 0 PASS) | D20260529-003 | 完了 |
