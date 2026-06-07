@@ -25,6 +25,8 @@ Phase 1（StatusList + uptime）+ Phase 2（/api/services + /api/cron + services
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
 |---|---|---|---|---|---|
 | [revise_service-icons_20260528_icon-from-service-hub/](./revise_service-icons_20260528_icon-from-service-hub/) | revise | service-icons | 設計完了 (実装待ち) | service-hub から iconUrl 受信 → StatusList で icon 表示 + フォールバック (CF-016 連動改修対象 = service-hub PJ) | [INDEX](./revise_service-icons_20260528_icon-from-service-hub/INDEX.md) |
+| [claim_C20260608-001_20260608_realtime-refresh-gap/](./claim_C20260608-001_20260608_realtime-refresh-gap/) | claim | C20260608-001 | 判定完了 → revise | HUB 3件登録なのに shipyard 2件表示 (naze-bako 欠落) → 仕様検討漏れ判定 | — |
+| [revise_C20260608-001_20260608_realtime-refresh-gap/](./revise_C20260608-001_20260608_realtime-refresh-gap/) | revise | C20260608-001 | 設計完了 (実装待ち) | read-through refresh (最終同期日時ベース TTL 1h、cron 非依存) + 最終同期日時「{日時}現在」表示 | [INDEX](./revise_C20260608-001_20260608_realtime-refresh-gap/INDEX.md) |
 
 ## 関連
 - 親 concept: `../concept.md` §1.3.1 service-status 行 / §5.2
