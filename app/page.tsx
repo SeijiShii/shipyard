@@ -6,6 +6,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { StatusList } from "@/features/service-status/StatusList";
+import { newestFetchedAt } from "@/lib/service-status/syncedAt";
 import { Hero } from "@/features/landing/Hero";
 import { ValueSection } from "@/features/landing/ValueSection";
 import { ConsultPitch } from "@/features/landing/ConsultPitch";
@@ -17,6 +18,7 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   // 稼働一覧は cache のみ（HUB を叩かない）。DB 不可でも EmptyState で graceful（L-E1）。
   const services = await loadStatusSafe(() => getRepos().statusCache);
+  const syncedAt = newestFetchedAt(services);
   return (
     <>
       <JsonLd data={[websiteJsonLd(), personJsonLd()]} />
@@ -27,7 +29,7 @@ export default async function HomePage() {
           <h2 className="mb-4 text-xl font-semibold text-ink">
             いま動いているサービス
           </h2>
-          <StatusList services={services} />
+          <StatusList services={services} syncedAt={syncedAt} />
         </section>
         <ValueSection />
         <ConsultPitch />

@@ -1,12 +1,18 @@
-import { getCachedStatus } from "@/lib/hub/cache";
-import type { StatusCacheRepo, ServiceStatusRow } from "@/lib/db/repositories/statusCache";
+import { getStatusReadThrough } from "@/lib/hub/cache";
+import type {
+  StatusCacheRepo,
+  ServiceStatusRow,
+} from "@/lib/db/repositories/statusCache";
 
 // 稼働一覧の graceful 取得 — docs/landing/001 L-E1 / service-status/001 S-E1
-// DB 接続不可（DATABASE_URL 未設定/接続断）でも例外を投げず空配列を返す → 画面は EmptyState で
-// graceful（技術詳細を出さない、SEC-001）。getRepo() 自体の throw（getDb 失敗）も捕捉する。
-export async function loadStatusSafe(getRepo: () => StatusCacheRepo): Promise<ServiceStatusRow[]> {
+//   + revise_C20260608-001: read-through refresh（最終同期日時が TTL 超なら HUB 再取得）
+// DB 接続不可（DATABASE_URL 未設定/接続断）や HUB ダウンでも例外を投げず空配列/前回値を返す →
+// 画面は EmptyState で graceful（技術詳細を出さない、SEC-001）。getRepo() 自体の throw も捕捉。
+export async function loadStatusSafe(
+  getRepo: () => StatusCacheRepo,
+): Promise<ServiceStatusRow[]> {
   try {
-    return await getCachedStatus({ repo: getRepo() });
+    return await getStatusReadThrough({ repo: getRepo() });
   } catch {
     return [];
   }
