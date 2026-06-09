@@ -8,10 +8,18 @@
 
 metrics:
   deploy_target: production
-  deployed_url: https://shipyard.givers.work
+  deployed_url: https://shipyard.givers.work + https://givers.work (apex 新規接続)
   collected_vars: 0 (新規 env なし)
-  check_result: build ✓ + post-deploy /legal/commerce 200 + 特商法コンテンツ/sitemap 確認
+  check_result: build ✓ + post-deploy /legal/commerce 200 + 特商法コンテンツ/sitemap 確認 + apex givers.work 200/SSL OK/shipyard 配信 + subdomain 維持 200
   paid_confirmed: n/a (静的ページ、課金なし)
+
+## apex 接続 検証結果 (2026-06-10)
+- ConoHa apex A: 163.44.111.156 → 76.76.21.21 (権威 a.conoha-dns.com + 一般リゾルバ 両方反映)
+- https://givers.work/ → 200 / SSL OK / shipyard 配信
+- https://givers.work/legal/commerce → 200
+- https://shipyard.givers.work/ → 200 (CNAME 911a1cfe...vercel-dns-017.com 維持、無影響)
+- 旧 giving_platform (VPS 163.44.111.156) は apex 配信から離脱 (意図どおり)
+- 未対応 (任意): www.givers.work は VPS のまま (apex のみ要望)
 
 ## 含まれる decision 範囲
 live 判定 / env 不足検出 / Phase2 build 検証 + sitemap 修正 / Phase3 デプロイ Class B / post-deploy smoke。
