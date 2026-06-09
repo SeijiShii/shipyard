@@ -19,7 +19,8 @@ metrics:
 - https://givers.work/legal/commerce → 200
 - https://shipyard.givers.work/ → 200 (CNAME 911a1cfe...vercel-dns-017.com 維持、無影響)
 - 旧 giving_platform (VPS 163.44.111.156) は apex 配信から離脱 (意図どおり)
-- 未対応 (任意): www.givers.work は VPS のまま (apex のみ要望)
+- www.givers.work も追加対応 (ユーザー承認): ConoHa A → 76.76.21.21 + `vercel domains add www.givers.work` → shipyard 配信 (HTTP 200/SSL OK)。現状リダイレクトなし (apex/www/subdomain いずれも直接 shipyard 配信)。www→apex リダイレクトは任意 (SEO 推奨、未適用)
+- 最終確認: givers.work / www.givers.work / shipyard.givers.work / givers.work/legal/commerce すべて HTTP 200 + SSL OK
 
 ## 含まれる decision 範囲
 live 判定 / env 不足検出 / Phase2 build 検証 + sitemap 修正 / Phase3 デプロイ Class B / post-deploy smoke。
