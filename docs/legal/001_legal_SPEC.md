@@ -37,15 +37,16 @@
 | 内容整合 | §9.2 個人情報保護法 / §6 cookieless / SEC-001 と矛盾しない | concept §9 |
 | SEO | index 可（公開ページ）、buildMetadata（seo） | §9.3 |
 | 導線 | フッタ（全ページ、_shared/ui Footer） | §9.3 |
-- 連携: _shared/ui（Footer リンク）/ _shared/seo（metadata）。特商法表記は不要（課金なし、§9.1）。
+- 連携: _shared/ui（Footer リンク）/ _shared/seo（metadata）。
+- **特商法表記 (2026-06-10 追加, revise tokushoho-stripe)**: 当初「不要」としたが、業態整合により `/legal/commerce` を新設（作者応援寄付 + 有料追加オプション、Stripe 審査提示先）。詳細仕様は `revise_tokushoho-stripe_20260610/001_REVISE_SPEC.md`、UC-LG3 として追加。
 
 ## 6. タグ別追加
 feature（静的 UI）。consent banner 不要（cookieless、§6）。
 
 ## 7. スコープ外
-- 特定商取引法表記（有償取引なしのため不要、§9.1）
+- ~~特定商取引法表記~~ → **2026-06-10 スコープ内化** (revise tokushoho-stripe、`/legal/commerce`)
 - Cookie ポリシー（cookieless のため不要、§9.1）
-- 多言語
+- 多言語（特商法 EN 版は別 revise、§論点-002）
 
 ## 8. 未決事項
 現時点で論点なし (2026-05-27)。

@@ -36,10 +36,10 @@ shipyard は、seiji が運用している自作マイクロサービス群を�
 
 **含まないもの（明示除外）**:
 - HUB の内部指標（財務 / コスト / 離脱率 / PaaS トークン）の表示・保持 — **絶対除外**
-- 本サイトでの課金・決済（コンサルは lead-gen のみ、成約・請求は別チャネル）
 - 訪問者（問い合わせ側）のアカウント登録・ログイン（メアド + トークン URL で足りる）
 - 外部 AI サービスの呼び出し（shipyard 自体は AI を叩かない。§6 参照）
-- 特定商取引法表記（有償サービスではないため不要。§9 参照）
+
+> **2026-06-10 業態整合 (revise tokushoho-stripe)**: 当初「本サイトでの課金なし → 特商法不要」としていたが、shipyard を QUADii（個人事業）の**公式ホームページ**と位置づけ直し、**公開済みマイクロサービスへの「作者応援寄付」+ 一部サービスの有料「追加オプション」販売**（いずれも単発、Stripe 決済）を業態として明示。よって以下を**含む**に変更: 特定商取引法に基づく表記（`/legal/commerce`、§9 参照）。決済自体は各サービス側で発生し、shipyard は事業者単位の開示先 + 公式 HP。コンサルは引き続き lead-gen のみ（成約・請求は別チャネル）。
 - **`/api/hub/service-info` (O48 producer)** — shipyard は **service-hub registry に登録しない方針** (HUB ダッシュボードの showcase 表示対象外、[論点-008] 2026-05-28 確定)。shipyard は service-hub の **consumer のみ** (status API の read-only 消費)、自身は pull 対象でないため **perspectives.md O48 `skip_if: [service-hub 管理対象外]` 該当**。本 PJ では service-info producer (`lib/hub/service-info.ts` + `/api/hub/service-info`) を実装しない
 
 ### 1.3 ドキュメントフォルダ分割設計
@@ -343,9 +343,10 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 ### 4.7 公開戦略・ドメイン・リバースプロキシ
 
 #### 4.7.1 ドメイン情報
-- **既存ドメイン**: あり（`<domain>`、DNS 管理は既存）
-- **本サービスの公開 URL**: `shipyard.<domain>`（サブドメ運用、撤退リスク最小）
+- **既存ドメイン**: あり（`givers.work`、DNS 管理は既存）
+- **本サービスの公開 URL**: `shipyard.givers.work`（サブドメ運用、本番稼働中）
 - 新規ドメイン取得: なし
+- **2026-06-10 方針 (revise tokushoho-stripe)**: 旧 givers（寄付募集プラットフォーム）の業態が稼働していないため、特商法ページ本番反映後に **apex `givers.work` を shipyard に向ける**（apex → shipyard 配信）。DNS 切替はユーザー手動（撤退リスク・周知への影響を考慮し、Stripe 審査通過後に実施）。あわせて shipyard フッタに `powered by givers.work` を掲示（ブランド帰属）。
 
 #### 4.7.2 公開構成パターン
 - **採用パターン**: **(A) PaaS 完結**（Vercel ホスティング、運用負担ゼロ）
@@ -592,14 +593,14 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 
 ## 9. 法務・コンプライアンス書類
 
-> 公開 PJ かつ問い合わせ者のメール + 本文を収集・保存するため、プライバシーポリシー必須。**本サイトでの課金はないため特定商取引法表記は不要**。
+> 公開 PJ かつ問い合わせ者のメール + 本文を収集・保存するため、プライバシーポリシー必須。**2026-06-10 更新 (revise tokushoho-stripe)**: shipyard を QUADii の公式 HP と位置づけ、公開済みサービスへの作者応援寄付 + 有料追加オプション販売（Stripe 決済）を業態化したため、**特定商取引法に基づく表記を必要・作成**（`/legal/commerce`、Stripe 事業者審査の提示先）。事業者情報は QUADii / 四伊清司 / 〒101-0024 東京都千代田区神田和泉町1番地6-16 ヤマトビル405 / 050-1792-0316 / quadii.shii@gmail.com。
 
 ### 9.1 必須書類チェックリスト
 | 書類 | 必要性 | 状態 | 配置パス / URL | 備考 |
 |---|---|---|---|---|
 | プライバシーポリシー | ✅ | 未作成 | `/legal/privacy` | メール + 本文の取得目的 / 保管 / 削除請求窓口 / cookieless アナリティクス利用を明示 |
 | 利用規約 | ✅（推奨） | 未作成 | `/legal/terms` | 問い合わせ利用上の責任 / 免責 / 禁止行為 / 準拠法 |
-| 特定商取引法に基づく表記 | ❌ | 不要 | — | 本サイトでの有償取引なし（コンサルは lead-gen のみ、成約・請求は別チャネル） |
+| 特定商取引法に基づく表記 | ✅ | 作成済 (2026-06-10) | `/legal/commerce` | 作者応援寄付 + 有料追加オプション（Stripe）= 有償取引あり。Stripe 事業者審査の提示先。事業者=QUADii。単発のみ（定期課金なし）。詳細: `docs/legal/revise_tokushoho-stripe_20260610/` |
 | Cookie ポリシー | ❌ | 不要 | — | cookieless アナリティクス採用、Turnstile は必要 cookie のみ → consent banner 不要（プラポリで言及） |
 
 ### 9.2 対応地域法規
