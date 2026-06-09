@@ -220,4 +220,16 @@
   chosen_type: auto-recommended
   depends_on: [D20260610-006]
   context: 静的ページ + Footer + concept 記述更新のみ。
+
+- id: D20260610-012
+  timestamp: 2026-06-10T00:20:00+09:00
+  command: /flow:revise
+  phase: Step Z Git 自動コミット
+  question: 本セッション成果物のコミット
+  options: [main 直 (protected), feature ブランチ]
+  recommended: feature ブランチ
+  chosen: flow/revise-20260610 へ切替しコミット (a0ca29f)。push は実施しない (ユーザー手動)。
+  chosen_type: auto-recommended
+  depends_on: [D20260610-001]
+  context: main は protected (git-commit-policy §7)。1 セッション=1 commit。
 ```
