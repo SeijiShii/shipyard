@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260610_004_release_shipyard.md](./D20260610_004_release_shipyard.md) | 2026-06-10 | /flow:release | shipyard 本番 redeploy (特商法 /legal/commerce 反映 + sitemap、smoke green、Aliased shipyard.givers.work) | D20260610-018〜021 | 完了 |
 | [D20260610_003_tdd_legal_revise_tokushoho-stripe.md](./D20260610_003_tdd_legal_revise_tokushoho-stripe.md) | 2026-06-10 | /flow:tdd | legal revise tokushoho-stripe (特商法ページ実装 + Footer + docs整合、192/192 GREEN) | D20260610-015〜017 | 完了 |
 | [D20260610_002_resume_continuous.md](./D20260610_002_resume_continuous.md) | 2026-06-10 | /flow:auto | continuous loop (revise→tdd dispatch、P4.2 Fix/Revise-impl gate) | D20260610-013〜014 | 進行中 |
 | [D20260610_001_revise_legal_tokushoho-stripe.md](./D20260610_001_revise_legal_tokushoho-stripe.md) | 2026-06-10 | /flow:revise | legal tokushoho-stripe (特商法ページ追加 Stripe審査 + 業態整合 寄付PF→マイクロサービス運営 + Footer "powered by givers.work") | D20260610-001〜012 | 完了 (4 文書生成、Class C 2問=対象/課金形態、tdd 待ち) |
