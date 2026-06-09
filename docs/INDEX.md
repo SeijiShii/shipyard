@@ -17,7 +17,7 @@
 | 3 | ❌ | [landing](./landing/) | unit 実装完了（10件 GREEN, E2E 待ち, revise#1 unit 完了, revise#2 about-link 設計完了） | 4/4 | 2 | 0 | 0 | [INDEX](./landing/INDEX.md) |
 | 3 | ❌ | [service-status](./service-status/) | unit 実装完了（7件 GREEN, E2E 待ち, revise#1 設計完了） | 4/4 | 1 | 0 | 0 | [INDEX](./service-status/INDEX.md) |
 | 3 | ❌ | [inquiry](./inquiry/) | unit 実装完了（14件 GREEN, E2E 待ち） | 4/4 | 0 | 0 | 0 | [INDEX](./inquiry/INDEX.md) |
-| 3 | ❌ | [legal](./legal/) | unit 実装完了（5件 GREEN, E2E 待ち） | 4/4 | 0 | 0 | 0 | [INDEX](./legal/INDEX.md) |
+| 3 | ❌ | [legal](./legal/) | unit 実装完了（5件 GREEN, E2E 待ち, revise#1 特商法 設計完了） | 4/4 | 1 | 0 | 0 | [INDEX](./legal/INDEX.md) |
 | 4 | ❌ | [admin](./admin/) | unit 実装完了（10件 GREEN, E2E 待ち） | 4/4 | 0 | 0 | 0 | [INDEX](./admin/INDEX.md) |
 
 ## 横断フォルダ

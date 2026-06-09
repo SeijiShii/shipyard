@@ -1,8 +1,8 @@
 # AI_LOG インデックス — shipyard
 
-**最終更新**: 2026-05-29 09:58 (+09:00)
-**総セッション数**: 54
-**総 decision 数**: 128
+**最終更新**: 2026-06-10 (+09:00)
+**総セッション数**: 55
+**総 decision 数**: 139
 
 > このフォルダは AI 主導の自走 / 後追いトレースを目的とする詳細ログ。
 > セッションごとに 1 ファイル、append-only、過去ファイルは削除・編集禁止。
@@ -14,6 +14,7 @@
 
 | ファイル | 実行日 | コマンド | 対象 | decision 範囲 | 状態 |
 |---|---|---|---|---|---|
+| [D20260610_001_revise_legal_tokushoho-stripe.md](./D20260610_001_revise_legal_tokushoho-stripe.md) | 2026-06-10 | /flow:revise | legal tokushoho-stripe (特商法ページ追加 Stripe審査 + 業態整合 寄付PF→マイクロサービス運営 + Footer "powered by givers.work") | D20260610-001〜011 | 完了 (4 文書生成、Class C 2問=対象/課金形態、tdd 待ち) |
 | [D20260529_008_resume_continuous.md](./D20260529_008_resume_continuous.md) | 2026-05-29 | /flow:auto | about 404 fix tdd 実装 + 本番 redeploy + smoke green (loop 完了) | D20260529-009〜011 | 完了 |
 | [D20260529_007_revise_landing_remove-about-link.md](./D20260529_007_revise_landing_remove-about-link.md) | 2026-05-29 | /flow:revise | landing remove-about-link (Header /about 404 リンク + sitemap /about 削除、O41 は LP で充足) | D20260529-006〜008 | 完了 (設計→tdd 実装+デプロイ済) |
 | [D20260529_006_promote_shipyard.md](./D20260529_006_promote_shipyard.md) | 2026-05-29 | /flow:promote | shipyard 告知文生成 (note/X/FB → docs/marketing/、CF-20260529-002 生成パート) | D20260529-005 | 完了 |

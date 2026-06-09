@@ -24,7 +24,7 @@ PrivacyContent/TermsContent + /legal/privacy・/legal/terms ページ完了。�
 ## サブフォルダ（改修・バグ修正・クレーム判定履歴）
 | パス | 種別 | issue/slug | 状態 | 概要 | INDEX |
 |---|---|---|---|---|---|
-| (なし。`/flow:revise` / `/flow:fix` / `/flow:claim` で生成) |
+| `revise_tokushoho-stripe_20260610/` | revise | tokushoho-stripe | 設計完了（実装待ち） | 特商法ページ追加 + 業態整合（寄付PF→マイクロサービス運営）+ Footer "powered by givers.work" | [INDEX](./revise_tokushoho-stripe_20260610/INDEX.md) |
 
 ## 関連
 - 親 concept: `../concept.md` §1.3.1 legal 行 / §9 法務
