@@ -7,8 +7,10 @@
 | ユーザー | サービスを見に来た一般の訪問者（AI 活用に悩む個人・小規模事業者 / SNS・検索流入の潜在相談者）+ 運用者（seiji、問い合わせに返信する側） |
 | 解決する課題 | AI の進歩が速く「自分のビジネスにどう取り込めばいいか分からない」と悩む人が多い一方、先進的な開発者も「絶対の正解」は持っていない。動いているサービス群で実装力の信頼を作り、「答えを売る」のではなく「正解の見えない世界で共に考える相談相手」と出会う |
 | 提供価値 | リアルタイム稼働状況による「本当に動いている」実装力の信頼 + 週1ペースで AI 駆動開発を回しているメイカーの実践実績 + 「正解の分からない世界で共に考え・共に悩む」スタンス + 気軽に相談できる問い合わせ導線 |
-| 現フェーズ | 企画（concept 更新 — メッセージング転換 2026-05-28） |
-| 最終更新 | 2026-05-28 |
+| 現フェーズ | 公開後運用（2026-06-10: givers.work 公式サイトへのリブランド + サービス紹介文表示の要件登録、[論点-009〜012]） |
+| 最終更新 | 2026-06-10 |
+
+> **2026-06-10 リブランド方針 ([論点-009])**: shipyard は QUADii の**公式ホームページ = givers.work** として公開向けにリブランドする。「shipyard」は内部コードネーム、公開ブランドは **givers.work**。あわせて (a) サービス一覧に各サービスの**短文紹介 (summary)** を表示 ([論点-010]、上流 = service-hub 公開 status API の summary [論点-011] / perspectives O48 v3)、(b) 各サービスに「他のアプリ」back-link を追加し givers.work へ誘導 ([論点-012]、perspectives O62、shipyard 自身は誘導先のため skip)。実装は `/flow:revise` 後段。
 
 ---
 
@@ -28,7 +30,7 @@ shipyard は、seiji が運用している自作マイクロサービス群を�
 
 ### 1.2 スコープ
 **含むもの**:
-- 稼働サービス一覧（HUB status API の read-only 消費 + キャッシュ + リアルタイム up/down 表示 + 各サービスへのリンク）
+- 稼働サービス一覧（HUB status API の read-only 消費 + キャッシュ + リアルタイム up/down 表示 + 各サービスへのリンク + **各サービスの短文紹介 (summary) 表示** [★★★必須、[論点-010]、2026-06-10 追加]）
 - LP（提供価値 / メイカー紹介 / AI コンサルの打ち出し / OGP / SEO）
 - 問い合わせ機能（サイト内スレッド形式・メアド必須・不可視スパム対策・返信通知メール）
 - 運用者 admin（Clerk gate、問い合わせスレッド一覧 / 返信）
@@ -590,6 +592,42 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 - **担当**: seiji
 - **learning (flow-suite 補強 candidate, CF-20260528-022)**: perspectives.md O48 の `require: [マイクロサービス連発]` だけで判定すると、本 PJ のような「マイクロサービスだが consumer 役割のみ」を誤判定する。**audit.md #4 観点反映で `require` + `skip_if` 両方を必ず参照、`skip_if` のキーワード (`service-hub 管理対象外` 等) を concept のどこから判定するかの SoT が必要** (PJ 性質判定根拠の明示化)。本 PJ では §1.2 「含まないもの」に明示行を追加 (本論点解決と同 commit)。perspectives.md / audit.md の評価ロジック強化案として `~/.claude/flow-data/command-feedback-inbox.md` に追記候補。
 - **関連**: `./AUDIT_20260528_2000.md` §3.2 (誤検出) / `./AUDIT_20260528_2030.md` §3.2 (誤解消) / `./_shared/hub-client/revise_service-info-v2-contract_20260528/` (revise 設計 + tdd 履歴、不変保存) / `./AI_LOG/D20260528_020_audit_full.md` + `D20260528_021_revise__shared_hub-client_service-info-v2-contract.md` + `D20260528_022_tdd__shared_hub-client_revise_service-info-v2-contract.md` + `D20260528_023_audit_full.md` (誤判定からの retrofit 履歴)
+
+### [論点-009] givers.work 公式サイトへのリブランド (shipyard → givers.work)
+
+- **status**: `accepted-as-requirement` (2026-06-10、seiji [flow] 指示で登録。実装は `/flow:revise landing` 後段)
+- **影響範囲**: §1 プロダクト概要 (公開ブランド名) / landing (title / header / logo / footer / コピー) / `_shared/seo` (metadata title / OGP `og:site_name`) / §4.7.1 ドメイン (apex givers.work → shipyard、既決)
+- **要件**: shipyard を **QUADii (個人事業) の公式ホームページ = givers.work** としてリブランドする。公開向けブランド名・サイトタイトル・OGP・ヘッダー/フッターの表記を「shipyard」(内部コードネーム) でなく **givers.work** に統一する。apex `givers.work` → shipyard 配信は §4.7.1 で既決。"powered by givers.work" フッター掲示も既決 (§4.7.1)。
+- **audit-hittable signal (CF-20260610-003 §2.5)**: 公開ブランドが givers.work であること = landing/header/footer + SEO metadata の `title`/`og:site_name` に `givers.work` が露出し、ユーザー向け表示で `shipyard` がブランド名として出ない。audit #4 はこの signal の有無で未リブランドを検出 (`grep "givers.work"` が landing/seo に不在 = 未実装)。
+- **推奨修正アクション**: `/flow:revise landing` でブランド表記を givers.work に統一 (+ `_shared/seo` metadata)。`/flow:wording` で公式 HP トーンに仕上げ。
+- **担当**: seiji
+
+### [論点-010] サービス一覧に各サービスの短文紹介 (summary) を表示する [★★★必須]
+
+- **status**: `accepted-as-requirement` (2026-06-10、seiji [flow] 指示で登録。実装は `/flow:revise service-status` 後段)
+- **影響範囲**: §1.2 スコープ (含むもの) / `_shared/hub-client` (contract に summary 追加) / service-status (StatusCard に紹介文表示) / **上流依存 = [論点-011]** (service-hub 公開 status API が summary を返す)
+- **要件**: 稼働サービス一覧 (`/` / `/services`) で **サービス名だけでなく「何のサービスか」の短文紹介 (summary、1-2 文)** を表示する。データ源 = service-hub 公開 status API `GET /api/public/status` の安全サブセットに追加される `summary` field ([論点-011] / perspectives O48 v3)。
+- **audit-hittable signal (CF-20260610-003 §2.5)**: `lib/hub/contract.ts` の status schema に `summary` field + `components/status/StatusCard.tsx` (or 一覧コンポーネント) が summary を描画。`grep "summary"` が hub-client contract + StatusCard に不在 = 未実装 (audit #4 が PJ ★★★必須 未実装として検出)。
+- **推奨修正アクション**: `/flow:revise service-status` で hub-client contract に `summary?: string` 追加 (上流 status API 追従) + 一覧 UI に紹介文表示 (O38 コピー、O41 入口理解と整合)。
+- **担当**: seiji
+
+### [論点-011] [上流/cross-PJ] service-hub 公開 status API に summary を含める (O48 v3 consumer 追従)
+
+- **status**: `open` (cross-PJ tracked follow-up、shipyard 側では消費のみ。service-hub repo で `/flow:revise` 必要)
+- **影響範囲**: service-hub repo (`_shared/types` + 公開 status API `GET /api/public/status` の安全サブセット) / 各 producer サービス (service-info に summary 自己申告 = O48 v3) / shipyard [論点-010] (これが満たされて初めて summary が流れてくる)
+- **要件**: perspectives O48 を v3 (summary) に改訂済 (flow-suite commit a6d552c)。**producer 各サービス**が service-info に `summary` を自己申告 → **service-hub** が `_shared/types` に summary 追加 + **公開 status API の安全サブセットに summary を含める** → shipyard が消費して表示 ([論点-010])。CF-20260607-002 型の cross-repo 波及 (producer 片側では完結しない)。
+- **shipyard 側の対応**: なし (consumer)。本論点は「上流が summary を出すまで [論点-010] の表示にデータが来ない」依存を明示するための tracked 記録。service-hub repo で別途起票・実装。
+- **推奨アクション**: service-hub repo で `/flow:revise` (公開 status API に summary 追加) + 各 producer で service-info に summary 追加 (O48 v3 audit drift で順次検出)。
+- **担当**: seiji
+
+### [論点-012] [cross-PJ] 各サービスに「他のアプリ」back-link を追加し showcase (givers.work) へ誘導 (O62、shipyard は skip)
+
+- **status**: `open` (cross-PJ、**shipyard 自身は対象外** = showcase サイト本体。各 producer サービス側の作業)
+- **影響範囲**: 各公開マイクロサービス repo (footer/nav に showcase back-link) / perspectives O62 (新設済、flow-suite commit 8109f23)
+- **要件**: 各公開サービスの footer/nav に「他のアプリ」(英 "Other apps") 導線を追加し showcase `https://givers.work` へ誘導 (相互送客)。perspectives O62 で require 観点化済 → 各サービスの audit #4 が未配線を検出。
+- **shipyard 側の対応**: なし (shipyard = showcase 本体、O62 skip_if「showcase サイト自身」該当)。本論点は shipyard が誘導**先**であることの記録 + 各サービス側ロールアウトの tracked pointer。
+- **推奨アクション**: 各サービス repo で `/flow:revise` (footer に showcase back-link 配線)。O62 audit で順次検出・retrofit。
+- **担当**: seiji
 
 ## 9. 法務・コンプライアンス書類
 

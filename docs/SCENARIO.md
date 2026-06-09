@@ -70,7 +70,7 @@
 
 <!-- AUTO-GENERATED:BEGIN scenario-cursor -->
 - 現在フェーズ: **Phase 5 (公開後運用) = launch 全完了** 🎉。本番稼働中 `https://shipyard.givers.work` (HTTPS 200 / `/api/services` 200 = service-hub consumer 連携も本番動作)。Release gate (P4.7) + Promote gate (P4.8) **実態通過**。
-- 進行中ターゲット: なし (定常運用フェーズ)。次回作業は (a) 問い合わせ運用 (admin) / (b) E2E 基盤化 ([論点-005]、判断期限到来 = post-release) / (c) 機能改善・次サービス
+- 進行中ターゲット: **givers.work リブランド + サービス紹介文表示 ([論点-009〜012]、2026-06-10 [flow] 登録、audit-hittable)**。次回作業は (a) `/flow:revise landing` = givers.work ブランド統一 [論点-009] / (b) `/flow:revise service-status` = 一覧に summary 表示 [論点-010] (上流 service-hub status API summary [論点-011] 待ち) / (c) 問い合わせ運用 (admin) / (d) E2E 基盤化 ([論点-005])
 - 最終更新セッション: D20260529_006_promote_shipyard 後の実態 reconcile (本 scenario 更新は D20260529_005/006 セッション内 inline)
 - 最終更新時刻: 2026-05-29 09:35
 - 完了フェーズ: [Phase 1 (concept+secure+estimate), Phase 1.5 (design SoT), Phase 2 (全 12 設計), Phase 3 unit (scaffold + 横断 7 + 機能 5、**170 GREEN** = O48 revert 後), Phase 4 release scaffold §3.1c 7 ファイル + Phase 1 FILL 完了 + Phase 2 動作確認 (contact + email + cron-refresh + favicon OK = ユーザー確認済) + **service-icons revise tdd 完遂** + **app/icon.svg 配線 (O56)** + **inquiry mail-include-reply revise tdd 完遂 ([論点-006] reconcile、Phase 1 email + Phase 2 admin)** + **[論点-008] O48 適用判定 = shipyard は consumer のみ、pull 対象外確定 → O48 service-info producer 全 revert (D025)** + **初回 GitHub 公開 (https://github.com/SeijiShii/shipyard main branch)** + **smoke-prod.sh 整備 (CF-025) + vercel.json cron 1 日 1 回 (Hobby plan 対応)** + **release-pre 必須監査ハードゲート再通過 (High 0、AUDIT_20260529_0900.md)**]
