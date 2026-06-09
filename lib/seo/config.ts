@@ -16,6 +16,7 @@ export const PUBLIC_PATHS = [
   "/contact",
   "/legal/privacy",
   "/legal/terms",
+  "/legal/commerce",
 ] as const;
 
 // 末尾スラッシュを正規化した SITE_URL（U-B2）。env を呼び出し時に読む（テストで注入可）。
