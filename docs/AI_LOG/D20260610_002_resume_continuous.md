@@ -4,7 +4,7 @@
 - **コマンド**: /flow:auto
 - **モード**: continuous loop
 - **実行者**: seiji
-- **状態**: 進行中
+- **状態**: 完了 (反復1 = tdd dispatch 完遂 → 反復2 = Class B 境界 (本番デプロイ/push/Stripe審査/DNS) で正当停止)
 
 ## 含まれる decision 範囲
 前回停止ふりかえり / 優先度判定 (P1-P5) / auto-pick / dispatch。
