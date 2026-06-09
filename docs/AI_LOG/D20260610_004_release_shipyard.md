@@ -99,4 +99,21 @@ live 判定 / env 不足検出 / Phase2 build 検証 + sitemap 修正 / Phase3 �
   chosen_type: auto-recommended
   depends_on: [D20260610-020]
   context: 静的ページのため O51 (api 500)・O22 (auth 401)・webhook は非該当 (新規 api/webhook なし)。
+
+- id: D20260610-022
+  timestamp: 2026-06-10T07:30:00+09:00
+  command: /flow:release
+  phase: §3.2 カスタムドメイン (apex givers.work 追加)
+  question: apex givers.work を shipyard に接続 (subdomain 維持)
+  options: []
+  recommended: Vercel に apex 割当 + ConoHa apex A を 76.76.21.21 へ
+  chosen: |
+    Step A (agent, Class B): `vercel domains add givers.work` で apex を shipyard プロジェクトに割当 (Success)。
+      apex はこれまで未割当 (各 PJ は *.givers.work subdomain のみ)。shipyard.givers.work ほか subdomain は無影響。
+    Step B (user 手動, ConoHa DNS): apex A レコードを 163.44.111.156 (旧 VPS) → 76.76.21.21 (Vercel) に変更。
+      shipyard の CNAME (911a1cfe...vercel-dns-017.com) は触らない。www は apex のみ要望のため任意。
+    DNS 伝播後 Vercel が auto-verify + SSL 発行 → https://givers.work が shipyard を配信。
+  chosen_type: explicit-choice
+  depends_on: [D20260610-021]
+  context: DNS 管理元 = ConoHa (a.conoha-dns.com/b.conoha-dns.org)、レコード変更は ConoHa GUI = user 手番。
 ```
