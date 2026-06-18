@@ -48,7 +48,7 @@ describe("ValueSection (U-B1)", () => {
 
 describe("page metadata (U-3)", () => {
   it("generateMetadata 相当が title/OGP を返す（seo 連携）", () => {
-    expect(metadata.title).toBe("shipyard");
+    expect(metadata.title).toBe("givers.work");
     expect(metadata.openGraph).toBeTruthy();
     expect((metadata.twitter as { card?: string })?.card).toBe(
       "summary_large_image",

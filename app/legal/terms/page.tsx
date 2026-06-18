@@ -6,7 +6,7 @@ import { TermsContent } from "@/features/legal/TermsContent";
 // /legal/terms — 利用規約（SSG、index 可）。
 export const metadata = buildMetadata({
   title: "利用規約",
-  description: "shipyard の利用規約。禁止行為・免責・準拠法について。",
+  description: "givers.work の利用規約。禁止行為・免責・準拠法について。",
   path: "/legal/terms",
 });
 

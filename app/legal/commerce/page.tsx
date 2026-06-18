@@ -7,7 +7,7 @@ import { CommerceContent } from "@/features/legal/CommerceContent";
 export const metadata = buildMetadata({
   title: "特定商取引法に基づく表記",
   description:
-    "QUADii（shipyard）の特定商取引法に基づく表記。事業者情報・料金・お支払い方法・返金について。",
+    "QUADii（givers.work）の特定商取引法に基づく表記。事業者情報・料金・お支払い方法・返金について。",
   path: "/legal/commerce",
 });
 

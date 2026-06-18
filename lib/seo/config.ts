@@ -1,7 +1,9 @@
 // SEO 基盤の設定 — docs/_shared/seo/001_seo_SPEC.md
 // 秘密ではない公開設定。SITE_URL は env から（未設定時は安全なデフォルト）。
 
-export const SITE_NAME = "shipyard";
+// 公開ブランド名 = givers.work（[論点-009] リブランド、2026-06-10）。
+// 「shipyard」は内部コードネーム。ユーザー向け表示・SEO title・OGP は givers.work に統一する。
+export const SITE_NAME = "givers.work";
 
 // メッセージング転換 (revise_messaging-shift_20260528、AI_LOG D20260528-001/004) — スタンスキーワード保持。
 export const DEFAULT_DESCRIPTION =

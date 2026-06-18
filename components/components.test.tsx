@@ -156,7 +156,7 @@ describe("StatusCard (U-2, U-E2)", () => {
 describe("Header (U-5) / Footer", () => {
   it("U-5: ワードマーク + お問い合わせ（about リンクなし）", () => {
     render(<Header />);
-    expect(screen.getByRole("link", { name: "shipyard" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "givers.work" })).toHaveAttribute(
       "href",
       "/",
     );

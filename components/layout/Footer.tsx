@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
+import { SITE_NAME } from "@/lib/seo/config";
 
 // Footer — design SoT §5（法務リンク + 控えめなメイカー文脈）。
+// コピーライト表記は公開ブランド名 SITE_NAME=givers.work（[論点-009] リブランド）。
 
 export function Footer({
   className,
@@ -24,7 +26,9 @@ export function Footer({
             特定商取引法に基づく表記
           </a>
         </nav>
-        <p className="sm:ml-auto">© {y} shipyard</p>
+        <p className="sm:ml-auto">
+          © {y} {SITE_NAME}
+        </p>
       </div>
       <div className="mx-auto flex max-w-5xl flex-col gap-1 px-6 pb-6 text-xs text-ink-muted">
         <p>AI 駆動開発で週1ペースに作っています。</p>

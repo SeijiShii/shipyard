@@ -52,10 +52,10 @@ describe("TermsContent (U-2)", () => {
 
 describe("metadata (U-3)", () => {
   it("両ページが title/description を持ち index 可（noindex でない）", () => {
-    expect(privacyMeta.title).toBe("プライバシーポリシー — shipyard");
+    expect(privacyMeta.title).toBe("プライバシーポリシー — givers.work");
     expect(privacyMeta.description).toBeTruthy();
     expect(privacyMeta.robots).toBeUndefined(); // index 可
-    expect(termsMeta.title).toBe("利用規約 — shipyard");
+    expect(termsMeta.title).toBe("利用規約 — givers.work");
     expect(termsMeta.robots).toBeUndefined();
   });
 });
@@ -101,7 +101,7 @@ describe("CommerceContent (U-CM1, U-CM2, U-CM3, U-CM5)", () => {
 
 describe("commerce metadata (U-CM4)", () => {
   it("title/description を持ち index 可（noindex でない）", () => {
-    expect(commerceMeta.title).toBe("特定商取引法に基づく表記 — shipyard");
+    expect(commerceMeta.title).toBe("特定商取引法に基づく表記 — givers.work");
     expect(commerceMeta.description).toBeTruthy();
     expect(commerceMeta.robots).toBeUndefined(); // index 可（審査担当が到達可能）
   });

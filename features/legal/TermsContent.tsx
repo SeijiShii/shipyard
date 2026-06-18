@@ -3,7 +3,7 @@ export function TermsContent() {
   return (
     <div className="flex flex-col gap-6 leading-relaxed text-ink">
       <p className="text-ink-muted">
-        本サイト（shipyard）のご利用にあたっては、以下の規約に同意いただいたものとみなします。
+        本サイト（givers.work）のご利用にあたっては、以下の規約に同意いただいたものとみなします。
       </p>
 
       <section>
