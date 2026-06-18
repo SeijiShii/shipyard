@@ -277,6 +277,27 @@ describe("statusCacheRepo", () => {
     expect(a.status).toBe("down");
   });
 
+  it("SM-Repo1: summary を round-trip 保存 + upsert 上書き (summary-projection [論点-010])", async () => {
+    const repo = createStatusCacheRepo(db);
+    await repo.upsertMany([
+      {
+        slug: "svc-s",
+        name: "S",
+        url: "https://s",
+        status: "up",
+        summary: "短い紹介文。",
+      },
+    ]);
+    let row = (await repo.listAll()).find((r) => r.slug === "svc-s")!;
+    expect(row.summary).toBe("短い紹介文。");
+    // summary 未指定の upsert は null へ (excluded 上書き、明示列挙)
+    await repo.upsertMany([
+      { slug: "svc-s", name: "S2", url: "https://s2", status: "up" },
+    ]);
+    row = (await repo.listAll()).find((r) => r.slug === "svc-s")!;
+    expect(row.summary).toBeNull();
+  });
+
   it("U-E4(status): 不正な status は拒否", async () => {
     await expect(
       createStatusCacheRepo(db).upsertMany([

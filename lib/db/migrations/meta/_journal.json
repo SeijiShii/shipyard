@@ -15,6 +15,13 @@
       "when": 1779960556626,
       "tag": "0001_needy_nico_minoru",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1781749089453,
+      "tag": "0002_unknown_network",
+      "breakpoints": true
     }
   ]
 }

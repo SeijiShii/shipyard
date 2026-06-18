@@ -15,6 +15,7 @@ export type StatusCacheInput = {
   since?: string | null; // date 列（'YYYY-MM-DD'）
   lastCheckedAt?: Date | null;
   iconUrl?: string | null; // service-icons revise (R2 型拡張)
+  summary?: string | null; // summary-projection [論点-010]
   fetchedAt?: Date;
 };
 
@@ -38,6 +39,7 @@ export function createStatusCacheRepo(db: DB) {
         since: r.since ?? null,
         lastCheckedAt: r.lastCheckedAt ?? null,
         iconUrl: r.iconUrl ?? null, // service-icons revise (R1 明示列挙への追加)
+        summary: r.summary ?? null, // summary-projection [論点-010]
         fetchedAt: r.fetchedAt ?? now,
       }));
       await db
@@ -52,6 +54,7 @@ export function createStatusCacheRepo(db: DB) {
             since: sql`excluded.since`,
             lastCheckedAt: sql`excluded.last_checked_at`,
             iconUrl: sql`excluded.icon_url`, // service-icons revise (R1)
+            summary: sql`excluded.summary`, // summary-projection [論点-010]
             fetchedAt: sql`excluded.fetched_at`,
           },
         });

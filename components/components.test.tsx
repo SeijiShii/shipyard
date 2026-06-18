@@ -151,6 +151,61 @@ describe("StatusCard (U-2, U-E2)", () => {
     expect(screen.queryByRole("link")).toBeNull();
     expect(screen.getByText("停止中アプリ")).toBeInTheDocument();
   });
+
+  // summary-projection [論点-010]
+  it("SM-Card1: summary 有 → 名前の下に短文紹介を表示", () => {
+    render(
+      <StatusCard
+        service={{
+          slug: "a",
+          name: "メモアプリ",
+          url: "https://memo.example.com",
+          status: "up",
+          since: "2026-05-01",
+          summary: "草花を撮るだけの発見ノートです。",
+        }}
+        now={now}
+      />,
+    );
+    expect(screen.getByText("メモアプリ")).toBeInTheDocument();
+    expect(
+      screen.getByText("草花を撮るだけの発見ノートです。"),
+    ).toBeInTheDocument();
+  });
+
+  it("SM-Card2: summary 無し → 短文紹介は表示しない (既存レイアウト維持)", () => {
+    render(
+      <StatusCard
+        service={{
+          slug: "a",
+          name: "メモアプリ",
+          url: "https://memo.example.com",
+          status: "up",
+          since: "2026-05-01",
+        }}
+        now={now}
+      />,
+    );
+    expect(screen.getByText("メモアプリ")).toBeInTheDocument();
+    // summary 行は存在しない (name のみ)
+    expect(screen.queryByText(/発見ノート/)).toBeNull();
+  });
+
+  it("SM-Card3: summary 空白のみ → 表示しない (trim 後 falsy)", () => {
+    render(
+      <StatusCard
+        service={{
+          slug: "a",
+          name: "メモアプリ",
+          url: "https://memo.example.com",
+          status: "up",
+          summary: "   ",
+        }}
+        now={now}
+      />,
+    );
+    expect(screen.getByText("メモアプリ")).toBeInTheDocument();
+  });
 });
 
 describe("Header (U-5) / Footer", () => {

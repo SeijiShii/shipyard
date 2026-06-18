@@ -39,6 +39,7 @@ export async function refreshStatusCache(
       since: s.since ?? null,
       lastCheckedAt: s.lastCheckedAt ? new Date(s.lastCheckedAt) : null,
       iconUrl: s.iconUrl ?? null, // service-icons revise (R1 明示列挙への追加、漏らすと DB 保存されない)
+      summary: s.summary ?? null, // summary-projection [論点-010] (R1 明示列挙、漏らすと DB 保存されない)
       fetchedAt,
     })),
   );

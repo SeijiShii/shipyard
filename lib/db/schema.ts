@@ -88,6 +88,7 @@ export const serviceStatusCache = pgTable("service_status_cache", {
   since: date("since"),
   lastCheckedAt: timestamp("last_checked_at", { withTimezone: true }),
   iconUrl: text("icon_url"), // nullable, service-icons revise (Phase 5 MIGRATION)
+  summary: text("summary"), // nullable, summary-projection [論点-010] (HUB 公開 status API 由来の短文)
   fetchedAt: timestamp("fetched_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

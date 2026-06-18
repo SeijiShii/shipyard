@@ -20,6 +20,7 @@ export interface StatusCardService {
   status: string;
   since?: string | null;
   iconUrl?: string | null; // service-icons revise
+  summary?: string | null; // summary-projection [論点-010] (HUB 由来の短文紹介、有れば名前下に表示)
 }
 
 function ServiceIcon({
@@ -74,6 +75,8 @@ export function StatusCard({
   const days = daysSince(service.since, now);
   const accessibleName = `${service.name} ${STATUS_LABEL[s]}`;
 
+  // summary-projection [論点-010]: HUB から短文紹介が来ていれば名前の下に表示 (showcase 一覧で「何のサービスか」)。
+  const summary = service.summary?.trim() || null;
   const content = (
     <>
       <ServiceIcon name={service.name} iconUrl={service.iconUrl} />
@@ -81,8 +84,13 @@ export function StatusCard({
         className={cn("h-2.5 w-2.5 shrink-0 rounded-full", STATUS_DOT_CLASS[s])}
         aria-hidden="true"
       />
-      <span className="font-medium text-ink">{service.name}</span>
-      <span className="ml-auto flex items-center gap-3 text-sm text-ink-muted">
+      <span className="flex min-w-0 flex-col">
+        <span className="font-medium text-ink">{service.name}</span>
+        {summary && (
+          <span className="line-clamp-2 text-sm text-ink-muted">{summary}</span>
+        )}
+      </span>
+      <span className="ml-auto flex shrink-0 items-center gap-3 text-sm text-ink-muted">
         <span aria-hidden="true">{STATUS_LABEL[s]}</span>
         {days !== null && <span>稼働{days}日</span>}
       </span>

@@ -13,6 +13,7 @@ export interface StatusListItem {
   status: string;
   since?: string | null;
   iconUrl?: string | null; // service-icons revise (passthrough to StatusCard、表示集約は StatusCard)
+  summary?: string | null; // summary-projection [論点-010] (passthrough to StatusCard)
 }
 
 export function StatusList({

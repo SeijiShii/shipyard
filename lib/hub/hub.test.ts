@@ -82,6 +82,40 @@ describe("contract (U-1, U-E3, U-E4, U-B1, U-B2)", () => {
     expect(parsed.since).toBeUndefined();
   });
 
+  // summary-projection [論点-010]/O48 v3
+  it("SM-C1: summary を受信したら保持 (showcase 一覧用短文)", () => {
+    const parsed = serviceStatusSchema.parse({
+      slug: "x",
+      name: "X",
+      url: "https://x",
+      status: "up",
+      summary: "草花を撮るだけの発見ノートです。",
+    });
+    expect(parsed.summary).toBe("草花を撮るだけの発見ノートです。");
+  });
+
+  it("SM-C2: summary 欠落 (v1/v2 producer) は optional として許容", () => {
+    const parsed = serviceStatusSchema.parse({
+      slug: "x",
+      name: "X",
+      url: "https://x",
+      status: "up",
+    });
+    expect(parsed.summary).toBeUndefined();
+  });
+
+  it("SM-C3: summary 不正値 (非 string) は service エントリ保持で undefined 降格 (iconUrl と同方針)", () => {
+    const parsed = serviceStatusSchema.parse({
+      slug: "x",
+      name: "X",
+      url: "https://x",
+      status: "up",
+      summary: 12345,
+    });
+    expect(parsed.slug).toBe("x"); // エントリは reject されない
+    expect(parsed.summary).toBeUndefined(); // summary のみ降格
+  });
+
   // CF-20260528-016: 実 service-hub MVP contract 対応 (2026-05-28 実検証)
   it("U-C1: 実 service-hub 形 (直接 Service[]) を accept + services key に wrap", () => {
     const realHubResponse = [
