@@ -1,7 +1,7 @@
 # revise_010_20260618_summary-display — 一覧に summary 短文紹介を表示 [論点-010]
 
-**状態**: implemented (unit/component green、視覚レビュー + デプロイ残)
-<!-- ticket-status: implemented | updated: 20260618 | ref: components/status/StatusCard.tsx summary 表示 -->
+**状態**: shipped (本番反映済、service_status_cache.summary 列 migrate 済 + redeploy、smoke green)
+<!-- ticket-status: shipped | updated: 20260618 | ref: dpl_2cbxgn7sZ9NeHsjhjVRWPik8ZP6e (givers.work redeploy) -->
 
 **種別**: revise (service-status + hub-client + db — O48 v3 summary consumer 表示)
 **起点**: concept §8 [論点-010] (★★★必須) / 上流 [論点-011] (service-hub) は本日 landed
