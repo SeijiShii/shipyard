@@ -458,6 +458,7 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 | 2026-05-27 | リソース選定 = §3.1 個人ツール/無料枠バンドル | preferences §3.1 | §4.3, §4.4 | [D20260527-008](./AI_LOG/D20260527_001_concept_initial.md#decisions) |
 | 2026-05-27 | 外部 AI = 使わない | サービス自体に AI 要件なし | §6 | [D20260527-009](./AI_LOG/D20260527_001_concept_initial.md#decisions) |
 | 2026-05-28 | メッセージング転換: 「AI 駆動開発で成功させましょう」と打ち出さず、「正解の分からない世界で共に考える相談相手」スタンスへ | wants.md 2026-05-28 追記（seiji 明示） | 冒頭表, §1, §1.1 UC#3 | [D20260528-001](./AI_LOG/D20260528_001_concept_update_messaging.md#decisions) |
+| 2026-06-18 | **[論点-009/010/011] を resolved 化** ([論点-009] givers.work rebrand=7352722 / [論点-010] summary 表示=cbb8bb4 実装済 / [論点-011] 上流 service-hub 17th deploy で公開 API summary 反映)。本番反映は redeploy で出荷 | audit AUDIT_20260618_1210 Medium ×3 drift シューティング | §8 論点-009/010/011, landing/seo, service-status | [D20260618-001](./AI_LOG/D20260618_005_concept_update.md#decisions) |
 
 ## 8. 未決事項（論点リスト）
 
@@ -595,7 +596,8 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 
 ### [論点-009] givers.work 公式サイトへのリブランド (shipyard → givers.work)
 
-- **status**: `accepted-as-requirement` (2026-06-10、seiji [flow] 指示で登録。実装は `/flow:revise landing` 後段)
+- **status**: `resolved` ✅ (2026-06-18、commit 7352722 で実装完了 — landing/header/footer + `_shared/seo` metadata を givers.work に統一、audit-hittable signal 充足。audit AUDIT_20260618_1210 #4 PASS で確認。本番反映は redeploy で出荷)
+- **status 履歴**: 2026-06-10 accepted-as-requirement → 2026-06-18 resolved (revise landing/seo、commit 7352722)
 - **影響範囲**: §1 プロダクト概要 (公開ブランド名) / landing (title / header / logo / footer / コピー) / `_shared/seo` (metadata title / OGP `og:site_name`) / §4.7.1 ドメイン (apex givers.work → shipyard、既決)
 - **要件**: shipyard を **QUADii (個人事業) の公式ホームページ = givers.work** としてリブランドする。公開向けブランド名・サイトタイトル・OGP・ヘッダー/フッターの表記を「shipyard」(内部コードネーム) でなく **givers.work** に統一する。apex `givers.work` → shipyard 配信は §4.7.1 で既決。"powered by givers.work" フッター掲示も既決 (§4.7.1)。
 - **audit-hittable signal (CF-20260610-003 §2.5)**: 公開ブランドが givers.work であること = landing/header/footer + SEO metadata の `title`/`og:site_name` に `givers.work` が露出し、ユーザー向け表示で `shipyard` がブランド名として出ない。audit #4 はこの signal の有無で未リブランドを検出 (`grep "givers.work"` が landing/seo に不在 = 未実装)。
@@ -604,7 +606,8 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 
 ### [論点-010] サービス一覧に各サービスの短文紹介 (summary) を表示する [★★★必須]
 
-- **status**: `accepted-as-requirement` (2026-06-10、seiji [flow] 指示で登録。実装は `/flow:revise service-status` 後段)
+- **status**: `resolved` ✅ (2026-06-18、commit cbb8bb4 で実装完了 — `lib/hub/contract.ts` に summary + `components/status/StatusCard.tsx` が描画、199 tests green、audit-hittable signal 充足。上流 [論点-011] も同日 service-hub 17th deploy で反映済。本番反映は db:migrate + redeploy で出荷)
+- **status 履歴**: 2026-06-10 accepted-as-requirement → 2026-06-18 resolved (revise service-status、commit cbb8bb4)
 - **影響範囲**: §1.2 スコープ (含むもの) / `_shared/hub-client` (contract に summary 追加) / service-status (StatusCard に紹介文表示) / **上流依存 = [論点-011]** (service-hub 公開 status API が summary を返す)
 - **要件**: 稼働サービス一覧 (`/` / `/services`) で **サービス名だけでなく「何のサービスか」の短文紹介 (summary、1-2 文)** を表示する。データ源 = service-hub 公開 status API `GET /api/public/status` の安全サブセットに追加される `summary` field ([論点-011] / perspectives O48 v3)。
 - **audit-hittable signal (CF-20260610-003 §2.5)**: `lib/hub/contract.ts` の status schema に `summary` field + `components/status/StatusCard.tsx` (or 一覧コンポーネント) が summary を描画。`grep "summary"` が hub-client contract + StatusCard に不在 = 未実装 (audit #4 が PJ ★★★必須 未実装として検出)。
@@ -613,7 +616,8 @@ L1 設計レビュー（`docs/SECURITY_REVIEW_20260527.md`）で検出した Cri
 
 ### [論点-011] [上流/cross-PJ] service-hub 公開 status API に summary を含める (O48 v3 consumer 追従)
 
-- **status**: `open` (cross-PJ tracked follow-up、shipyard 側では消費のみ。service-hub repo で `/flow:revise` 必要)
+- **status**: `resolved` ✅ (2026-06-18、上流 service-hub が 17th deploy で公開 status API `/api/public/status` に summary を露出 — commit 8e97a26 + dpl_4bUadnQGfUGwoPHxpaajQjkxLnZT、smoke green。cross-PJ 依存充足、shipyard consumer [論点-010] にデータが流れる経路が開通。実 summary 値は各 producer が service-info で自己申告すれば次 collect で surface)
+- **status 履歴**: 2026-06-10 open → 2026-06-18 resolved (上流 service-hub 17th deploy 反映)
 - **影響範囲**: service-hub repo (`_shared/types` + 公開 status API `GET /api/public/status` の安全サブセット) / 各 producer サービス (service-info に summary 自己申告 = O48 v3) / shipyard [論点-010] (これが満たされて初めて summary が流れてくる)
 - **要件**: perspectives O48 を v3 (summary) に改訂済 (flow-suite commit a6d552c)。**producer 各サービス**が service-info に `summary` を自己申告 → **service-hub** が `_shared/types` に summary 追加 + **公開 status API の安全サブセットに summary を含める** → shipyard が消費して表示 ([論点-010])。CF-20260607-002 型の cross-repo 波及 (producer 片側では完結しない)。
 - **shipyard 側の対応**: なし (consumer)。本論点は「上流が summary を出すまで [論点-010] の表示にデータが来ない」依存を明示するための tracked 記録。service-hub repo で別途起票・実装。
