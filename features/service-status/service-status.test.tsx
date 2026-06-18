@@ -166,6 +166,25 @@ describe("uptimeDays (U-2, U-B2)", () => {
 });
 
 describe("toPublicStatus (U-3, U-B1)", () => {
+  // fix C20260618-001: toPublicStatus が summary を公開出力に含める (API 層脱落の回帰防止)
+  it("U-SUM-pub: summary ありの row は公開出力に summary を含む (fix C20260618-001)", () => {
+    const rows = [
+      {
+        slug: "time-budget",
+        name: "時間の家計簿",
+        url: "https://time-budget.givers.work",
+        status: "up",
+        since: null,
+        lastCheckedAt: null,
+        iconUrl: null,
+        summary: "やったことと時間と気分を記録して振り返るアプリ。",
+        fetchedAt: new Date("2026-06-18T00:00:00Z"),
+      },
+    ] as unknown as ServiceStatusRow[];
+    const pub = toPublicStatus(rows);
+    expect(pub[0].summary).toBe("やったことと時間と気分を記録して振り返るアプリ。");
+  });
+
   it("安全サブセットのみ返す（内部/余剰フィールドを含まない、iconUrl は公開対象）", () => {
     const rows = [
       {
@@ -188,6 +207,7 @@ describe("toPublicStatus (U-3, U-B1)", () => {
       status: "up",
       since: "2026-01-01",
       iconUrl: null,
+      summary: null,
       fetchedAt: "2026-05-27T00:00:00.000Z",
     });
     expect(pub[0]).not.toHaveProperty("internalCost");

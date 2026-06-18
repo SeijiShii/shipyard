@@ -10,6 +10,7 @@ export interface PublicServiceView {
   status: string;
   since: string | null;
   iconUrl: string | null; // service-icons revise (公開安全、LP 表示)
+  summary: string | null; // summary-projection [論点-010] (公開安全、一覧の短文紹介。fix C20260618-001: API 層脱落の修正)
   fetchedAt: string;
 }
 
@@ -22,6 +23,7 @@ export function toPublicStatus(rows: ServiceStatusRow[]): PublicServiceView[] {
     status: r.status,
     since: r.since ?? null,
     iconUrl: r.iconUrl ?? null, // service-icons revise
+    summary: r.summary ?? null, // summary-projection [論点-010] (fix C20260618-001)
     fetchedAt:
       r.fetchedAt instanceof Date
         ? r.fetchedAt.toISOString()
